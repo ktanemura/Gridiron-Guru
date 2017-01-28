@@ -1,4 +1,4 @@
-Fantasy Football AI Project
+Fantasy Football AI Project: Gridiorn Guru
 Kyle Tanemura
 Erica Dorn
 Ryan McKinney
