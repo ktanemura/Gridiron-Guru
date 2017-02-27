@@ -1,5 +1,3 @@
-Fantasy Football AI Project: Gridiorn Guru
-Kyle Tanemura
-Erica Dorn
-Ryan McKinney
-Michael Li
+Fantasy Football AI Project: Gridiron Guru
+
+Kyle Tanemura, Ryan McKinney, Michael Li, Erica Dorn
