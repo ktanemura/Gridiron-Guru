@@ -5,7 +5,7 @@
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Sign in with your yahoo fantasy football account</p>
       <form v-on:submit.prevent="login()">
         <div v-if="!success && messages != ''">
           <div class="alert alert-danger"> 
@@ -34,14 +34,18 @@
         <div class="row">
           <div class="col-xs-8">
             <div class="checkbox icheck">
-              <label>
+              <!--label>
                 <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"><ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div> Remember Me
-              </label>
+              </label--!>
             </div>
           </div>
           <!-- /.col -->
-          <div class="col-xs-4">
-            <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <!--div class="col-xs-4"--!>
+          <div class="signIn-box">
+            <div class="signIn"><button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button><d/div>
+          </div>
+          <div>
+            <div class="registerButton"--!><a class="registerStyle" href="https://football.fantasysports.yahoo.com">Register</a></div>
           </div>
           <!-- /.col -->
         </div>
@@ -69,3 +73,36 @@ export default {
   },
 };
 </script>
+
+<style>
+.signIn-box {
+   margin-left: -5px;
+   margin-right: 100px;
+   width: 360px;
+   height: 40px;
+   box-sizing: border-box;
+}
+.signIn {
+   margin-top: 10px;
+   marin-bottom: 10px;
+   margin-left: 260px;
+   width: 80px;
+   height: 20px;
+   box-sizing: border-box;
+ 
+}
+.registerButton {
+   width: 85px;
+   height: 35px;
+   box-sizing: border-box;
+   margin-top: -10px;
+   margin-left: 20px;
+}
+.registerStyle {
+   color: white;
+   width: 85px;
+   height: 35px;
+   color: #2f8ec6;
+   font-weight: bold;
+}
+</style>
