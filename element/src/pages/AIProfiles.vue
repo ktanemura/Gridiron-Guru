@@ -1,68 +1,71 @@
 <template>
-  <div class="row">
-    <div class="col-sm-12 col-md-12">
-      <el-row>
-        <el-col :span="24">
-          <div class="grid-content bg-blue-dark">
-            <h3>AI Profiles</h3>
+<div id="app-aiprofiles">
+  <el-row class="row-cnt">
+    <el-col :span="24">
+      <div class="grid-content bg-blue-dark">
+        <h2>AI Profiles</h2>
+      </div>
+    </el-col>
+  </el-row>
+  <el-row class="row-cnt">
+    <el-col :span="12">
+      <div class="grid-content bg-blue">
+        <p>View and create new AI profiles here. You can assign a profile to a team to manage.</p>
+      </div>
+    </el-col>
+    <el-col :span="12">
+      <div class="grid-content bg-blue">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>Profile Stats</span>
           </div>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <div class="grid-content bg-blue">
-            <p>View and create new AI profiles here. You can assign a profile to a team to manage.</p>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="grid-content bg-blue">
-            <p>Profile stats here</p>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="24">
-          <el-table
-            :data="tableData"
-            border
-            style="width: 100%"
-            max-height="250">
-            <el-table-column
-              prop="name"
-              label="Name">
-            </el-table-column>
-            <el-table-column
-              prop="aggression"
-              label="Risk Tendency">
-            </el-table-column>
-            <el-table-column
-              prop="trading"
-              label="Make Trades"
-              :filters="[{ text: 'True', value: 'True' }, { text: 'False', value: 'False' }]"
-              :filter-method="filterTag">
-              <template scope="scope">
-                <el-tag
-                  :type="scope.row.trading === 'True' ? 'success' : 'danger'"
-                  close-transition>{{scope.row.trading}}</el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="focus"
-              label="Team Focus">
-            </el-table-column>
-            <el-table-column
-              fixed="right"
-              label="Operations">
-              <template scope="scope">
-                <el-button @click="handleClick" type="text" size="small">Details</el-button>
-                <el-button type="text" size="small">Edit</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-col>
-      </el-row>
-    </div>
-  </div>
+          <p>Profile stats here</p>
+        </el-card>
+      </div>
+    </el-col>
+  </el-row>
+  <el-row class="row-cnt">
+    <el-col :span="24">
+      <el-table
+        :data="tableData"
+        border
+        style="width: 100%"
+        max-height="250">
+        <el-table-column
+          prop="name"
+          label="Name">
+        </el-table-column>
+        <el-table-column
+          prop="aggression"
+          label="Risk Tendency">
+        </el-table-column>
+        <el-table-column
+          prop="trading"
+          label="Make Trades"
+          :filters="[{ text: 'True', value: 'True' }, { text: 'False', value: 'False' }]"
+          :filter-method="filterTag">
+          <template scope="scope">
+            <el-tag
+              :type="scope.row.trading === 'True' ? 'success' : 'danger'"
+              close-transition>{{scope.row.trading}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="focus"
+          label="Team Focus">
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="Operations">
+          <template scope="scope">
+            <el-button @click="handleClick" type="text" size="small">Details</el-button>
+            <el-button type="text" size="small">Edit</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-col>
+  </el-row>
+</div>
 </template>
 
 <script>
