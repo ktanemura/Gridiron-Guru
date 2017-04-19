@@ -7,17 +7,21 @@ export default [
   {
     path: '/',
     component: Index,
+    breadcrumb: 'dashboard',
   },
   {
     path: '/aiprofiles',
-    component: AIProfiles
+    component: AIProfiles,
+    breadcrumb: 'aiprofiles',
   },
   {
-    path: '/FantasyTeamList',
+    path: '/fantasyteamlist',
     component: FantasyTeamList,
+    breadcrumb: 'fantasy team list',
   },
   {
-    path: '/FantasyList',
+    path: '/fantasylist',
     component: FantasyList,
+    breadcrumb: 'fantasy list',
   },
 ];

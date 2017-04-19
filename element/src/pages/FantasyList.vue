@@ -1,37 +1,37 @@
 <template>
-  <div class="row">
+  <div class="app-fantasylist">
     <div class="col-sm-12 col-md-12">
       <el-row>
         <el-col :span="24">
           <div class="grid-content bg-blue-dark">
-            <h3>Fantasy Team List</h3>
+            <h2>Fantasy List</h2>
           </div>
         </el-col>
       </el-row>
-<el-row class="block-col-2">
-  <el-col :span="12">
-    <el-dropdown trigger="click">
-      <span class="el-dropdown-link">
-        <el-button type="primary" icon="setting"></el-button>
-      </span>
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item>Action 1</el-dropdown-item>
-        <el-dropdown-item>Action 2</el-dropdown-item>
-        <el-dropdown-item>Action 3</el-dropdown-item>
-        <el-dropdown-item>Action 4</el-dropdown-item>
-        <el-dropdown-item>Action 5</el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
-  </el-col>
-</el-row>
+      <el-row class="el-row-cnt">
+      <el-col :span="24">
+        <el-dropdown trigger="click">
+          <span class="el-dropdown-link">
+            <el-button type="primary" icon="setting"></el-button>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>Action 1</el-dropdown-item>
+            <el-dropdown-item>Action 2</el-dropdown-item>
+            <el-dropdown-item>Action 3</el-dropdown-item>
+            <el-dropdown-item>Action 4</el-dropdown-item>
+            <el-dropdown-item>Action 5</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </el-col>
+    </el-row>
 
-  <el-table
-    :data="tableData"
-    border
-    style="width: 100%">
+    <el-table
+      :data="tableData"
+      border
+      style="width: 100%">
 
 
-<el-table-column
+    <el-table-column
       prop="team"
       label="Team"
       width="180">

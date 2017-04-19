@@ -1,6 +1,6 @@
 <template>
 <div id="app-aiprofiles">
-  <el-row class="row-cnt">
+  <el-row>
     <el-col :span="24">
       <div class="grid-content bg-blue-dark">
         <h2>AI Profiles</h2>
@@ -76,7 +76,7 @@
       },
       handleClick() {
         console.log('click');
-      }
+      },
     },
     data() {
       return {
@@ -112,7 +112,7 @@
             focus: 'Run Heavy'
           },
           {
-            name: 'The Admir  al',
+            name: 'The Admiral',
             aggression: 10,
             trading: 'False',
             focus: 'Arial Attack'

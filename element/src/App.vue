@@ -7,12 +7,12 @@
           <main-sidenav></main-sidenav>
         </el-col>
         <el-col :span="20">
-          <el-row class="el-row-breadcrumbs">
+          <!-- <el-row class="el-row-breadcrumbs">
             <el-breadcrumb separator="/">
               <el-breadcrumb-item :to="{ path: '/' }">dashboard</el-breadcrumb-item>
               <el-breadcrumb-item>page</el-breadcrumb-item>
             </el-breadcrumb>
-          </el-row>
+          </el-row> -->
           <router-view></router-view>
         </el-col>
       </el-row>
@@ -24,7 +24,7 @@
 export default {
   data () {
     return {
-      msg: 'Use Vue 2.0 Today!'
+      msg: 'Use Vue 2.0 Today!',
     }
   },
 

@@ -1,10 +1,10 @@
 <template>
-  <div class="row">
+  <div class="app-fantasyteamlist">
     <div class="col-sm-12 col-md-12">
       <el-row>
         <el-col :span="24">
           <div class="grid-content bg-blue-dark">
-            <h3>Fantasy Team List</h3>
+            <h2>Fantasy Team List</h2>
           </div>
         </el-col>
       </el-row>
