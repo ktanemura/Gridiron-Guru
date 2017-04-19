@@ -99,7 +99,7 @@
             focus: 'Run Heavy'
           },
           {
-            name: 'The Admrial',
+            name: 'The Admiral',
             aggression: 10,
             trading: 'False',
             focus: 'Arial Attack'

@@ -1,8 +1,29 @@
+<style>
+html, 
+body {
+    height: 100%;
+}
+body {
+  margin: 0 0;
+}
+#app {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+</style>
+
 <template>
   <div id="app">
-    <h1>{{ msg }}</h1>
+    <main-header></main-header>
     <div class="main-cnt">
-      <router-view></router-view>
+      <el-row>
+        <el-col :span="4">
+          <main-sidenav></main-sidenav>
+        </el-col>
+        <el-col :span="20">
+          <router-view></router-view>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
@@ -21,10 +42,10 @@ export default {
         title: 'It Works',
         message: 'We have laid the groundwork for you. Now it\'s your time to build something epic!',
         duration: 6000
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>
 
 <style>
