@@ -37,7 +37,14 @@
             </el-table-column>
             <el-table-column
               prop="trading"
-              label="Make Trades">
+              label="Make Trades"
+              :filters="[{ text: 'True', value: 'True' }, { text: 'False', value: 'False' }]"
+              :filter-method="filterTag">
+              <template scope="scope">
+                <el-tag
+                  :type="scope.row.trading === 'True' ? 'success' : 'danger'"
+                  close-transition>{{scope.row.trading}}</el-tag>
+              </template>
             </el-table-column>
             <el-table-column
               prop="focus"
@@ -61,6 +68,9 @@
 <script>
   export default {
     methods: {
+      filterTag(value, row) {
+        return row.trading === value;
+      },
       handleClick() {
         console.log('click');
       }
@@ -99,7 +109,7 @@
             focus: 'Run Heavy'
           },
           {
-            name: 'The Admiral',
+            name: 'The Admir  al',
             aggression: 10,
             trading: 'False',
             focus: 'Arial Attack'
