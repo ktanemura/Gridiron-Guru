@@ -6,8 +6,8 @@ export default [
     path: '/',
     component: Index,
   },
-    {
-    path: '/AIProfiles',
-    component: AIProfiles,
+  {
+    path: '/aiprofiles',
+    component: AIProfiles
   },
 ];

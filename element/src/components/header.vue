@@ -20,7 +20,7 @@
 
 <script>
   export default {
-    data() {
+    data () {
       return {
         active: '',
         isHome: false,
