@@ -17,55 +17,43 @@
         </el-dropdown>
        </p>
           <div class="grid-content bg-blue-dark">
-            <h2>Fantasy List</h2>
+            <h2>Weekly Reports</h2>
           </div>
         </el-col>
       </el-row>
-
 
     <el-table
       :data="tableData"
       border
       style="width: 100%">
+
     <el-table-column
-      prop="team"
-      label="Team"
+      prop="season"
+      label="Season"
+      width="180">
+    </el-table-column>
+
+
+    <el-table-column
+      prop="week"
+      label="Week"
       width="180">
     </el-table-column>
     <el-table-column
-      prop="league"
-      label="League"
-      width="180">
-    </el-table-column>
-    <el-table-column
-      prop="win"
-      label="Wins"
-      width="90">
-    </el-table-column>
-    <el-table-column
-      prop="lose"
-      label="Losses"
-      width="90">
-    </el-table-column>
-    <el-table-column
-      prop="status"
-      label="AI Status"
+      prop="result"
+      label="Result"
       width="230">
     </el-table-column>
     <el-table-column
       label="Options">
+
       <template scope="scope">
-        <el-button
-          size="small"
-          type="info"
-          @click="handleReport(scope.$index, scope.row)">Report</el-button>
+<!-- Form popup button for View-->
+<el-button size="small" type="primary" @click="dialogFormVisible = true">View</el-button>
 
-<!-- Form popup button for Edit-->
-<el-button size="small" type="success" @click="dialogFormVisible = true">Edit</el-button>
-
-<el-dialog title="Team AI" v-model="dialogFormVisible">
+<el-dialog title="Report" v-model="dialogFormVisible">
   <el-form :model="form">
-    <el-form-item label="AI Profile" :label-width="formLabelWidth">
+    <el-form-item label="View" :label-width="formLabelWidth">
       <el-select v-model="form.region" placeholder="Please select AI Profile">
         <el-option label="The Brady Bot" value="bradyBot"></el-option>
         <el-option label="Predicti-Ball" value="predictiBall"></el-option>
@@ -80,17 +68,10 @@
         <el-option label="None" value="noManage"></el-option>
       </el-select>
     </el-form-item>
-
-  <el-checkbox-group v-model="checkList">
-    <el-checkbox label="Set Lineup"></el-checkbox>
-    <el-checkbox label="Free Agency"></el-checkbox>
-    <el-checkbox label="Trade"></el-checkbox>
-  </el-checkbox-group>
-
   </el-form>
   <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible = false">Cancel</el-button>
-    <el-button type="primary" @click="dialogFormVisible = false">Submit</el-button>
+    <!--el-button @click="dialogFormVisible = false">Cancel</el-button-->
+    <el-button type="primary" @click="dialogFormVisible = false">Done</el-button>
   </span>
 </el-dialog>
 
@@ -105,7 +86,6 @@
   export default {
     data() {
       return {
-        checkList: ['selected and disabled','Option A'],
         dialogFormVisible: false,
         form: {
           name: '',
@@ -118,34 +98,25 @@
           desc: ''
         },
         formLabelWidth: '130px',
-
         tableData: [{
-          team: 'Happy Campers',
-          league: 'Extraordinary Bots',
-          win: 0, 
-          lose: 2,
-          status: 'The Brady Bot (Managing)',
+          season: 2016,
+          week: 4,
+          result: 'W',
           address: 'No. 189, Grove St, Los Angeles'
         }, {
-          team: 'Winnerz',
-          league: 'Extraordinary Bots',
-          win: 2,
-          lose: 1,
-          status: 'Predicti-Ball (Managing)',
+          season: 2016,
+          week: 3,
+          result: 'W',
           address: 'No. 189, Grove St, Los Angeles'
         }, {
-          team: 'Sports Illustrated',
-          league: 'Number One Fans',
-          win: 3,
-          lose: 1,
-          status: 'Weekend Warrior (Advising)',
+          season: 2016,
+          week: 2,
+          result: 'L',
           address: 'No. 189, Grove St, Los Angeles'
         }, {
-          team: 'Ballers',
-          league: 'Number One Fans',
-          win: 4,
-          lose: 0,
-          status: '(None)',
+          season: 2016,
+          week: 1,
+          result: 'W',
           address: 'No. 189, Grove St, Los Angeles'
         }]
       }
@@ -154,9 +125,11 @@
       handleEdit(index, row) {
         console.log(index, row);
       },
-      handleReport(index, row) {
+      handleReportAdvise(index, row) {
         console.log(index, row);
       }
     }
   }
 </script>
+
+

@@ -1,7 +1,8 @@
 import Index from './pages/Index.vue';
 import AIProfiles from './pages/AIProfiles.vue';
-import FantasyTeamList from './pages/FantasyTeamList.vue';
+/*import FantasyTeamList from './pages/FantasyTeamList.vue';*/
 import FantasyList from './pages/FantasyList.vue';
+import WeeklyReports from './pages/WeeklyReports.vue';
 
 export default [
   {
@@ -14,14 +15,19 @@ export default [
     component: AIProfiles,
     breadcrumb: 'aiprofiles',
   },
-  {
+ /* {
     path: '/fantasyteamlist',
     component: FantasyTeamList,
     breadcrumb: 'fantasy team list',
-  },
+  },*/
   {
     path: '/fantasylist',
     component: FantasyList,
     breadcrumb: 'fantasy list',
   },
+  {
+    path: '/weeklyreports',
+    component: WeeklyReports,
+    breadcrumb: 'weekly reports',
+  }
 ];
