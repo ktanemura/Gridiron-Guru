@@ -58,8 +58,8 @@
           fixed="right"
           label="Operations">
           <template scope="scope">
-            <el-button @click="handleClick" type="text" size="small">Details</el-button>
-            <el-button type="text" size="small">Edit</el-button>
+            <el-button @click="handleClick" type="text" size="small">Edit</el-button>
+            <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">Delete</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -77,6 +77,9 @@
       handleClick() {
         console.log('click');
       },
+      deleteRow(index, rows) {
+        rows.splice(index, 1);
+      }
     },
     data() {
       return {
