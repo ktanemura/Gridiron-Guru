@@ -3,33 +3,30 @@
     <div class="col-sm-12 col-md-12">
       <el-row>
         <el-col :span="24">
-          <div class="grid-content bg-blue-dark">
-            <h2>Fantasy List</h2>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row class="el-row-cnt">
-      <el-col :span="24">
+       <p align=right>
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
             <el-button type="primary" icon="setting"></el-button>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>Action 1</el-dropdown-item>
-            <el-dropdown-item>Action 2</el-dropdown-item>
-            <el-dropdown-item>Action 3</el-dropdown-item>
-            <el-dropdown-item>Action 4</el-dropdown-item>
-            <el-dropdown-item>Action 5</el-dropdown-item>
+            <el-dropdown-item>Settings</el-dropdown-item>
+            <el-dropdown-item>Account Management</el-dropdown-item>
+            <el-dropdown-item>Draft Advisor</el-dropdown-item>
+            <el-dropdown-item>Logout</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-      </el-col>
-    </el-row>
+       </p>
+          <div class="grid-content bg-blue-dark">
+            <h2>Fantasy List</h2>
+          </div>
+        </el-col>
+      </el-row>
+
 
     <el-table
       :data="tableData"
       border
       style="width: 100%">
-
 
     <el-table-column
       prop="team"
@@ -73,13 +70,40 @@
     <el-table-column
       label="Options">
       <template scope="scope">
-        <el-button
-          size="small" type="success"
-          @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+
+
         <el-button
           size="small"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+          type="info"
+          @click="handleReportAdvise(scope.$index, scope.row)">Report/Advise</el-button>
+
+<!-- Form popup button for Edit AI-->
+<el-button size="small" type="success" @click="dialogFormVisible = true">Edit/Add AI</el-button>
+
+<el-dialog title="Team AI" v-model="dialogFormVisible">
+  <el-form :model="form">
+    <el-form-item label="AI Profile" :label-width="formLabelWidth">
+      <el-select v-model="form.region" placeholder="Please select AI Profile">
+        <el-option label="The Brady Bot" value="bradyBot"></el-option>
+        <el-option label="Predicti-Ball" value="predictiBall"></el-option>
+        <el-option label="Weekend Warrior" value="weekendWarrior"></el-option>
+        <el-option label="None" value="noAI"></el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="Management Type" :label-width="formLabelWidth">
+      <el-select v-model="form.region" placeholder="Please select Management Type">
+        <el-option label="Manage" value="manage"></el-option>
+        <el-option label="Advise" value="advise"></el-option>
+        <el-option label="None" value="noManage"></el-option>
+      </el-select>
+    </el-form-item>
+  </el-form>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">Cancel</el-button>
+    <el-button type="primary" @click="dialogFormVisible = false">Submit</el-button>
+  </span>
+</el-dialog>
+
       </template>
     </el-table-column>
   </el-table>
@@ -91,6 +115,19 @@
   export default {
     data() {
       return {
+        dialogFormVisible: false,
+        form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
+        formLabelWidth: '130px',
+
         tableData: [{
           team: 'Happy Campers',
           league: 'Extraordinary Bots',
@@ -126,7 +163,7 @@
       handleEdit(index, row) {
         console.log(index, row);
       },
-      handleDelete(index, row) {
+      handleReportAdvise(index, row) {
         console.log(index, row);
       }
     }
