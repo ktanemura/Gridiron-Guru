@@ -2,6 +2,19 @@
 <div id="app-aiprofiles">
   <el-row>
     <el-col :span="24">
+      <p align=right>
+        <el-dropdown trigger="click">
+          <span class="el-dropdown-link">
+            <el-button type="primary" icon="setting"></el-button>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>Settings</el-dropdown-item>
+            <el-dropdown-item>Account Management</el-dropdown-item>
+            <el-dropdown-item>Draft Advisor</el-dropdown-item>
+            <el-dropdown-item>Logout</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+       </p>
       <div class="grid-content bg-blue-dark">
         <h2>AI Profiles</h2>
       </div>
@@ -58,8 +71,24 @@
           fixed="right"
           label="Operations">
           <template scope="scope">
-            <el-button @click="handleClick" type="text" size="small">Edit</el-button>
-            <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">Delete</el-button>
+            <el-button @click="dialogFormVisible = true" type="text" size="small">Edit</el-button>
+            <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">Delete</el-button>            <el-dialog title="AI Profile" v-model="dialogFormVisible">
+              <el-form :model="form">
+                <el-form-item label="Promotion name" :label-width="formLabelWidth">
+                  <el-input v-model="form.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="Zones" :label-width="formLabelWidth">
+                  <el-select v-model="form.region" placeholder="Please select a zone">
+                    <el-option label="Zone No.1" value="shanghai"></el-option>
+                    <el-option label="Zone No.2" value="beijing"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-form>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
+              </span>
+            </el-dialog>
           </template>
         </el-table-column>
       </el-table>
@@ -74,8 +103,8 @@
       filterTag(value, row) {
         return row.trading === value;
       },
-      handleClick() {
-        console.log('click');
+      handleClick(index, row) {
+        console.log(index, row.get(index));
       },
       deleteRow(index, rows) {
         rows.splice(index, 1);
@@ -126,7 +155,19 @@
             trading: 'True',
             focus: 'Run Heavy'
           },
-        ]
+        ],
+        dialogFormVisible: false,
+        form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
+        formLabelWidth: '120px'
       }
     }
   }
