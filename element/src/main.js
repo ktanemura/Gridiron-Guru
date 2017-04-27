@@ -10,7 +10,7 @@ import MainHeader from './components/header.vue';
 import MainSidenav from './components/sidenav.vue';
 import MainFooter from './components/footer.vue';
 var VueFire = require('vuefire');
-var firebase = require('firebase');
+var fb = require('firebase');
 
 Vue.use(ElementUI);
 Vue.use(VueRouter);
@@ -28,7 +28,10 @@ Vue.component('main-footer', MainFooter);
     messagingSenderId: "811469506152"
   };
 
-  firebase.initializeApp(config);
+  var firebaseapp = fb.initializeApp(config);
+  var db = firebaseapp.database();
+
+export const firebase = fb;
 
 export const router = new VueRouter({
   mode: 'hash',
@@ -38,6 +41,38 @@ export const router = new VueRouter({
 
 new Vue({
   el: '#app',
+/*
+  firebase: {
+    anArray: db.ref('url/to/my/collection'),
+    anObject: {
+      source: db.ref('url/to/my/object'),
+      // optionally bind as an object
+      asObject: true,
+      // optionally provide the cancelCallback
+      cancelCallback: function () {}
+    }
+  },
+*/
   render: h => h(App),
-  router
+  router,
+    data: {
+      user: {},
+  },
+  beforeCreate: function() {
+    // Our earliest lifecycle hook and first access
+    // to $bindAsArray() / $bindAsObject() from VueFire
+    // Start Firebase authentication here:
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // Cache user - an anonymously authenticated firebase.User account
+        //  - https://firebase.google.com/docs/reference/js/firebase.User
+        this.user = user
+        // Note: Child component instances will have access to these
+        // references via this.$root.user and this.$root.messages
+      } else {
+        firebase.auth().signInAnonymously().catch(console.error)
+        this.$route.path = '/login'
+      }
+    }.bind(this))
+  }
 });
