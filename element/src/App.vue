@@ -20,7 +20,7 @@
     </div>
   </div>
 </template>
-<head>
+
 <script>
 export default {
   data () {
