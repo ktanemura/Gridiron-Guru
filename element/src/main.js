@@ -9,12 +9,26 @@ import Routes from './routes';
 import MainHeader from './components/header.vue';
 import MainSidenav from './components/sidenav.vue';
 import MainFooter from './components/footer.vue';
+var VueFire = require('vuefire');
+var firebase = require('firebase');
 
 Vue.use(ElementUI);
 Vue.use(VueRouter);
 Vue.component('main-header', MainHeader);
 Vue.component('main-sidenav', MainSidenav);
 Vue.component('main-footer', MainFooter);
+
+// Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCI2wCtuTZkcrJmU2InHNFfmXDhzjisbfk",
+    authDomain: "gridiron-gurus.firebaseapp.com",
+    databaseURL: "https://gridiron-gurus.firebaseio.com",
+    projectId: "gridiron-gurus",
+    storageBucket: "gridiron-gurus.appspot.com",
+    messagingSenderId: "811469506152"
+  };
+
+  firebase.initializeApp(config);
 
 export const router = new VueRouter({
   mode: 'hash',

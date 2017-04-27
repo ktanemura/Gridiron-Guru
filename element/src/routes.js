@@ -35,5 +35,5 @@ export default [
     path: '/login',
     component: Login,
     breadcrumb: 'login',
-  }
+  },
 ];
