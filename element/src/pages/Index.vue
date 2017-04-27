@@ -1,24 +1,3 @@
-<script src="https://www.gstatic.com/firebasejs/3.8.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/3.8.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/3.8.0/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/3.8.0/firebase-messaging.js"></script>
-<script>
-  var firebase = require("firebase/app");
-  require("firebase/auth");
-  //require("firebase/database");
-  
-  // Initialize Firebase
-  // TODO: Replace with your project's customized code snippet
-  var config = {
-    apiKey: "AIzaSyCI2wCtuTZkcrJmU2InHNFfmXDhzjisbfk",
-    authDomain: "gridiron-gurus.firebaseapp.com",
-    //databaseURL: "https://<DATABASE_NAME>.firebaseio.com",
-    //storageBucket: "gs://gridiron-gurus.appspot.com",
-    //messagingSenderId: "<SENDER_ID>",
-  };
-  firebase.initializeApp(config);
-</script>
-
 <template>
   <div class="app-dashboard">
     <div class="col-sm-12 col-md-12">
