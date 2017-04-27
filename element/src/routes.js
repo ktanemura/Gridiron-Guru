@@ -3,6 +3,7 @@ import AIProfiles from './pages/AIProfiles.vue';
 /*import FantasyTeamList from './pages/FantasyTeamList.vue';*/
 import FantasyList from './pages/FantasyList.vue';
 import WeeklyReports from './pages/WeeklyReports.vue';
+import Login from './pages/Login.vue';
 
 export default [
   {
@@ -29,5 +30,10 @@ export default [
     path: '/weeklyreports',
     component: WeeklyReports,
     breadcrumb: 'weekly reports',
+  },
+  {
+    path: '/login',
+    component: Login,
+    breadcrumb: 'login',
   }
 ];
