@@ -10,11 +10,13 @@ export default [
     path: '/',
     component: Index,
     breadcrumb: 'dashboard',
+    auth: true,
   },
   {
     path: '/aiprofiles',
     component: AIProfiles,
     breadcrumb: 'aiprofiles',
+    auth: true,
   },
  /* {
     path: '/fantasyteamlist',
@@ -25,6 +27,7 @@ export default [
     path: '/fantasylist',
     component: FantasyList,
     breadcrumb: 'fantasy list',
+    auth: true,
   },
   {
     path: '/weeklyreports',
@@ -35,5 +38,6 @@ export default [
     path: '/login',
     component: Login,
     breadcrumb: 'login',
+    auth: false,
   },
 ];

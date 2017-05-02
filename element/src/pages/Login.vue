@@ -50,6 +50,10 @@
   export default {
     data() {
       return {
+        user: {
+          email: 'kyletanemura@gmail.com',
+          password: 'password',
+        }
       };
     },
     methods: {
@@ -61,6 +65,7 @@
             console.log('error submit!!');
             return false;
           }
+          firebase.auth.signInWithEmailAndPassword('kyletanemura@gmail.com', 'password');
         });
       },
       resetForm(formName) {

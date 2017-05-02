@@ -56,7 +56,10 @@ new Vue({
   render: h => h(App),
   router,
     data: {
-      user: {},
+      user: {
+        email: 'kyletanemura@gmail.com',
+        password: 'password',
+      },
   },
   beforeCreate: function() {
     // Our earliest lifecycle hook and first access
@@ -70,7 +73,7 @@ new Vue({
         // Note: Child component instances will have access to these
         // references via this.$root.user and this.$root.messages
       } else {
-        firebase.auth().signInAnonymously().catch(console.error)
+        firebase.auth().signInWithEmailAndPassword('kyletanemura@gmail.com', 'password')
         this.$route.path = '/login'
       }
     }.bind(this))
