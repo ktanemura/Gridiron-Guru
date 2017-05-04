@@ -3,11 +3,7 @@
   <el-menu-item index="/"><i class="el-icon-menu"></i>Dashboard</el-menu-item>
   <el-menu-item index="/aiprofiles"><i class="el-icon-menu"></i>AI Profiles</el-menu-item>
   <el-menu-item index="/login"><i class="el-icon-menu"></i>Login</el-menu-item>
-  <el-submenu>
-    <template slot="title"><i class="el-icon-message"></i>Fantasy Teams</template>
-    <el-menu-item index="/fantasyteamlist">Team List</el-menu-item>
-    <el-menu-item index="/fantasylist">Fantasy List</el-menu-item>
-  </el-submenu>
+  <el-menu-item index="/fantasylist"><i class="el-icon-menu"></i>Fantasy List</el-menu-item>
 </el-menu>
 </template>
 

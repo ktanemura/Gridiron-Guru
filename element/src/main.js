@@ -9,7 +9,7 @@ import Routes from './routes';
 import MainHeader from './components/header.vue';
 import MainSidenav from './components/sidenav.vue';
 import MainFooter from './components/footer.vue';
-var VueFire = require('vuefire');
+//var VueFire = require('vuefire');
 import Firebase from 'firebase';
 
 Vue.use(ElementUI);
@@ -52,13 +52,6 @@ router.beforeEach((to, from, next) => {
       });
     } else {
       console.log("user authenticated");
-      user.providerData.forEach(function (profile) {
-        console.log("Sign-in provider: "+profile.providerId);
-        console.log("  Provider-specific UID: "+profile.uid);
-        console.log("  Name: "+profile.displayName);
-        console.log("  Email: "+profile.email);
-        console.log("  Photo URL: "+profile.photoURL);
-      });
       next();
     }
   } else {
@@ -75,5 +68,5 @@ const unsubscribe = Firebase.auth().onAuthStateChanged((user) => {
   });
 
   // stop listening
-  unsubscribe()
+  unsubscribe();
 });
