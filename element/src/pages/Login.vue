@@ -48,14 +48,6 @@
 
 <script>
   export default {
-    data() {
-      return {
-        user: {
-          email: 'kyletanemura@gmail.com',
-          password: 'password',
-        }
-      };
-    },
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
@@ -65,7 +57,6 @@
             console.log('error submit!!');
             return false;
           }
-          firebase.auth.signInWithEmailAndPassword('kyletanemura@gmail.com', 'password');
         });
       },
       resetForm(formName) {

@@ -25,7 +25,6 @@
 export default {
   data () {
     return {
-      authenticated: authenticated,
       msg: 'Use Vue 2.0 Today!',
     }
   },

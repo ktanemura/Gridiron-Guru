@@ -10,7 +10,7 @@ import MainHeader from './components/header.vue';
 import MainSidenav from './components/sidenav.vue';
 import MainFooter from './components/footer.vue';
 var VueFire = require('vuefire');
-var fb = require('firebase');
+import Firebase from 'firebase';
 
 Vue.use(ElementUI);
 Vue.use(VueRouter);
@@ -28,54 +28,52 @@ Vue.component('main-footer', MainFooter);
     messagingSenderId: "811469506152"
   };
 
-  var firebaseapp = fb.initializeApp(config);
+  var firebaseapp = Firebase.initializeApp(config);
   var db = firebaseapp.database();
 
-export const firebase = fb;
-
 export const router = new VueRouter({
-  mode: 'hash',
+  mode: 'history',
   base: __dirname,
   routes: Routes,
 });
 
-new Vue({
-  el: '#app',
-/*
-  firebase: {
-    anArray: db.ref('url/to/my/collection'),
-    anObject: {
-      source: db.ref('url/to/my/object'),
-      // optionally bind as an object
-      asObject: true,
-      // optionally provide the cancelCallback
-      cancelCallback: function () {}
+router.beforeEach((to, from, next) => {
+  console.log("Method called");
+  if (to.matched.some(record => record.meta.reqAuth)) {
+    console.log("Auth required");
+    var user = firebaseapp.auth().currentUser;
+    if (!user) {
+      console.log("redirect to login");
+      next({
+        path: '/login',
+        query: {
+          redirect: to.fullPath,
+        },
+      });
+    } else {
+      console.log("user authenticated");
+      user.providerData.forEach(function (profile) {
+        console.log("Sign-in provider: "+profile.providerId);
+        console.log("  Provider-specific UID: "+profile.uid);
+        console.log("  Name: "+profile.displayName);
+        console.log("  Email: "+profile.email);
+        console.log("  Photo URL: "+profile.photoURL);
+      });
+      next();
     }
-  },
-*/
-  render: h => h(App),
-  router,
-    data: {
-      user: {
-        email: 'kyletanemura@gmail.com',
-        password: 'password',
-      },
-  },
-  beforeCreate: function() {
-    // Our earliest lifecycle hook and first access
-    // to $bindAsArray() / $bindAsObject() from VueFire
-    // Start Firebase authentication here:
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        // Cache user - an anonymously authenticated firebase.User account
-        //  - https://firebase.google.com/docs/reference/js/firebase.User
-        this.user = user
-        // Note: Child component instances will have access to these
-        // references via this.$root.user and this.$root.messages
-      } else {
-        firebase.auth().signInWithEmailAndPassword('kyletanemura@gmail.com', 'password')
-        this.$route.path = '/login'
-      }
-    }.bind(this))
+  } else {
+    console.log("Auth not required");
+    next();
   }
+});
+
+const unsubscribe = Firebase.auth().onAuthStateChanged((user) => {
+  new Vue({
+    el: '#app',
+    render: h => h(App),
+    router,
+  });
+
+  // stop listening
+  unsubscribe()
 });
