@@ -41,7 +41,7 @@ router.beforeEach((to, from, next) => {
   console.log("Method called");
   if (to.matched.some(record => record.meta.reqAuth)) {
     console.log("Auth required");
-    var user = firebaseapp.auth().currentUser;
+    var user = Firebase.auth().currentUser;
     if (!user) {
       console.log("redirect to login");
       next({
@@ -60,7 +60,7 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-const unsubscribe = Firebase.auth().onAuthStateChanged((user) => {
+const unsubscribe = firebaseapp.auth().onAuthStateChanged((user) => {
   new Vue({
     el: '#app',
     render: h => h(App),

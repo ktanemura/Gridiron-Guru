@@ -10,21 +10,20 @@
       </el-row>
 
 
-<el-form :model="numberValidateForm" ref="numberValidateForm" label-width="100px" class="demo-ruleForm">
+<el-form :model="userLoginForm" ref="userLoginForm" :rules="rules" label-width="100px" class="demo-ruleForm">
   <el-form-item
-    label="Username"
-    prop="username">
-    <el-input type="age" auto-complete="off"></el-input>
+    label="Email"
+    prop="email">
+    <el-input type="email" v-model="userLoginForm.email" auto-complete="off"></el-input>
   </el-form-item>
   <el-form-item
     label="Password"
     prop="password">
-    <el-input type="password" auto-complete="off"></el-input>
+    <el-input type="password" v-model="userLoginForm.password" auto-complete="off"></el-input>
   </el-form-item>
   <el-form-item>
-    <el-button type="primary" @click="submitForm('numberValidateForm')">Login</el-button>
+    <el-button type="primary" @click="submitForm('userLoginForm')">Login</el-button>
     <el-button>Sign Up</el-button>
-    <!--el-button @click="resetForm('numberValidateForm')">Reset</el-button-->
   </el-form-item>
 </el-form>
 
@@ -35,20 +34,41 @@
 
 <script>
   export default {
+    data() {
+      var checkPass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('Please input the password'));
+        } 
+      };
+
+      return {
+        userLoginForm: {
+          email: '',
+          password: ''
+        },
+
+        rules: {
+          email: [
+            { required: true, message: 'Please input email address', trigger: 'blur' },
+            { type: 'email', message: 'Please input correct email address', trigger: 'blur,change' }
+          ],
+          password: [
+            { validator: checkPass, trigger: 'blur' }
+          ]
+        }
+      };
+    },
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            console.log("Valid")
           } else {
             console.log('error submit!!');
             return false;
           }
         });
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
     }
   }
 </script>
