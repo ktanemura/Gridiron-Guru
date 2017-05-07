@@ -9,6 +9,7 @@ import Login from './pages/Login.vue';
 export default [
   {
     path: '/',
+    redirect: '/dashboard',
     component: Main,
     meta: {
       reqAuth: true,
@@ -56,4 +57,5 @@ export default [
       reqAuth: false,
     },
   },
+  { path: '*', redirect: '/' },
 ];
