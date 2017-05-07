@@ -4,23 +4,24 @@
     <div class="main-cnt">
       <el-row :gutter="20">
         <el-col :span="12" :offset="6">
-<el-form :model="userLoginForm" ref="userLoginForm" :rules="rules" label-width="100px" class="demo-ruleForm">
-  <el-form-item
-    label="Email"
-    prop="email">
-    <el-input type="email" v-model="userLoginForm.email" auto-complete="off"></el-input>
-  </el-form-item>
-  <el-form-item
-    label="Password"
-    prop="password">
-    <el-input type="password" v-model="userLoginForm.password" auto-complete="off"></el-input>
-  </el-form-item>
-  <el-form-item>
-    <el-button type="primary" @click="submitForm('userLoginForm', userLoginForm.email, userLoginForm.password)">Login</el-button>
-    <el-button>Sign Up</el-button>
-  </el-form-item>
-</el-form>
-
+          <el-form :model="userLoginForm" ref="userLoginForm" :rules="rules" label-width="100px" class="demo-ruleForm">
+            <el-form-item
+              label="Email"
+              prop="email">
+                <el-input type="email" v-model="userLoginForm.email" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item
+              label="Password"
+              prop="password">
+                <el-input type="password" v-model="userLoginForm.password" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('userLoginForm', userLoginForm.email, userLoginForm.password)">Login</el-button>
+              <el-button>Sign Up</el-button>
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
