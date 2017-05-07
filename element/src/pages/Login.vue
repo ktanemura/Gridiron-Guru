@@ -146,6 +146,12 @@ p {
               // Handle Errors here.
               var errorCode = error.code;
               var errorMessage = error.message;
+              if (errorCode === 'auth/wrong-password' || errorCode == 'auth/user-not-found') {
+                alert('Invalid Email and Password combination');
+              } else {
+                alert(errorMessage);
+              }
+              console.log(error);
             });
           }
           else {
