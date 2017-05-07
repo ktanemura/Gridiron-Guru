@@ -105,7 +105,7 @@ p {
 
 
 <script>
-
+  import firebase from 'firebase'
   export default {
     data() {
       var checkPass = (rule, value, callback) => {
@@ -130,7 +130,7 @@ p {
           password: [
             { validator: checkPass, trigger: 'blur' }
           ]
-        }
+        },
       };
     },
     methods: {
@@ -142,8 +142,13 @@ p {
             console.log(email);
             console.log(password);
             //Need to add firebase import
-            return firebaseapp.auth.signInWithEmailAndPassword(email, password);
-          } else {
+            firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+              // Handle Errors here.
+              var errorCode = error.code;
+              var errorMessage = error.message;
+            });
+          }
+          else {
             console.log('error submit!!');
             return false;
           }

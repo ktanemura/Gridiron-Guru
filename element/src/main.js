@@ -37,6 +37,8 @@ export const router = new VueRouter({
   routes: Routes,
 });
 
+export const fb = firebaseapp;
+
 router.beforeEach((to, from, next) => {
   console.log("router.beforeEach call");
   if (to.matched.some(record => record.meta.reqAuth)) {
@@ -65,6 +67,7 @@ const unsubscribe = firebaseapp.auth().onAuthStateChanged((user) => {
     el: '#app',
     render: h => h(App),
     router,
+    fb,
   });
 
   // stop listening
