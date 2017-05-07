@@ -22,7 +22,7 @@
     <el-input type="password" v-model="userLoginForm.password" auto-complete="off"></el-input>
   </el-form-item>
   <el-form-item>
-    <el-button type="primary" @click="submitForm('userLoginForm')">Login</el-button>
+    <el-button type="primary" @click="submitForm('userLoginForm', userLoginForm.email, userLoginForm.password)">Login</el-button>
     <el-button>Sign Up</el-button>
   </el-form-item>
 </el-form>
@@ -33,12 +33,15 @@
 
 
 <script>
+
   export default {
     data() {
       var checkPass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('Please input the password'));
-        } 
+        }
+
+        callback();
       };
 
       return {
@@ -59,10 +62,15 @@
       };
     },
     methods: {
-      submitForm(formName) {
+      submitForm(formName, email, password) {
         this.$refs[formName].validate((valid) => {
+          console.log('called');
           if (valid) {
-            console.log("Valid")
+            console.log('Valid');
+            console.log(email);
+            console.log(password);
+            //Need to add firebase import
+            return firebaseapp.auth.signInWithEmailAndPassword(email, password);
           } else {
             console.log('error submit!!');
             return false;
