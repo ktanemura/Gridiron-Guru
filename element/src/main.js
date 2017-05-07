@@ -38,7 +38,7 @@ export const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log("Method called");
+  console.log("router.beforeEach call");
   if (to.matched.some(record => record.meta.reqAuth)) {
     console.log("Auth required");
     var user = firebaseapp.auth().currentUser;
