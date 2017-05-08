@@ -2,22 +2,26 @@
   <div id="login">
     <main-header></main-header>
     <div class="main-cnt">
-        <el-form :model="userLoginForm" ref="userLoginForm" :rules="rules" label-width="100px" class="demo-ruleForm">
-          <el-form-item
-            label="Email"
-            prop="email">
-            <el-input type="email" v-model="userLoginForm.email" auto-complete="off"></el-input>
-          </el-form-item>
-          <el-form-item
-            label="Password"
-            prop="password">
-            <el-input type="password" v-model="userLoginForm.password" auto-complete="off"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitForm('userLoginForm')">Login</el-button>
-            <el-button>Sign Up</el-button>
-          </el-form-item>
-        </el-form>
+      <el-row :gutter="20">
+        <el-col :span="12" :offset="6">
+          <el-form :model="userLoginForm" ref="userLoginForm" :rules="rules" label-width="100px" class="demo-ruleForm">
+            <el-form-item
+              label="Email"
+              prop="email">
+                <el-input type="email" v-model="userLoginForm.email" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item
+              label="Password"
+              prop="password">
+                <el-input type="password" v-model="userLoginForm.password" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('userLoginForm', userLoginForm.email, userLoginForm.password)">Login</el-button>
+              <el-button>Sign Up</el-button>
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
@@ -101,43 +105,49 @@ p {
 
 
 <script>
-  export default {
-    data() {
-      var checkPass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('Please input the password'));
-        } 
-      };
+export default {
+  data() {
+    var checkPass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('Please input the password'));
+      }
 
-      return {
-        userLoginForm: {
-          email: '',
-          password: ''
-        },
+      callback();
+    };
 
-        rules: {
-          email: [
-            { required: true, message: 'Please input email address', trigger: 'blur' },
-            { type: 'email', message: 'Please input correct email address', trigger: 'blur,change' }
-          ],
-          password: [
-            { validator: checkPass, trigger: 'blur' }
-          ]
-        }
-      };
-    },
-    methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            console.log("Valid")
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+    return {
+      userLoginForm: {
+        email: '',
+        password: ''
       },
-    }
+      rules: {
+        email: [
+          { required: true, message: 'Please input email address', trigger: 'blur' },
+          { type: 'email', message: 'Please input valid email address', trigger: 'blur,change' }
+        ],
+        password: [
+          { required: true, validator: checkPass, trigger: 'blur' }
+        ]
+      }
+    };
+  },
+  methods: {
+    submitForm(formName, email, password) {
+      this.$refs[formName].validate((valid) => {
+        console.log('called');
+        if (valid) {
+          console.log('Valid');
+          console.log(email);
+          console.log(password);
+          //Need to add firebase import
+          return firebase.auth.signInWithEmailAndPassword(email, password);
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
   }
+}
 </script>
 
