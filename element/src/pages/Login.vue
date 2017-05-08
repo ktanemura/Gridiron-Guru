@@ -106,6 +106,7 @@ p {
 
 <script>
   import firebase from 'firebase'
+
   export default {
     data() {
       var checkPass = (rule, value, callback) => {
@@ -121,7 +122,6 @@ p {
           email: '',
           password: ''
         },
-
         rules: {
           email: [
             { required: true, message: 'Please input email address', trigger: 'blur' },
@@ -139,10 +139,12 @@ p {
           console.log('called');
           if (valid) {
             console.log('Valid');
-            console.log(email);
-            console.log(password);
-            //Need to add firebase import
-            firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+            firebase.auth().signInWithEmailAndPassword(email, password).then(function(firebaseUser) {
+                console.log("success");
+                //Need to add redirect
+                //this.$route.router.push('/dashboard');
+            })
+            .catch(function(error) {
               // Handle Errors here.
               var errorCode = error.code;
               var errorMessage = error.message;
