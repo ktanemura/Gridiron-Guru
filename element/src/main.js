@@ -19,17 +19,17 @@ Vue.component('main-sidenav', MainSidenav);
 Vue.component('main-footer', MainFooter);
 
 // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyCI2wCtuTZkcrJmU2InHNFfmXDhzjisbfk",
-    authDomain: "gridiron-gurus.firebaseapp.com",
-    databaseURL: "https://gridiron-gurus.firebaseio.com",
-    projectId: "gridiron-gurus",
-    storageBucket: "gridiron-gurus.appspot.com",
-    messagingSenderId: "811469506152"
-  };
+var config = {
+  apiKey: "AIzaSyCI2wCtuTZkcrJmU2InHNFfmXDhzjisbfk",
+  authDomain: "gridiron-gurus.firebaseapp.com",
+  databaseURL: "https://gridiron-gurus.firebaseio.com",
+  projectId: "gridiron-gurus",
+  storageBucket: "gridiron-gurus.appspot.com",
+  messagingSenderId: "811469506152"
+};
 
-  var firebaseapp = Firebase.initializeApp(config);
-  var db = firebaseapp.database();
+var firebaseapp = Firebase.initializeApp(config);
+var db = firebaseapp.database();
 
 export const router = new VueRouter({
   mode: 'history',
@@ -50,12 +50,19 @@ router.beforeEach((to, from, next) => {
           redirect: to.fullPath,
         },
       });
-    } else {
-      console.log("user authenticated");
+    }
+    else {
+      console.log("User authenticated");
       next();
     }
-  } else {
+  }
+  else {
     console.log("Auth not required");
+    if (to.path === '/login') {
+      next({
+        path: '/dashboard',
+      });
+    }
     next();
   }
 });

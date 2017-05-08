@@ -27,23 +27,65 @@
 </template>
 
 <script>
+import firebase from 'firebase'
 export default {
-  data () {
+  data() {
+    var checkPass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('Please input the password'));
+      }
+      callback();
+    };
     return {
-      
-    }
+      userLoginForm: {
+        email: '',
+        password: ''
+      },
+      rules: {
+        email: [
+          { required: true, message: 'Please input email address', trigger: 'blur' },
+          { type: 'email', message: 'Please input correct email address', trigger: 'blur,change' }
+        ],
+        password: [
+          { validator: checkPass, trigger: 'blur' }
+        ]
+      },
+    };
   },
-
   methods: {
-    startHacking () {
-      this.$notify({
-        title: 'It Works',
-        message: 'We have laid the groundwork for you. Now it\'s your time to build something epic!',
-        duration: 6000
+    submitForm(formName, email, password) {
+      this.$refs[formName].validate((valid) => {
+        console.log('called');
+        if (valid) {
+          console.log('Valid');
+          firebase.auth().signInWithEmailAndPassword(email, password).then(function(firebaseUser) {
+              console.log("success");
+              //Need to add redirect
+              //this.$route.router.push('/dashboard');
+              //
+              this.$route.router.go('/dashboard');
+          })
+          .catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            if (errorCode === 'auth/wrong-password' || errorCode == 'auth/user-not-found') {
+              alert('Invalid Email and Password combination');
+            } else {
+              alert(errorMessage);
+            }
+            console.log(error);
+          });
+        }
+        else {
+          console.log('error submit!!');
+          return false;
+        }
       });
     },
-  },
-};
+  }
+}
+
 </script>
 
 <style>
@@ -102,52 +144,3 @@ p {
   box-shadow: none;
 }
 </style>
-
-
-<script>
-export default {
-  data() {
-    var checkPass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('Please input the password'));
-      }
-
-      callback();
-    };
-
-    return {
-      userLoginForm: {
-        email: '',
-        password: ''
-      },
-      rules: {
-        email: [
-          { required: true, message: 'Please input email address', trigger: 'blur' },
-          { type: 'email', message: 'Please input valid email address', trigger: 'blur,change' }
-        ],
-        password: [
-          { required: true, validator: checkPass, trigger: 'blur' }
-        ]
-      }
-    };
-  },
-  methods: {
-    submitForm(formName, email, password) {
-      this.$refs[formName].validate((valid) => {
-        console.log('called');
-        if (valid) {
-          console.log('Valid');
-          console.log(email);
-          console.log(password);
-          //Need to add firebase import
-          return firebase.auth.signInWithEmailAndPassword(email, password);
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
-  }
-}
-</script>
-
