@@ -28,8 +28,8 @@ var config = {
   messagingSenderId: "811469506152"
 };
 
-var firebaseapp = Firebase.initializeApp(config);
-var db = firebaseapp.database();
+var firebaseApp = Firebase.initializeApp(config);
+var firebaseDb = firebaseApp.database();
 
 export const router = new VueRouter({
   mode: 'history',
@@ -59,15 +59,17 @@ router.beforeEach((to, from, next) => {
   else {
     console.log("Auth not required");
     if (to.path === '/login') {
-      next({
-        path: '/dashboard',
-      });
+      if (Firebase.auth().currentUser) {
+        next({
+          path: '/dashboard',
+        });
+      }
     }
     next();
   }
 });
 
-const unsubscribe = firebaseapp.auth().onAuthStateChanged((user) => {
+const unsubscribe = firebaseApp.auth().onAuthStateChanged((user) => {
   new Vue({
     el: '#app',
     render: h => h(App),

@@ -55,15 +55,12 @@ export default {
   methods: {
     submitForm(formName, email, password) {
       this.$refs[formName].validate((valid) => {
-        console.log('called');
+        console.log('submitForm call');
+        console.log(this.$router.mode);
         if (valid) {
-          console.log('Valid');
+          console.log('form valid');
           firebase.auth().signInWithEmailAndPassword(email, password).then(function(firebaseUser) {
               console.log("success");
-              //Need to add redirect
-              //this.$route.router.push('/dashboard');
-              //
-              this.$route.router.go('/dashboard');
           })
           .catch(function(error) {
             // Handle Errors here.
