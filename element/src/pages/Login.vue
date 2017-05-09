@@ -54,31 +54,43 @@ export default {
   },
   methods: {
     submitForm(formName, email, password) {
+      console.log('checking form');
+      var checkForm = false;
+
       this.$refs[formName].validate((valid) => {
         console.log('submitForm call');
-        console.log(this.$router.mode);
         if (valid) {
-          console.log('form valid');
-          firebase.auth().signInWithEmailAndPassword(email, password).then(function(firebaseUser) {
-              console.log("success");
-          })
-          .catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            if (errorCode === 'auth/wrong-password' || errorCode == 'auth/user-not-found') {
-              alert('Invalid Email and Password combination');
-            } else {
-              alert(errorMessage);
-            }
-            console.log(error);
-          });
+          console.log('good form')
+          checkForm = true;
+          return true;
         }
         else {
           console.log('error submit!!');
           return false;
         }
       });
+
+      if (checkForm == true) {
+        console.log('attempting firebase login call');
+        firebase.auth().signInWithEmailAndPassword(email, password).then(function(firebaseUser) {
+            console.log("success");
+            location.reload();
+          })
+        .catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          if (errorCode === 'auth/wrong-password' || errorCode == 'auth/user-not-found') {
+            alert('Invalid Email and Password combination');
+          } else {
+            alert(errorMessage);
+          }
+          console.log(error);
+        });
+      }
+      else {
+        console.log('false');
+      }
     },
   }
 }

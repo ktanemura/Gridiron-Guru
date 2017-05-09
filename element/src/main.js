@@ -69,7 +69,12 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-const unsubscribe = firebaseApp.auth().onAuthStateChanged((user) => {
+const unsubscribe = Firebase.auth().onAuthStateChanged((user) => {
+  console.log('status change');
+  if (user) {
+    console.log('user sign in');
+    router.push('/dashboard');
+  }
   new Vue({
     el: '#app',
     render: h => h(App),
