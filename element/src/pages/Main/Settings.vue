@@ -1,6 +1,5 @@
 <template>
-  <div id="login">
-    <main-header></main-header>
+  <div id="settings">
     <div class="main-cnt">
       <el-row :gutter="20">
         <el-col :span="12" :offset="6">
@@ -94,6 +93,7 @@ export default {
 
       if (checkForm == true) {
         console.log('send request');
+        // Construct AJAX query string here
       }
       else {
         console.log('false');
