@@ -4,6 +4,7 @@ import AIProfiles from './pages/Main/AIProfiles.vue';
 /*import FantasyTeamList from './pages/FantasyTeamList.vue';*/
 import FantasyList from './pages/Main/FantasyList.vue';
 import WeeklyReports from './pages/Main/WeeklyReports.vue';
+import SignUp from './pages/Main/SignUp.vue';
 import Login from './pages/Login.vue';  
 
 export default [
@@ -43,6 +44,14 @@ export default [
         path: 'weeklyreports',
         component: WeeklyReports,
         breadcrumb: 'weekly reports',
+        meta: {
+          reqAuth: true,
+        },
+      },
+      {
+        path: 'signup',
+        component: SignUp,
+        breadcrumb: 'signup',
         meta: {
           reqAuth: true,
         },

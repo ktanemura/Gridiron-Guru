@@ -4,6 +4,7 @@
   <el-menu-item index="/aiprofiles"><i class="el-icon-menu"></i>AI Profiles</el-menu-item>
   <el-menu-item index="/login"><i class="el-icon-menu"></i>Login</el-menu-item>
   <el-menu-item index="/fantasylist"><i class="el-icon-menu"></i>Fantasy List</el-menu-item>
+  <el-menu-item index="/signup"><i class="el-icon-menu"></i>Sign Up</el-menu-item>
 </el-menu>
 </template>
 
