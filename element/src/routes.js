@@ -6,7 +6,8 @@ import FantasyList from './pages/Main/FantasyList.vue';
 import WeeklyReports from './pages/Main/WeeklyReports.vue';
 import SignUp from './pages/Main/SignUp.vue';
 import Settings from './pages/Main/Settings.vue';
-import Login from './pages/Login.vue';  
+import Login from './pages/Login.vue';
+import Draft from './pages/Draft.vue';
 
 export default [
   {
@@ -66,6 +67,14 @@ export default [
         },
       },
     ],
+  },
+  {
+    path: '/draft',
+    component: Draft,
+    breadcrumb: 'draft',
+    meta: {
+      reqAuth: false,
+    }
   },
   {
     path: '/login',

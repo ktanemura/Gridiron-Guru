@@ -18,7 +18,7 @@
             <el-form-item>
               <el-button type="primary" @click="submitForm('userLoginForm', userLoginForm.email, userLoginForm.password)">Login</el-button>
               <el-button>Sign Up</el-button>
-              <el-button>Draft</el-button>
+              <router-link :to="{ path: '/draft' }" tag="el-button">Draft</router-link>
             </el-form-item>
           </el-form>
         </el-col>
