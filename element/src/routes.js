@@ -61,21 +61,20 @@ export default [
     ],
   },
   {
-<<<<<<< HEAD
     path: '/draft',
     component: Draft,
     breadcrumb: 'draft',
     meta: {
       reqAuth: false,
     }
-=======
+  },
+  {
     path: '/signup',
     component: SignUp,
     breadcrumb: 'signup',
     meta: {
       reqAuth: false,
     },
->>>>>>> 7c065f0708d1e24c70995c3ac2757155f4115788
   },
   {
     path: '/login',
