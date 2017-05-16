@@ -18,6 +18,7 @@
             <el-form-item>
               <el-button type="primary" @click="submitForm('userLoginForm', userLoginForm.email, userLoginForm.password)">Login</el-button>
               <el-button>Sign Up</el-button>
+              <el-button>Draft</el-button>
             </el-form-item>
           </el-form>
         </el-col>
