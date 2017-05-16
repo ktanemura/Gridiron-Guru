@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import VueResoure from 'vue-resource';
+import VueResource from 'vue-resource';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import App from './App.vue';
@@ -14,9 +14,13 @@ import Firebase from 'firebase';
 
 Vue.use(ElementUI);
 Vue.use(VueRouter);
+Vue.use(VueResource);
 Vue.component('main-header', MainHeader);
 Vue.component('main-sidenav', MainSidenav);
 Vue.component('main-footer', MainFooter);
+
+Vue.http.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:8010/';
+Vue.http.headers.common['Access-Control-Allow-Header'] = 'Origin, X-Requested-With, Content-Type, Accept';
 
 // Initialize Firebase
 var config = {

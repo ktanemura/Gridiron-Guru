@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
@@ -44,7 +46,7 @@ export default {
       callback();
     };
     var checkYahooEmail = (rule, value, callback) => {
-      if (!value.includes('@yahoo.com')) {
+      if (!value.includes('@')) {
         callback(new Error('Please enter yahoo email'));
       }
       callback();
@@ -57,7 +59,7 @@ export default {
       rules: {
         email: [
           { required: true, message: 'Please input email address', trigger: 'blur' },
-          { type: 'email', message: 'Please input correct email address', trigger: 'blur,change' },
+          { type: 'email', message: 'Please input correct email address', trigger: 'blur' },
           { validator: checkYahooEmail, trigger: 'blur' }
 
         ],
@@ -75,6 +77,7 @@ export default {
   },
   methods: {
     submitForm(formName, email, password) {
+
       console.log('checking form');
       var checkForm = false;
 
@@ -94,6 +97,22 @@ export default {
       if (checkForm == true) {
         console.log('send request');
         // Construct AJAX query string here
+        var clientId = 'dj0yJmk9aUFzRkx2MkVGbnNiJmQ9WVdrOWJXVkVXRWhzTm5NbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00OA--';
+        var redirectUri = 'localhost:8010';
+        var responseType = 'token';
+
+        var requestUrl = 'https://api.login.yahoo.com/oauth2/request_auth?client_id=' + clientId + '&redirect_uri=' + redirectUri + '&response_type=' + responseType;
+
+        console.log(requestUrl);
+
+        axios.get(requestUrl)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          console.log(response);
+        })
+        .catch(e => {
+          console.log(e);
+        });
       }
       else {
         console.log('false');

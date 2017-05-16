@@ -17,8 +17,12 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('userLoginForm', userLoginForm.email, userLoginForm.password)">Login</el-button>
+<<<<<<< HEAD
               <el-button>Sign Up</el-button>
               <router-link :to="{ path: '/draft' }" tag="el-button">Draft</router-link>
+=======
+              <router-link :to="'signup'" style="text-decoration: none;"><el-button>Sign Up</el-button></router-link>
+>>>>>>> 7c065f0708d1e24c70995c3ac2757155f4115788
             </el-form-item>
           </el-form>
         </el-col>
