@@ -29,7 +29,7 @@
     return {
       draftInfoForm: {
         teams: 0,
-        password: ''
+        rounds: 0,
       },
     };
   },
