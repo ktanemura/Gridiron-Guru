@@ -1,12 +1,11 @@
 import Main from './pages/Main.vue'
-import Dashboard from './pages/Main/Dashboard.vue';
-import AIProfiles from './pages/Main/AIProfiles.vue';
-/*import FantasyTeamList from './pages/FantasyTeamList.vue';*/
-import FantasyList from './pages/Main/FantasyList.vue';
-import WeeklyReports from './pages/Main/WeeklyReports.vue';
-import SignUp from './pages/Main/SignUp.vue';
-import Settings from './pages/Main/Settings.vue';
-import Login from './pages/Login.vue';  
+import Dashboard from './pages/Main/Dashboard.vue'
+import AIProfiles from './pages/Main/AIProfiles.vue'
+import FantasyList from './pages/Main/FantasyList.vue'
+import WeeklyReports from './pages/Main/WeeklyReports.vue'
+import SignUp from './pages/Main/SignUp.vue'
+import Settings from './pages/Main/Settings.vue'
+import Login from './pages/Login.vue'
 
 export default [
   {
@@ -14,7 +13,7 @@ export default [
     redirect: '/dashboard',
     component: Main,
     meta: {
-      reqAuth: true,
+      reqAuth: true
     },
     children: [
       {
@@ -22,58 +21,61 @@ export default [
         component: Dashboard,
         breadcrumb: 'dashboard',
         meta: {
-          reqAuth: true,
-        },
+          reqAuth: true
+        }
       },
       {
         path: 'aiprofiles',
         component: AIProfiles,
         breadcrumb: 'aiprofiles',
         meta: {
-          reqAuth: true,
-        },
+          reqAuth: true
+        }
       },
       {
         path: 'fantasylist',
         component: FantasyList,
         breadcrumb: 'fantasy list',
         meta: {
-          reqAuth: true,
-        },
+          reqAuth: true
+        }
       },
       {
         path: 'weeklyreports',
         component: WeeklyReports,
         breadcrumb: 'weekly reports',
         meta: {
-          reqAuth: true,
-        },
+          reqAuth: true
+        }
       },
       {
         path: 'settings',
         component: Settings,
         breadcrumb: 'settings',
         meta: {
-          reqAuth: true,
-        },
-      },
-    ],
+          reqAuth: true
+        }
+      }
+    ]
   },
   {
     path: '/signup',
     component: SignUp,
     breadcrumb: 'signup',
     meta: {
-      reqAuth: false,
-    },
+      reqAuth: false
+    }
   },
   {
     path: '/login',
     component: Login,
     breadcrumb: 'login',
     meta: {
-      reqAuth: false,
-    },
+      reqAuth: false
+    }
   },
-  { path: '*', redirect: '/' },
-];
+  {
+    path: '*',
+    redirect: '/'
+  }
+]

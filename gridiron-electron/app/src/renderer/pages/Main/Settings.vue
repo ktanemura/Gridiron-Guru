@@ -25,32 +25,32 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
-function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
+/* function getParameterByName (name, url) {
+  if (!url) url = window.location.href
+  name = name.replace(/[\[\]]/g, '\\$&')
+  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+    results = regex.exec(url)
+  if (!results) return null
+  if (!results[2]) return ''
+  return decodeURIComponent(results[2].replace(/\+/g, ' '))
+} */
 
 export default {
-  data() {
+  data () {
     var checkPass = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('Please input the password'));
+        callback(new Error('Please input the password'))
       }
-      callback();
-    };
+      callback()
+    }
     var checkYahooEmail = (rule, value, callback) => {
       if (!value.includes('@')) {
-        callback(new Error('Please enter yahoo email'));
+        callback(new Error('Please enter yahoo email'))
       }
-      callback();
-    };
+      callback()
+    }
     return {
       userLoginForm: {
         email: '',
@@ -72,50 +72,46 @@ export default {
         client_id: 'dj0yJmk9UUdja0lOdmo0dlhXJmQ9WVdrOWJIRjBVRFJSTjJzbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD05Mw--',
         redirect_uri: 'https://localhost:8010',
         response_type: 'token'
-      },
-    };
+      }
+    }
   },
   methods: {
-    submitForm(formName, email, password) {
-
-      console.log('checking form');
-      var checkForm = false;
+    submitForm (formName, email, password) {
+      console.log('checking form')
+      var checkForm = false
 
       this.$refs[formName].validate((valid) => {
-        console.log('submitForm call');
+        console.log('submitForm call')
         if (valid) {
           console.log('good form')
-          checkForm = true;
-          return true;
+          checkForm = true
+          return true
+        } else {
+          console.log('error submit!!')
+          return false
         }
-        else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
+      })
 
-      if (checkForm == true) {
-        console.log('send request');
+      if (checkForm === true) {
+        console.log('send request')
         // Construct AJAX query string here
-        var clientId = 'dj0yJmk9aUFzRkx2MkVGbnNiJmQ9WVdrOWJXVkVXRWhzTm5NbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00OA--';
-        var redirectUri = 'localhost:8010';
-        var responseType = 'token';
+        var clientId = 'dj0yJmk9aUFzRkx2MkVGbnNiJmQ9WVdrOWJXVkVXRWhzTm5NbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00OA--'
+        var redirectUri = 'localhost:8010'
+        var responseType = 'token'
 
-        var requestUrl = 'https://api.login.yahoo.com/oauth2/request_auth?client_id=' + clientId + '&redirect_uri=' + redirectUri + '&response_type=' + responseType;
+        var requestUrl = 'https://api.login.yahoo.com/oauth2/request_auth?client_id=' + clientId + '&redirect_uri=' + redirectUri + '&response_type=' + responseType
 
-        console.log(requestUrl);
+        console.log(requestUrl)
 
-        axios.get(requestUrl)
-        .then(response => {
+        axios.get(requestUrl).then(response => {
           // JSON responses are automatically parsed.
-          console.log(response);
+          console.log(response)
         })
         .catch(e => {
-          console.log(e);
-        });
-      }
-      else {
-        console.log('false');
+          console.log(e)
+        })
+      } else {
+        console.log('false')
       }
     }
   }
