@@ -65,11 +65,11 @@
 <script>
   export default {
     methods: {
-      handleClick() {
-        console.log('click');
+      handleClick () {
+        console.log('click')
       }
     },
-    data() {
+    data () {
       return {
         tableData: [
           {
@@ -120,7 +120,7 @@
             wins: 0,
             losses: 2,
             status: 'None'
-          },
+          }
         ]
       }
     }

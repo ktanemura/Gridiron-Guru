@@ -70,7 +70,7 @@ export default {
       authRequest: {
         url: 'https://api.login.yahoo.com/oauth2/request_auth?',
         client_id: 'dj0yJmk9UUdja0lOdmo0dlhXJmQ9WVdrOWJIRjBVRFJSTjJzbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD05Mw--',
-        redirect_uri: 'https://localhost:8010',
+        redirect_uri: 'https://localhost:9080',
         response_type: 'token'
       }
     }
@@ -96,7 +96,7 @@ export default {
         console.log('send request')
         // Construct AJAX query string here
         var clientId = 'dj0yJmk9aUFzRkx2MkVGbnNiJmQ9WVdrOWJXVkVXRWhzTm5NbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00OA--'
-        var redirectUri = 'localhost:8010'
+        var redirectUri = 'localhost:9080'
         var responseType = 'token'
 
         var requestUrl = 'https://api.login.yahoo.com/oauth2/request_auth?client_id=' + clientId + '&redirect_uri=' + redirectUri + '&response_type=' + responseType
@@ -105,6 +105,12 @@ export default {
 
         axios.get(requestUrl).then(response => {
           // JSON responses are automatically parsed.
+          if (response.status === 302) {
+            console.log('Got')
+          } else {
+            console.log('Nope')
+            console.log(response.status)
+          }
           console.log(response)
         })
         .catch(e => {
