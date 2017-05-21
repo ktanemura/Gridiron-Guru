@@ -8,6 +8,7 @@ import SignUp from './pages/Main/SignUp.vue';
 import Settings from './pages/Main/Settings.vue';
 import Login from './pages/Login.vue';
 import Draft from './pages/Draft.vue';
+import DraftInfo from './pages/DraftInfo.vue';
 
 export default [
   {
@@ -82,6 +83,16 @@ export default [
     breadcrumb: 'login',
     meta: {
       reqAuth: false,
+    },
+  },
+  {
+    path: '/draftInfo',
+    component: DraftInfo,
+    breadcrumb: 'draftinfo',
+    meta: {
+      reqAuth: false,
+      rounds: 0,
+      teams: 0,
     },
   },
   { path: '*', redirect: '/' },

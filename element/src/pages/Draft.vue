@@ -3,21 +3,11 @@
     <main-header></main-header>
     <div class="main-cnt">
       <el-row :gutter="20">
-        <el-col :span="12" :offset="6">
-          <el-form :model="draftInfoForm" ref="draftInfoForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item
-              label="Number of Teams"
-              prop="numTeams">
-                <el-input-number v-model="draftInfoForm.teams" :min="4" :max="16"></el-input-number>
-            </el-form-item>
-            <el-form-item
-              label="Number of Rounds"
-              prop="numRounds">
-                <el-input-number v-model="draftInfoForm.rounds" :min="15" :max="20"></el-input-number>
-            </el-form-item>
-          </el-form>
-          <router-link :to="{ path: 'login' }" tag="el-button">Back to Login</router-link>
-        </el-col>
+      <p>
+          Draft Here <br>
+          Rounds: {{this.$router.params}} <br>
+          Teams: {{this.$router.params}} 
+      </p>
       </el-row>
     </div>
   </div>
