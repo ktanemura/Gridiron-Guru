@@ -3,7 +3,7 @@ import Dashboard from './pages/Main/Dashboard.vue'
 import AIProfiles from './pages/Main/AIProfiles.vue'
 import FantasyList from './pages/Main/FantasyList.vue'
 import WeeklyReports from './pages/Main/WeeklyReports.vue'
-import SignUp from './pages/Main/SignUp.vue'
+import SignUp from './pages/SignUp.vue'
 import Settings from './pages/Main/Settings.vue'
 import Login from './pages/Login.vue'
 
