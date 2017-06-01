@@ -3,31 +3,219 @@
     <main-header></main-header>
     <div class="main-cnt">
       <el-row :gutter="20">
-      <p>
-          Draft Here <br>
-          Rounds: {{this.$router.params}} <br>
-          Teams: {{this.$router.params}} 
+      <p name="Post">
+          Draft Here<br>
+          <el-button type="primary" @click="logAll()">Log</el-button>
       </p>
+      </el-row>
+      <el-row :gutter="24">
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+              <img src="" class="image">
+              <div style="padding: 14px;">
+                <span>Recommended Player 1</span>
+                <div class="bottom clearfix">
+                  <p>Position</p>
+                  <p>Projected Points</p>
+                </div>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+                <img src="" class="image">
+                <div style="padding: 14px;">
+                  <span>Recommended Player 2</span>
+                  <div class="bottom clearfix">
+                    <p>Position</p>
+                    <p>Projected Points</p>
+                  </div>
+                </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+                <img src="" class="image">
+                <div style="padding: 14px;">
+                  <span>Recommended Player 3</span>
+                  <div class="bottom clearfix">
+                    <p>Position</p>
+                    <p>Projected Points</p>
+                  </div>
+                </div>
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-tabs v-model="tableTab">
+            <el-tab-pane label="Players" name="first">
+              <el-table
+                  :data="players"
+                  max-height="350"
+                  border
+                  style="width: 100%">
+                  <el-table-column
+                    fixed="left"
+                    prop="name"
+                    label="Name">
+                  </el-table-column>
+                  <el-table-column
+                    prop="position"
+                    label="Position">
+                  </el-table-column>
+                  <el-table-column
+                    prop="points"
+                    label="Projected Points">
+                  </el-table-column>
+                  <el-table-column
+                    fixed="right"
+                    prop="actions"
+                    label="Actions">
+                    <template scope="undrafted">
+                    <el-button @click="draftPlayer(undrafted.$index, players)"
+                      type="text"
+                      size="small">
+                        Draft
+                    </el-button>
+                    </template>
+                  </el-table-column>
+              </el-table>
+            </el-tab-pane>
+            <el-tab-pane label="Pick History" name="second">
+              <el-table
+                  :data="picks"
+                  max-height="350"
+                  border
+                  style="width: 100%">
+                  <el-table-column
+                    prop="round"
+                    label="Round">
+                  </el-table-column>
+                  <el-table-column
+                    prop="overall"
+                    label="Pick">
+                  </el-table-column>
+                  <el-table-column
+                    prop="player"
+                    label="Name">
+                  </el-table-column>
+                  <el-table-column
+                    prop="team"
+                    label="Team">
+                  </el-table-column>
+              </el-table>
+            </el-tab-pane>
+        </el-tabs>
       </el-row>
     </div>
   </div>
 </template>
-
 <script type="text/javascript">
-  export default {
-  data() {
-    return {
-      draftInfoForm: {
-        teams: 0,
-        password: ''
-      },
-    };
-  },
-  methods: {
-  }
-}
-</script>
+  import { firebaseDb } from '../main.js';
+  
+  var draftRef;
+  var numTeams;
+  var numRounds;
+  var pickNumber;
+  var isSnake;
+  var draftId;
+  var teams;
+  var pickDir;
+  var curTeam;
+  var curRound;
+  var curPick;
+  var overallPick;
 
+  export default {
+    data() {
+      return {
+        tableTab: 'first',
+        picks: [],
+        players: [{name:'Tom Brady', position:'QB', points:10000}],
+      };
+    },
+    methods: {
+      draftPlayer(index, players) {
+        var toDraft = players[index];
+        players.splice(index, 1);
+        teams[curTeam].push(toDraft);
+
+        curTeam += pickDir;
+
+        if (curTeam < 0 || curTeam >= numTeams) {
+          if (isSnake) {
+            pickDir *= -1;
+            curTeam += pickDir;
+          }
+          else {
+            curTeam = 0;
+          }
+        }
+        var pick = {round:curRound, pick:curPick, overall: overallPick, player: toDraft.name, team:curTeam};
+        this.picks.push(pick);
+        curPick += 1;
+        overallPick += 1;
+
+        console.log(pick);
+        var updates = {};
+        updates['/picks'] = this.picks;
+        draftRef.update(updates);
+        if (curPick > numTeams) {
+          curPick = 1;
+          curRound += 1
+        }      
+      },
+      setUp() {
+        draftId = this.$route.params.id;
+        draftRef = firebaseDb.ref('drafts/' + draftId);
+
+        draftRef.child('draftInfo').once('value').then(function(snapshot) {
+          numTeams = snapshot.val().teams;
+          teams = [];
+          for (var i = 0; i < numTeams; i++) {
+            teams[i] = [];
+          }
+        });
+
+        draftRef.child('draftInfo').once('value').then(function(snapshot) {
+          numRounds = snapshot.val().rounds;
+        });
+        
+        draftRef.child('draftInfo').once('value').then(function(snapshot) {
+          pickNumber = snapshot.val().pickNo;
+        });
+        
+        draftRef.child('draftInfo').once('value').then(function(snapshot) {
+          isSnake = snapshot.val().isSnake;
+        });
+        
+        /*
+        var updates = {};
+        updates['/picks'] = this.picks;
+        draftRef.update(updates);
+        */
+
+        pickDir = 1;
+        curTeam = 0;
+        curRound = 1;
+        curPick = 1;
+        overallPick = 1;
+      },
+      logAll() {
+        //console.log(numRounds);
+        //console.log(numTeams);
+        //console.log(pickNumber);
+        //console.log(isSnake);
+        //picks = draftRef.child('picks')
+        //picks.push();
+      },
+    },
+    mounted() {
+      this.setUp()
+    }
+  }
+  console.log("hello")
+</script>
 <style>
 html, 
 body {

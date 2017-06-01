@@ -30,6 +30,12 @@ var config = {
 
 var firebaseApp = Firebase.initializeApp(config);
 var firebaseDb = firebaseApp.database();
+var draftInfo = {
+  rounds: 0,
+  teams: 0
+};
+
+export { firebaseDb, draftInfo };
 
 export const router = new VueRouter({
   mode: 'history',
@@ -40,6 +46,7 @@ export const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   console.log("router.beforeEach call");
   if (to.matched.some(record => record.meta.reqAuth)) {
+    console.log(to);
     console.log("Auth required");
     var user = Firebase.auth().currentUser;
     if (!user) {

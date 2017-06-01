@@ -1,5 +1,5 @@
 <template>
-  <div id="draft">
+  <div id="draftInfo">
     <main-header></main-header>
     <div class="main-cnt">
       <el-row :gutter="20">
@@ -15,9 +15,17 @@
               prop="numRounds">
                 <el-input-number v-model="draftInfoForm.rounds" :min="15" :max="20"></el-input-number>
             </el-form-item>
+            <el-form-item
+              label="Your Pick Number"
+              prop="pickNo">
+                <el-input-number v-model="draftInfoForm.pickNo" :min="1" :max="16"></el-input-number>
+            </el-form-item>
+            <el-form-item>
+              <el-checkbox label="Snake Draft" prop="isSnake" v-model="draftInfoForm.isSnake"></el-checkbox>
+            </el-form-item>
             <el-form-item>
               <router-link :to="{ path: 'login' }" tag="el-button">Back to Login</router-link>
-              <el-button type="primary" @click="submitForm(draftInfoForm.teams, draftInfoForm.rounds)">Draft</el-button>
+              <el-button type="primary" @click="submitForm(draftInfoForm.teams, draftInfoForm.rounds, draftInfoForm.pickNo, draftInfoForm.isSnake)">Draft</el-button>
             </el-form-item>
           </el-form>
         </el-col>
@@ -27,18 +35,34 @@
 </template>
 
 <script type="text/javascript">
+  import { firebaseDb } from '../main.js'
   export default {
   data() {
     return {
       draftInfoForm: {
         teams: 0,
         rounds: 0,
+        pickNo: 0,
+        isSnake: false
       },
     };
   },
   methods: {
-    submitForm(numTeams, numRounds) {
-      this.$router.push({ path: '/draft', params: { rounds: numRounds, teams: numTeams }})
+    submitForm(numTeams, numRounds, pick, snake) {
+      var draftRefs = firebaseDb.ref().child('drafts')
+      var pushRef = draftRefs.push()
+      var newKey = pushRef.getKey()
+      var draftI = {
+        rounds: numRounds,
+        teams: numTeams,
+        pickNo: pick,
+        isSnake: snake,
+        picks: [],
+        teamRoster: []
+      }
+      pushRef.set({draftInfo: draftI})
+      console.log(pushRef.getKey())
+      this.$router.push({ name: 'DRAFT', params: { 'id': newKey }})
     },
   },
 }

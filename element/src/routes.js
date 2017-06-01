@@ -70,14 +70,6 @@ export default [
     ],
   },
   {
-    path: '/draft',
-    component: Draft,
-    breadcrumb: 'draft',
-    meta: {
-      reqAuth: false,
-    }
-  },
-  {
     path: '/login',
     component: Login,
     breadcrumb: 'login',
@@ -91,9 +83,16 @@ export default [
     breadcrumb: 'draftinfo',
     meta: {
       reqAuth: false,
-      rounds: 0,
-      teams: 0,
     },
+  },
+  {
+    path: '/draft/:id',
+    name: 'DRAFT',
+    component: Draft,
+    breadcrumb: 'draft',
+    meta: {
+      reqAuth: false,
+    }
   },
   { path: '*', redirect: '/' },
 ];
