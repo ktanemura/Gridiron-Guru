@@ -45,24 +45,33 @@
             <el-tab-pane label="Players" name="first">
               <el-table
                   :data="players"
+                  :default-sort="{prop: 'points', order: 'descending'}"
                   max-height="350"
                   border
                   style="width: 100%">
+                  <el-table-column type="expand">
+                    <template scope="props">
+                      <p>Position: {{props.row.position}}</p>
+                      <p>Points: {{props.row.points}}</p>
+                    </template>
+                  </el-table-column>
                   <el-table-column
-                    fixed="left"
                     prop="name"
                     label="Name">
                   </el-table-column>
                   <el-table-column
                     prop="position"
-                    label="Position">
+                    label="Position"
+                    :filters="[{ text: 'QB', value: 'QB' }, { text: 'RB', value: 'RB' }]"
+                    :filter-method="filterTag"
+                    filter-placement="bottom-end">
                   </el-table-column>
                   <el-table-column
                     prop="points"
-                    label="Projected Points">
+                    label="Projected Points"
+                    sortable>
                   </el-table-column>
                   <el-table-column
-                    fixed="right"
                     prop="actions"
                     label="Actions">
                     <template scope="undrafted">
@@ -130,11 +139,19 @@
             name: 'Tom Brady',
             position: 'QB',
             points: 10000
+          },
+          {
+            name: 'David Johnson',
+            position: 'RB',
+            points: 9000
           }
         ]
       }
     },
     methods: {
+      filterTag (value, row) {
+        return row.position === value
+      },
       draftPlayer (index, players) {
         var toDraft = players[index]
         players.splice(index, 1)
