@@ -45,35 +45,35 @@
             <el-tab-pane label="Players" name="first">
               <el-table
                   :data="players"
-                  :default-sort="{prop: 'points', order: 'descending'}"
+                  :default-sort="{prop: 'PredFantasyPoints', order: 'descending'}"
                   max-height="350"
                   border
                   style="width: 100%">
                   <el-table-column type="expand">
                     <template scope="props">
-                      <template v-if="props.row.position === 'QB'">
+                      <template v-if="props.row.Position === 'QB'">
                         <p>Passing Yards: {{props.row.passingyds}}</p>
                         <p>Passing TDs: {{props.row.passingtd}}</p>
                       </template>
-                      <template v-if="props.row.position === 'RB'">
+                      <template v-if="props.row.Position === 'RB'">
                         <p>Rushing Yards: {{props.row.rushingyds}}</p>
                         <p>Rushing TDs {{props.row.rushingtd}}</p>
                       </template>
                     </template>
                   </el-table-column>
                   <el-table-column
-                    prop="name"
+                    prop="Player"
                     label="Name">
                   </el-table-column>
                   <el-table-column
-                    prop="position"
+                    prop="Position"
                     label="Position"
-                    :filters="[{ text: 'QB', value: 'QB' }, { text: 'RB', value: 'RB' }]"
+                    :filters="[{ text: 'QB', value: 'QB' }, { text: 'RB', value: 'RB' }, { text: 'WR', value: 'WR' }, { text: 'TE', value: 'TE' }, { text: 'PK', value: 'PK' }]"
                     :filter-method="filterTag"
                     filter-placement="bottom-end">
                   </el-table-column>
                   <el-table-column
-                    prop="points"
+                    prop="PredFantasyPoints"
                     label="Projected Points"
                     sortable>
                   </el-table-column>
@@ -134,33 +134,19 @@
   var curRound
   var curPick
   var overallPick
+  var thisisme
 
   export default {
     data () {
       return {
         tableTab: 'first',
         picks: [],
-        players: [
-          {
-            name: 'Tom Brady',
-            position: 'QB',
-            points: 10000,
-            passingyds: 20000,
-            passingtd: 30
-          },
-          {
-            name: 'David Johnson',
-            position: 'RB',
-            points: 9000,
-            rushingyds: 10000,
-            rushingtd: 10
-          }
-        ]
+        players: []
       }
     },
     methods: {
       filterTag (value, row) {
-        return row.position === value
+        return row.Position === value
       },
       draftPlayer (index, players) {
         var toDraft = players[index]
@@ -190,7 +176,6 @@
         curPick += 1
         overallPick += 1
 
-        console.log(pick)
         var updates = {}
         updates['/picks'] = this.picks
         draftRef.update(updates)
@@ -206,7 +191,7 @@
       setUp () {
         draftId = this.$route.params.id
         draftRef = firebaseDb.ref('drafts/' + draftId)
-
+        thisisme = this
         draftRef.child('draftInfo').once('value').then(function (snapshot) {
           numTeams = snapshot.val().teams
           teams = []
@@ -225,6 +210,28 @@
 */
         draftRef.child('draftInfo').once('value').then(function (snapshot) {
           isSnake = snapshot.val().isSnake
+        })
+
+        var playerRef = firebaseDb.ref('players')
+        playerRef.child('QB').once('value').then(function (snapshot) {
+          var qbs = snapshot.val()
+          thisisme.players = thisisme.players.concat(qbs)
+        })
+        playerRef.child('RB').once('value').then(function (snapshot) {
+          var rbs = snapshot.val()
+          thisisme.players = thisisme.players.concat(rbs)
+        })
+        playerRef.child('WR').once('value').then(function (snapshot) {
+          var wrs = snapshot.val()
+          thisisme.players = thisisme.players.concat(wrs)
+        })
+        playerRef.child('TE').once('value').then(function (snapshot) {
+          var tes = snapshot.val()
+          thisisme.players = thisisme.players.concat(tes)
+        })
+        playerRef.child('K').once('value').then(function (snapshot) {
+          var ks = snapshot.val()
+          thisisme.players = thisisme.players.concat(ks)
         })
         /*
         var updates = {};
