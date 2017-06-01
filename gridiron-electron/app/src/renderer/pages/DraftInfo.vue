@@ -37,35 +37,42 @@
 <script type="text/javascript">
   import { firebaseDb } from '../main.js'
   export default {
-  data() {
-    return {
-      draftInfoForm: {
-        teams: 0,
-        rounds: 0,
-        pickNo: 0,
-        isSnake: false
-      },
-    };
-  },
-  methods: {
-    submitForm(numTeams, numRounds, pick, snake) {
-      var draftRefs = firebaseDb.ref().child('drafts')
-      var pushRef = draftRefs.push()
-      var newKey = pushRef.getKey()
-      var draftI = {
-        rounds: numRounds,
-        teams: numTeams,
-        pickNo: pick,
-        isSnake: snake,
-        picks: [],
-        teamRoster: []
+    data () {
+      return {
+        draftInfoForm: {
+          teams: 0,
+          rounds: 0,
+          pickNo: 0,
+          isSnake: false
+        }
       }
-      pushRef.set({draftInfo: draftI})
-      console.log(pushRef.getKey())
-      this.$router.push({ name: 'DRAFT', params: { 'id': newKey }})
     },
-  },
-}
+    methods: {
+      submitForm (numTeams, numRounds, pick, snake) {
+        var draftRefs = firebaseDb.ref().child('drafts')
+        var pushRef = draftRefs.push()
+        var newKey = pushRef.getKey()
+        var draftI = {
+          rounds: numRounds,
+          teams: numTeams,
+          pickNo: pick,
+          isSnake: snake,
+          picks: [],
+          teamRoster: []
+        }
+        pushRef.set({draftInfo: draftI})
+        console.log(pushRef.getKey())
+        this.$router.push(
+          {
+            name: 'DRAFT',
+            params: {
+              'id': newKey
+            }
+          }
+        )
+      }
+    }
+  }
 </script>
 
 <style>

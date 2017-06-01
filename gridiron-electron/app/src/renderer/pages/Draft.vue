@@ -146,8 +146,7 @@
           if (isSnake) {
             pickDir *= -1
             curTeam += pickDir
-          }
-          else {
+          } else {
             curTeam = 0
           }
         }
@@ -175,7 +174,7 @@
 
         if (curRound > numRounds) {
           this.$router.push('/login')
-        }    
+        }
       },
       setUp () {
         draftId = this.$route.params.id
