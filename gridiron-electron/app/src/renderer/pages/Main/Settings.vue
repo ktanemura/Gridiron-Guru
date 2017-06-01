@@ -50,7 +50,7 @@
 
 <script>
 import axios from 'axios'
-import {Firebase} from '../../main.js'
+// import {Firebase} from '../../main.js'
 /* function getParameterByName (name, url) {
   if (!url) url = window.location.href
   name = name.replace(/[\[\]]/g, '\\$&')
@@ -60,7 +60,6 @@ import {Firebase} from '../../main.js'
   if (!results[2]) return ''
   return decodeURIComponent(results[2].replace(/\+/g, ' '))
 } */
-// var user
 
 export default {
   data () {
@@ -76,13 +75,11 @@ export default {
       }
       callback()
     }
-    var nameFromDB = Firebase.auth().currentUser.displayName
-    console.log('name from db: ' + nameFromDB)
     return {
       updatePasswordForm: {
       },
       updateSettingsForm: {
-        gridironUsername: Firebase.auth().currentUser.displayName,
+        gridironUsername: '',
         userEmail: ''
       },
       userLoginForm: {
@@ -109,31 +106,13 @@ export default {
     }
   },
   methods: {
-    setUp () {
+/*    setUp () {
       console.log('IN SETUP()')
       var user = Firebase.auth().currentUser
       this.updateSettingsForm.gridironUsername = user.displayName
       console.log('USER DISPLAY NAME' + user.displayName)
     },
-
-    logNewUsername (formName, newGridironUsername) {
-/*      console.log('1. new gridiron username: ' + newGridironUsername)
-      var user = Firebase.auth().currentUser
-      this.updateSettingsForm.gridironUsername = user.displayName
-      console.log('2. new gridiron username: ' + this.updateSettingsForm.gridironUsername)
 */
-/*      this.updateSettingsForm.gridironUsername = 'cheese'
-      console.log('this.updateSettingsForm.gridironUsername: ' + this.updateSettingsForm.gridironUsername)
-*/
-    },
-    updateSettings (formName, newUsername, newEmail) {
-      var user = Firebase.auth().currentUser
-      console.log(user.uid)
-      user.updateProfile({
-        gridironUsername: newUsername
-      })
-    },
-
     updatePassword () {
       console.log('in updatePassword method')
     },
@@ -181,10 +160,11 @@ export default {
       } else {
         console.log('false')
       }
-    },
-    mounted () {
+    }
+/*    mounted () {
       this.setUp()
     }
+*/
   }
 }
 </script>
