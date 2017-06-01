@@ -35,8 +35,8 @@ var config = {
 
 // Firebase.initializeApp(config)
 var firebaseApp = Firebase.initializeApp(config)
-var firebaseDB = firebaseApp.database()
-export {firebaseDB, Firebase}
+var firebaseDb = firebaseApp.database()
+export {firebaseDb, Firebase}
 
 // router init
 const router = new Router({

@@ -6,7 +6,8 @@ import WeeklyReports from './pages/Main/WeeklyReports.vue'
 import SignUp from './pages/SignUp.vue'
 import Settings from './pages/Main/Settings.vue'
 import Login from './pages/Login.vue'
-
+import Draft from './pages/Draft.vue'
+import DraftInfo from './pages/DraftInfo.vue'
 export default [
   {
     path: '/',
@@ -70,6 +71,23 @@ export default [
     path: '/login',
     component: Login,
     breadcrumb: 'login',
+    meta: {
+      reqAuth: false
+    }
+  },
+  {
+    path: '/draftInfo',
+    component: DraftInfo,
+    breadcrumb: 'draftinfo',
+    meta: {
+      reqAuth: false
+    }
+  },
+  {
+    path: '/draft/:id',
+    name: 'DRAFT',
+    component: Draft,
+    breadcrumb: 'draft',
     meta: {
       reqAuth: false
     }
