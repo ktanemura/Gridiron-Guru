@@ -81,7 +81,7 @@
                     prop="actions"
                     label="Actions">
                     <template scope="undrafted">
-                    <el-button @click="draftPlayer(undrafted.$index, players)"
+                    <el-button @click="draftPlayer(undrafted.row, players)"
                       type="text"
                       size="small">
                         Draft
@@ -109,6 +109,10 @@
                     label="Name">
                   </el-table-column>
                   <el-table-column
+                    prop="position"
+                    label="Position">
+                  </el-table-column>
+                  <el-table-column
                     prop="team"
                     label="Team">
                   </el-table-column>
@@ -131,6 +135,7 @@
   var teams
   var pickDir
   var curTeam
+  var curTeam2
   var curRound
   var curPick
   var overallPick
@@ -148,11 +153,12 @@
       filterTag (value, row) {
         return row.Position === value
       },
-      draftPlayer (index, players) {
+      draftPlayer (player, players) {
+        var index = players.indexOf(player)
         var toDraft = players[index]
         players.splice(index, 1)
         teams[curTeam].push(toDraft)
-
+        curTeam2 = curTeam + 1
         curTeam += pickDir
 
         if (curTeam < 0 || curTeam >= numTeams) {
@@ -168,8 +174,9 @@
           round: curRound,
           pick: curPick,
           overall: overallPick,
-          player: toDraft.name,
-          team: curTeam
+          player: toDraft.Player,
+          position: toDraft.Position,
+          team: curTeam2
         }
 
         this.picks.push(pick)
