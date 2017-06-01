@@ -38,7 +38,7 @@
     <el-input type="password" v-model="signUpForm.confirmPassword" auto-complete="off" style="width: 50%;"></el-input>
   </el-form-item>
   <el-form-item>
-    <el-button type="primary" @click="submitForm('signUpForm', signUpForm.email, signUpForm.password)">Sign Up</el-button>
+    <el-button type="primary" @click="submitForm('signUpForm', signUpForm.username, signUpForm.email, signUpForm.password)">Sign Up</el-button>
     <router-link :to="'login'" style="text-decoration: none;"><el-button>Back</el-button></router-link>
   </el-form-item>
 </el-form>
@@ -48,7 +48,7 @@
 
 <script>
 import firebase from 'firebase'
-console.log('hi')
+// import {Firebase} from '../main.js'
 
 export default {
   data () {
@@ -90,7 +90,29 @@ export default {
     }
   },
   methods: {
-    submitForm (formName, email, password) {
+    createRestOfProfile (username) {
+      console.log('in createRestOfProfile method!')
+      var user = firebase.auth().currentUser
+      user.updateProfile({
+        displayName: 'Jane Q. User'
+      })
+      .then(function () {
+        // Update successful.
+      })
+      .catch(function (error) {
+        // An error happened.
+        var errorcode = error.code
+        var errormessage = error.message
+        if (errorcode === 'auth/account-exists-with-different-credential') {
+          alert('email already associated with another account.')
+        } else {
+          alert(errormessage)
+        }
+        console.log(error)
+      })
+    },
+
+    submitForm (formName, username, email, password) {
       console.log('creating new user...')
       firebase.auth().createUserWithEmailAndPassword(email, password).then(function (firebaseUser) {
         window.history.go(-1)
@@ -98,15 +120,19 @@ export default {
       })
       .catch(function (error) {
         // Handle Errors here.
-        var errorCode = error.code
-        var errorMessage = error.message
-        if (errorCode === 'auth/account-exists-with-different-credential') {
-          alert('Email already associated with another account.')
+        var errorcode = error.code
+        var errormessage = error.message
+        if (errorcode === 'auth/account-exists-with-different-credential') {
+          alert('email already associated with another account.')
         } else {
-          alert(errorMessage)
+          alert(errormessage)
         }
         console.log(error)
       })
+      var user = firebase.auth().currentUser
+      user.displayName = 'Jane Q. User'
+      console.log('before createRestOfProfile method')
+      this.createRestOfProfile(username)
       // this.$router.push('/login')
     }
   }

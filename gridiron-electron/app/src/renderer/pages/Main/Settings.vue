@@ -3,7 +3,31 @@
     <div class="main-cnt">
       <el-row :gutter="20">
         <el-col :span="12" :offset="6">
+          <el-form :model="updateSettingsForm" ref="updateSettingsForm" :rules="rules" label-width="100px" class="demo-ruleForm">
+            <p style="font-weight:bold;">Update Gridiron Account Settings</p>
+            <el-form-item label="Gridiron Username" prop="gridironUsername">
+              <el-input v-model="updateSettingsForm.gridironUsername"></el-input> 
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="logNewUsername('updateSettingsForm', updateSettingsForm.gridironUsername)">Log New Username</el-button>
+            </el-form-item>
+            <el-form-item label="Email" prop="userEmail">
+              <el-input type="email" v-model="updateSettingsForm.userEmail"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="updateSettings('updateSettingsForm', updateSettingsForm.gridironUsername, updateSettingsForm.userEmail)">Save</el-button>
+            </el-form-item>
+          </el-form>
+
+          <el-form :model="updatePasswordForm" ref="updatePasswordForm" :rules="rules" label-width="100px" class="demo-ruleForm">
+            </br><p style="font-weight:bold;">Change Gridiron Password</p>
+            <el-form-item>
+              <el-button type="primary" @click="updatePassword('updatePasswordForm')">Change Password</el-button>
+            </el-form-item>
+          </el-form>
+
           <el-form :model="userLoginForm" ref="userLoginForm" :rules="rules" label-width="100px" class="demo-ruleForm">
+            </br><p style="font-weight:bold;">Link a Yahoo Account</p>
             <el-form-item
               label="Yahoo Email"
               prop="email">
@@ -26,7 +50,7 @@
 
 <script>
 import axios from 'axios'
-
+import {Firebase} from '../../main.js'
 /* function getParameterByName (name, url) {
   if (!url) url = window.location.href
   name = name.replace(/[\[\]]/g, '\\$&')
@@ -36,6 +60,7 @@ import axios from 'axios'
   if (!results[2]) return ''
   return decodeURIComponent(results[2].replace(/\+/g, ' '))
 } */
+// var user
 
 export default {
   data () {
@@ -51,7 +76,15 @@ export default {
       }
       callback()
     }
+    var nameFromDB = Firebase.auth().currentUser.displayName
+    console.log('name from db: ' + nameFromDB)
     return {
+      updatePasswordForm: {
+      },
+      updateSettingsForm: {
+        gridironUsername: Firebase.auth().currentUser.displayName,
+        userEmail: ''
+      },
       userLoginForm: {
         email: '',
         password: ''
@@ -76,6 +109,35 @@ export default {
     }
   },
   methods: {
+    setUp () {
+      console.log('IN SETUP()')
+      var user = Firebase.auth().currentUser
+      this.updateSettingsForm.gridironUsername = user.displayName
+      console.log('USER DISPLAY NAME' + user.displayName)
+    },
+
+    logNewUsername (formName, newGridironUsername) {
+/*      console.log('1. new gridiron username: ' + newGridironUsername)
+      var user = Firebase.auth().currentUser
+      this.updateSettingsForm.gridironUsername = user.displayName
+      console.log('2. new gridiron username: ' + this.updateSettingsForm.gridironUsername)
+*/
+/*      this.updateSettingsForm.gridironUsername = 'cheese'
+      console.log('this.updateSettingsForm.gridironUsername: ' + this.updateSettingsForm.gridironUsername)
+*/
+    },
+    updateSettings (formName, newUsername, newEmail) {
+      var user = Firebase.auth().currentUser
+      console.log(user.uid)
+      user.updateProfile({
+        gridironUsername: newUsername
+      })
+    },
+
+    updatePassword () {
+      console.log('in updatePassword method')
+    },
+
     submitForm (formName, email, password) {
       console.log('checking form')
       var checkForm = false
@@ -119,6 +181,9 @@ export default {
       } else {
         console.log('false')
       }
+    },
+    mounted () {
+      this.setUp()
     }
   }
 }
