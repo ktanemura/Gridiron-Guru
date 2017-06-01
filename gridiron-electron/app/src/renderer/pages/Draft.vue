@@ -51,8 +51,14 @@
                   style="width: 100%">
                   <el-table-column type="expand">
                     <template scope="props">
-                      <p>Position: {{props.row.position}}</p>
-                      <p>Points: {{props.row.points}}</p>
+                      <template v-if="props.row.position === 'QB'">
+                        <p>Passing Yards: {{props.row.passingyds}}</p>
+                        <p>Passing TDs: {{props.row.passingtd}}</p>
+                      </template>
+                      <template v-if="props.row.position === 'RB'">
+                        <p>Rushing Yards: {{props.row.rushingyds}}</p>
+                        <p>Rushing TDs {{props.row.rushingtd}}</p>
+                      </template>
                     </template>
                   </el-table-column>
                   <el-table-column
@@ -138,12 +144,16 @@
           {
             name: 'Tom Brady',
             position: 'QB',
-            points: 10000
+            points: 10000,
+            passingyds: 20000,
+            passingtd: 30
           },
           {
             name: 'David Johnson',
             position: 'RB',
-            points: 9000
+            points: 9000,
+            rushingyds: 10000,
+            rushingtd: 10
           }
         ]
       }
