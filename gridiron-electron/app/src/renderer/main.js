@@ -33,9 +33,11 @@ var config = {
   messagingSenderId: '811469506152'
 }
 
-Firebase.initializeApp(config)
-// var firebaseApp = Firebase.initializeApp(config)
-// var firebaseDB = firebaseApp.database()
+// Firebase.initializeApp(config)
+var firebaseApp = Firebase.initializeApp(config)
+var firebaseDB = firebaseApp.database()
+
+export { firebaseDB }
 
 // router init
 const router = new Router({
