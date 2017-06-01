@@ -90,28 +90,6 @@ export default {
     }
   },
   methods: {
-    createRestOfProfile (username) {
-      console.log('in createRestOfProfile method!')
-      var user = firebase.auth().currentUser
-      user.updateProfile({
-        displayName: 'Jane Q. User'
-      })
-      .then(function () {
-        // Update successful.
-      })
-      .catch(function (error) {
-        // An error happened.
-        var errorcode = error.code
-        var errormessage = error.message
-        if (errorcode === 'auth/account-exists-with-different-credential') {
-          alert('email already associated with another account.')
-        } else {
-          alert(errormessage)
-        }
-        console.log(error)
-      })
-    },
-
     submitForm (formName, username, email, password) {
       console.log('creating new user...')
       firebase.auth().createUserWithEmailAndPassword(email, password).then(function (firebaseUser) {
@@ -129,10 +107,6 @@ export default {
         }
         console.log(error)
       })
-      var user = firebase.auth().currentUser
-      user.displayName = 'Jane Q. User'
-      console.log('before createRestOfProfile method')
-      this.createRestOfProfile(username)
       // this.$router.push('/login')
     }
   }
