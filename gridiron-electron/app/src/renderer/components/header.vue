@@ -8,7 +8,9 @@
 <template>
 <el-menu theme="light" :router="true" class="el-menu-top" mode="horizontal">
   <el-menu-item index="1">Gridiron</el-menu-item>
-  <el-submenu v-if="this.$route.path != '/login'" style="float: right" index="2">
+  <el-submenu v-if="this.$route.path != '/login'
+    && this.$route.path != '/signup' && this.$route.path != '/draftInfo' && this.$route.name != 'DRAFT'"
+    style="float: right" index="2">
     <template slot="title"><i class="el-icon-setting"></i></template>
     <el-menu-item index="/settings" >Settings</el-menu-item>
     <el-menu-item index="2-2" @click="logout()">Logout</el-menu-item>
