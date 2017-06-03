@@ -50,7 +50,7 @@
 
 <script>
 import axios from 'axios'
-// import {Firebase} from '../../main.js'
+import {Firebase} from '../../main.js'
 /* function getParameterByName (name, url) {
   if (!url) url = window.location.href
   name = name.replace(/[\[\]]/g, '\\$&')
@@ -106,7 +106,8 @@ export default {
     }
   },
   methods: {
-/*    setUp () {
+/*
+    setUp () {
       console.log('IN SETUP()')
       var user = Firebase.auth().currentUser
       this.updateSettingsForm.gridironUsername = user.displayName
@@ -115,6 +116,13 @@ export default {
 */
     updatePassword () {
       console.log('in updatePassword method')
+    },
+
+    logNewUsername (formname, gUsername) {
+      var user = Firebase.auth().currentUser
+      if (user) {
+        console.log('user is currently logged in!!')
+      }
     },
 
     submitForm (formName, email, password) {
@@ -161,7 +169,8 @@ export default {
         console.log('false')
       }
     }
-/*    mounted () {
+/*
+    mounted () {
       this.setUp()
     }
 */

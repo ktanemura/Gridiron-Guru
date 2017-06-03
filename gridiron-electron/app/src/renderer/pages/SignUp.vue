@@ -1,9 +1,10 @@
 <template>
-  <div class="app-fantasylist">
+  <div class="signup">
+  <main-header></main-header>
     <div class="col-sm-12 col-md-12">
       <el-row>
         <el-col :span="24">
-       <p align=right>
+       <!--p align=right>
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
             <el-button type="primary" icon="setting"></el-button>
@@ -15,22 +16,19 @@
             <el-dropdown-item>Logout</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-       </p>
+       </p-->
           <div class="grid-content bg-blue-dark">
             <h2>Sign Up</h2>
           </div>
         </el-col>
       </el-row>
 <el-form :model="signUpForm" :rules="rules2" ref="signUpForm" label-width="150px" class="demo-signUpForm">
-  <el-form-item label="Name" prop="name">
-    <el-input v-model="signUpForm.name" style="width: 50%;"></el-input>
-  </el-form-item>
   <el-form-item label="Email" prop="email">
     <el-input type="email" v-model="signUpForm.email" style="width: 50%;"></el-input>
   </el-form-item>
-  <el-form-item label="Username" prop="username">
+  <!--el-form-item label="Username" prop="username">
     <el-input v-model="signUpForm.username" style="width: 50%;"></el-input>
-  </el-form-item>
+  </el-form-item-->
   <el-form-item label="Password" prop="password">
     <el-input type="password" v-model="signUpForm.password" auto-complete="off" style="width: 50%;"></el-input>
   </el-form-item>
@@ -38,7 +36,7 @@
     <el-input type="password" v-model="signUpForm.confirmPassword" auto-complete="off" style="width: 50%;"></el-input>
   </el-form-item>
   <el-form-item>
-    <el-button type="primary" @click="submitForm('signUpForm', signUpForm.username, signUpForm.email, signUpForm.password)">Sign Up</el-button>
+    <el-button type="primary" @click="submitForm('signUpForm', signUpForm.email, signUpForm.password)">Sign Up</el-button>
     <router-link :to="'login'" style="text-decoration: none;"><el-button>Back</el-button></router-link>
   </el-form-item>
 </el-form>
@@ -73,9 +71,7 @@ export default {
     }
     return {
       signUpForm: {
-        name: '',
         email: '',
-        username: '',
         password: '',
         confirmPassword: ''
       },
@@ -90,10 +86,12 @@ export default {
     }
   },
   methods: {
-    submitForm (formName, username, email, password) {
+    submitForm (formName, email, password) {
       console.log('creating new user...')
+      var thisisme = this
       firebase.auth().createUserWithEmailAndPassword(email, password).then(function (firebaseUser) {
-        window.history.go(-1)
+//        window.history.go(-1)
+        thisisme.$router.push('/createusername')
         console.log('success')
       })
       .catch(function (error) {
@@ -107,6 +105,11 @@ export default {
         }
         console.log(error)
       })
+/*
+      else if (!user) {
+        console.log('user is not signed in')
+      }
+*/
       // this.$router.push('/login')
     }
   }
