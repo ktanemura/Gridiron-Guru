@@ -2,6 +2,7 @@
   <div id="draft">
     <main-header></main-header>
     <div class="main-cnt">
+    <router-link :to="{ path: '/login' }" tag="el-button">Exit Draft</router-link>
       <el-row :gutter="24">
         <el-col :span="8">
           <el-card :body-style="{ padding: '0px' }">
@@ -51,9 +52,23 @@
                   style="width: 100%">
                   <el-table-column type="expand">
                     <template scope="props">
+                    <h4>Predictions</h4>
                       <template v-if="props.row.Position === 'QB'">
-                        <p>Passing Yards: {{props.row.passingyds}}</p>
-                        <p>Passing TDs: {{props.row.passingtd}}</p>
+                        <el-row :gutter="24">
+                          <el-col :span ="8">
+                            <p>Passing Yards: {{props.row.PredSeasonPassYrds.toFixed(2)}}</p>
+                            <p>Interceptions: {{props.row.PredSeasonInterceptions.toFixed(2)}}</p>
+                            <p>Fumbles: {{props.row.PredSeasonFumbles.toFixed(2)}}</p>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>Passing TDs: {{props.row.PredSeasonPassTDs.toFixed(2)}}</p>
+                            <p>TD Ratio: {{props.row.PredPassTDAttRatio.toFixed(4) * 100}}%</p>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>Passing Attempts Per Game: {{props.row.PredPassAttPerGame.toFixed(2)}}</p>
+                            <p>Rushing TDs: {{props.row.PredSeasonRushTDs.toFixed(2)}}</p>
+                          </el-col>
+                        </el-row>
                       </template>
                       <template v-if="props.row.Position === 'RB'">
                         <p>Rushing Yards: {{props.row.rushingyds}}</p>
