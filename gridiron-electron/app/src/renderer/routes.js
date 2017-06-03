@@ -6,6 +6,7 @@ import WeeklyReports from './pages/Main/WeeklyReports.vue'
 import SignUp from './pages/SignUp.vue'
 import Settings from './pages/Main/Settings.vue'
 import Login from './pages/Login.vue'
+import CreateUsername from './pages/CreateUsername.vue'
 import Draft from './pages/Draft.vue'
 import DraftInfo from './pages/DraftInfo.vue'
 export default [
@@ -65,6 +66,14 @@ export default [
     breadcrumb: 'signup',
     meta: {
       reqAuth: false
+    }
+  },
+  {
+    path: '/createusername',
+    component: CreateUsername,
+    breadcrumb: 'createusername',
+    meta: {
+      reqAuth: true
     }
   },
   {
