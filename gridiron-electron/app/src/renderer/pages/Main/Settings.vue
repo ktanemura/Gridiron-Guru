@@ -107,20 +107,27 @@ export default {
       var auth = firebase.auth()
       var emailAddress = firebase.auth().currentUser.email
       auth.sendPasswordResetEmail(emailAddress).then(function () {
-        // Email sent.
         console.log('email sent')
       }, function (error) {
         // An error happened.
         var errorcode = error.code
         var errormessage = error.message
-        if (errorcode === 'auth/account-exists-with-different-credential') {
-          alert('email already associated with another account.')
+        if (errorcode === 'auth/expired-action-code') {
+          alert('Password reset code has expired.')
+        }
+        if (errorcode === 'auth/weak-password') {
+          alert('New password is not strong enough.')
+        }
+        if (errorcode === 'auth/invalid-email') {
+          alert('Email address not valid.')
+        }
+        if (errorcode === 'auth/user-not-found') {
+          alert('no user corresponding to the email address')
         } else {
           alert(errormessage)
         }
         console.log('email NOT sent')
       })
-
       console.log('in updatePassword method')
     },
     updateUsername (formname, newUsername) {
@@ -132,26 +139,18 @@ export default {
         var pushRef = userRefs.push()
         pushRef.set({email: user.email, username: user.displayName})
         console.log('upated your username to ' + user.displayName)
-      }, function (error) {
-        var errorcode = error.code
-        var errormessage = error.message
-        if (errorcode === 'auth/account-exists-with-different-credential') {
-          alert('email already associated with another account.')
-        } else {
-          alert(errormessage)
-        }
       })
     },
     updateUserEmail (formname, newEmail) {
       var user = firebase.auth().currentUser
-
       user.updateEmail(newEmail).then(function () {
-        // Update successful.
         console.log('updated your email to ' + user.email)
       }, function (error) {
-        // An error happened.
         var errorcode = error.code
         var errormessage = error.message
+        if (errorcode === 'auth/invalid-email') {
+          alert('Email address is not valid.')
+        }
         if (errorcode === 'auth/account-exists-with-different-credential') {
           alert('email already associated with another account.')
         } else {

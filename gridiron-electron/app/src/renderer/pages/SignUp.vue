@@ -36,7 +36,7 @@
     <el-input type="password" v-model="signUpForm.confirmPassword" auto-complete="off" style="width: 50%;"></el-input>
   </el-form-item>
   <el-form-item>
-    <el-button type="primary" @click="submitForm('signUpForm', signUpForm.email, signUpForm.password)">Sign Up</el-button>
+    <el-button type="primary" @click="submitForm('signUpForm', signUpForm.email, signUpForm.password, signUpForm.confirmPassword)">Sign Up</el-button>
     <router-link :to="'login'" style="text-decoration: none;"><el-button>Back</el-button></router-link>
   </el-form-item>
 </el-form>
@@ -86,31 +86,31 @@ export default {
     }
   },
   methods: {
-    submitForm (formName, email, password) {
+    submitForm (formName, email, password, confirmPassword) {
       console.log('creating new user...')
       var thisisme = this
-      firebase.auth().createUserWithEmailAndPassword(email, password).then(function (firebaseUser) {
-//        window.history.go(-1)
-        thisisme.$router.push('/createusername')
-        console.log('success')
-      })
-      .catch(function (error) {
-        // Handle Errors here.
-        var errorcode = error.code
-        var errormessage = error.message
-        if (errorcode === 'auth/account-exists-with-different-credential') {
-          alert('email already associated with another account.')
-        } else {
-          alert(errormessage)
-        }
-        console.log(error)
-      })
-/*
-      else if (!user) {
-        console.log('user is not signed in')
+      if (password === confirmPassword) {
+        firebase.auth().createUserWithEmailAndPassword(email, password).then(function (firebaseUser) {
+          thisisme.$router.push('/createusername')
+          console.log('success')
+        })
+        .catch(function (error) {
+          // Handle Errors here.
+          var errorcode = error.code
+          var errormessage = error.message
+          if (errorcode === 'auth/invalid-email') {
+            alert('Email address is not valid.')
+          }
+          if (errorcode === 'auth/account-exists-with-different-credential') {
+            alert('email already associated with another account.')
+          } else {
+            alert(errormessage)
+          }
+          console.log(error)
+        })
+      } else {
+        alert('Password inputs must match.')
       }
-*/
-      // this.$router.push('/login')
     }
   }
 }
