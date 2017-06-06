@@ -62,17 +62,77 @@
                           </el-col>
                           <el-col :span="8">
                             <p>Passing TDs: {{props.row.PredSeasonPassTDs.toFixed(2)}}</p>
-                            <p>TD Ratio: {{props.row.PredPassTDAttRatio.toFixed(4) * 100}}%</p>
+                            <p>Rushing TDs: {{props.row.PredSeasonRushTDs.toFixed(2)}}</p>
+                            <p>Passing TD Ratio: {{(100 * props.row.PredPassTDAttRatio).toFixed(2)}}%</p>
                           </el-col>
                           <el-col :span="8">
                             <p>Passing Attempts Per Game: {{props.row.PredPassAttPerGame.toFixed(2)}}</p>
-                            <p>Rushing TDs: {{props.row.PredSeasonRushTDs.toFixed(2)}}</p>
+                            <p>Yards Per Pass: {{props.row.PredAvgPassYrds.toFixed(2)}}</p>
                           </el-col>
                         </el-row>
                       </template>
                       <template v-if="props.row.Position === 'RB'">
-                        <p>Rushing Yards: {{props.row.rushingyds}}</p>
-                        <p>Rushing TDs {{props.row.rushingtd}}</p>
+                        <el-row :gutter="24">
+                          <el-col :span ="8">
+                            <p>Rushing Yards: {{props.row.PredSeasonRushYrds.toFixed(2)}}</p>
+                            <p>Receiving Yards: {{props.row.PredSeasonPassYrds.toFixed(2)}}</p>
+                            <p>Fumbles: {{props.row.PredSeasonFumbles.toFixed(2)}}</p>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>Rushing TDs: {{props.row.PredSeasonRushTDs.toFixed(2)}}</p>
+                            <p>Receiving TDs: {{props.row.PredSeasonPassTDs.toFixed(2)}}</p>
+                            <p>Rushing TD Ratio: {{(parseFloat(props.row.PredRushTDAttRatio) * 100).toFixed(2)}}%</p>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>Rushing Attempts Per Game: {{props.row.PredRushAttPerGame.toFixed(2)}}</p>
+                            <p>Receptions Per Game: {{props.row.PredPassAttPerGame.toFixed(2)}}</p>
+                            <p>Yards Per Carry: {{props.row.PredAvgRushYrds.toFixed(2)}}</p>
+                          </el-col>
+                        </el-row>
+                      </template>
+                      <template v-if="props.row.Position === 'WR'">
+                        <el-row :gutter="24">
+                          <el-col :span ="8">
+                            <p>Receiving Yards: {{props.row.PredSeasonPassYrds.toFixed(2)}}</p>
+                            <p>Fumbles: {{props.row.PredSeasonFumbles.toFixed(2)}}</p>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>Receiving TDs: {{props.row.PredSeasonPassTDs.toFixed(2)}}</p>
+                            <p>TD Ratio: {{(props.row.PredPassTDAttRatio * 100).toFixed(2)}}%</p>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>Receptions Per Game: {{props.row.PredPassAttPerGame.toFixed(2)}}</p>
+                            <p>Yards Per Catch: {{props.row.PredAvgPassYrds.toFixed(2)}}</p>
+                          </el-col>
+                        </el-row>
+                      </template>
+                      <template v-if="props.row.Position === 'TE'">
+                        <el-row :gutter="24">
+                          <el-col :span ="8">
+                            <p>Receiving Yards: {{props.row.PredSeasonPassYrds.toFixed(2)}}</p>
+                            <p>Fumbles: {{props.row.PredSeasonFumbles.toFixed(2)}}</p>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>Receiving TDs: {{props.row.PredSeasonPassTDs.toFixed(2)}}</p>
+                            <p>TD Ratio: {{(props.row.PredPassTDAttRatio * 100).toFixed(2)}}%</p>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>Catches Per Game: {{props.row.PredPassAttPerGame.toFixed(2)}}</p>
+                            <p>Yards Per Catch: {{props.row.PredAvgPassYrds.toFixed(2)}}</p>
+                          </el-col>
+                        </el-row>
+                      </template>
+                      <template v-if="props.row.Position === 'PK'">
+                        <el-row :gutter="24">
+                          <el-col :span ="8">
+                            <p>Field Goals: {{props.row.PredSeasonFGoals.toFixed(2)}}</p>
+                            <p>FG Attemps Per Game: {{props.row.PredFGoalsPerGame.toFixed(2)}}</p>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>Extra Points: {{props.row.PredSeasonExtraPoints.toFixed(2)}}</p>
+                            <p>PATs Per Game: {{props.row.PredExtraPointsPerGame.toFixed(2)}}</p>
+                          </el-col>
+                        </el-row>
                       </template>
                     </template>
                   </el-table-column>
@@ -144,7 +204,7 @@
   var draftRef
   var numTeams
   var numRounds
-//  var pickNumber
+  // var pickNumber
   var isSnake
   var draftId
   var teams
@@ -207,6 +267,9 @@
         }
 
         if (curRound > numRounds) {
+          updates = {}
+          updates['/teams'] = teams
+          draftRef.update(updates)
           this.$router.push('/login')
         }
       },
@@ -226,7 +289,7 @@
           numRounds = snapshot.val().rounds
         })
 /*
-        draftRef.child('draftInfo').once('value').then(function(snapshot) {
+        draftRef.child('draftInfo').once('value').then(function (snapshot) {
           pickNumber = snapshot.val().pickNo
         })
 */

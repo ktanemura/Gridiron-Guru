@@ -49,6 +49,7 @@
     },
     methods: {
       submitForm (numTeams, numRounds, pick, snake) {
+        pick -= 1
         var draftRefs = firebaseDb.ref().child('drafts')
         var pushRef = draftRefs.push()
         var newKey = pushRef.getKey()
