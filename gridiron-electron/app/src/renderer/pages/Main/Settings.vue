@@ -1,42 +1,45 @@
 <template>
   <div id="settings">
     <div class="main-cnt">
-      <el-row :gutter="20">
-        <el-col :span="12" :offset="6">
-          <el-form :model="updateSettingsForm" ref="updateSettingsForm" :rules="rules" label-width="100px" class="demo-ruleForm">
+    <!--div class="col-sm-12 col-md-12"-->
+      <!--el-row :gutter="20"-->
+      <el-row>
+        <!--el-col :span="12" :offset="6"-->
+        <el-col :span="24">
+          <el-form :model="updateSettingsForm" ref="updateSettingsForm" :rules="rules" label-width="150px" class="demo-ruleForm">
             <p style="font-weight:bold;">Update Gridiron Account Settings</p>
-            <el-form-item label="Gridiron Username" prop="gridironUsername">
+            <el-form-item label="Gridiron Username" prop="gridironUsername" style="width: 50%;">
               <el-input v-model="updateSettingsForm.gridironUsername"></el-input> 
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="logNewUsername('updateSettingsForm', updateSettingsForm.gridironUsername)">Log New Username</el-button>
+              <el-button type="primary" @click="updateUsername('updateSettingsForm', updateSettingsForm.gridironUsername)">Update Username</el-button>
             </el-form-item>
             <el-form-item label="Email" prop="userEmail">
-              <el-input type="email" v-model="updateSettingsForm.userEmail"></el-input>
+              <el-input type="email" v-model="updateSettingsForm.userEmail" style="width: 50%;"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="updateSettings('updateSettingsForm', updateSettingsForm.gridironUsername, updateSettingsForm.userEmail)">Save</el-button>
+              <el-button type="primary" @click="updateUserEmail('updateSettingsForm', updateSettingsForm.userEmail)">Update Email</el-button>
             </el-form-item>
           </el-form>
 
-          <el-form :model="updatePasswordForm" ref="updatePasswordForm" :rules="rules" label-width="100px" class="demo-ruleForm">
+          <el-form :model="updatePasswordForm" ref="updatePasswordForm" :rules="rules" label-width="150px" class="demo-ruleForm">
             </br><p style="font-weight:bold;">Change Gridiron Password</p>
             <el-form-item>
-              <el-button type="primary" @click="updatePassword('updatePasswordForm')">Change Password</el-button>
+              <el-button type="primary" @click="updatePassword()">Change Password</el-button>
             </el-form-item>
           </el-form>
 
-          <el-form :model="userLoginForm" ref="userLoginForm" :rules="rules" label-width="100px" class="demo-ruleForm">
+          <el-form :model="userLoginForm" ref="userLoginForm" :rules="rules" label-width="150px" class="demo-ruleForm">
             </br><p style="font-weight:bold;">Link a Yahoo Account</p>
             <el-form-item
               label="Yahoo Email"
               prop="email">
-                <el-input type="email" v-model="userLoginForm.email" auto-complete="off"></el-input>
+                <el-input type="email" v-model="userLoginForm.email" auto-complete="off" style="width: 50%;"></el-input>
             </el-form-item>
             <el-form-item
               label="Password"
               prop="password">
-                <el-input type="password" v-model="userLoginForm.password" auto-complete="off"></el-input>
+                <el-input type="password" v-model="userLoginForm.password" auto-complete="off" style="width: 50%;"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('userLoginForm', userLoginForm.email, userLoginForm.password)">Link Account</el-button>
@@ -50,16 +53,9 @@
 
 <script>
 import axios from 'axios'
-import {Firebase} from '../../main.js'
-/* function getParameterByName (name, url) {
-  if (!url) url = window.location.href
-  name = name.replace(/[\[\]]/g, '\\$&')
-  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-    results = regex.exec(url)
-  if (!results) return null
-  if (!results[2]) return ''
-  return decodeURIComponent(results[2].replace(/\+/g, ' '))
-} */
+import firebase from 'firebase'
+import { firebaseDb } from '../../main.js'
+// import {Firebase} from '../../main.js'
 
 export default {
   data () {
@@ -75,12 +71,13 @@ export default {
       }
       callback()
     }
+    var user = firebase.auth().currentUser
     return {
       updatePasswordForm: {
       },
       updateSettingsForm: {
-        gridironUsername: '',
-        userEmail: ''
+        gridironUsername: user.displayName,
+        userEmail: user.email
       },
       userLoginForm: {
         email: '',
@@ -106,29 +103,64 @@ export default {
     }
   },
   methods: {
-/*
-    setUp () {
-      console.log('IN SETUP()')
-      var user = Firebase.auth().currentUser
-      this.updateSettingsForm.gridironUsername = user.displayName
-      console.log('USER DISPLAY NAME' + user.displayName)
-    },
-*/
     updatePassword () {
+      var auth = firebase.auth()
+      var emailAddress = firebase.auth().currentUser.email
+      auth.sendPasswordResetEmail(emailAddress).then(function () {
+        console.log('email sent')
+      }, function (error) {
+        // An error happened.
+        var errorcode = error.code
+        var errormessage = error.message
+        if (errorcode === 'auth/expired-action-code') {
+          alert('Password reset code has expired.')
+        }
+        if (errorcode === 'auth/weak-password') {
+          alert('New password is not strong enough.')
+        }
+        if (errorcode === 'auth/invalid-email') {
+          alert('Email address not valid.')
+        }
+        if (errorcode === 'auth/user-not-found') {
+          alert('no user corresponding to the email address')
+        } else {
+          alert(errormessage)
+        }
+        console.log('email NOT sent')
+      })
       console.log('in updatePassword method')
     },
-
-    logNewUsername (formname, gUsername) {
-      var user = Firebase.auth().currentUser
-      if (user) {
-        console.log('user is currently logged in!!')
-      }
+    updateUsername (formname, newUsername) {
+      var user = firebase.auth().currentUser
+      user.updateProfile({
+        displayName: newUsername
+      }).then(function () {
+        var userRefs = firebaseDb.ref().child('users')
+        var pushRef = userRefs.push()
+        pushRef.set({email: user.email, username: user.displayName})
+        console.log('upated your username to ' + user.displayName)
+      })
     },
-
+    updateUserEmail (formname, newEmail) {
+      var user = firebase.auth().currentUser
+      user.updateEmail(newEmail).then(function () {
+        console.log('updated your email to ' + user.email)
+      }, function (error) {
+        var errorcode = error.code
+        var errormessage = error.message
+        if (errorcode === 'auth/invalid-email') {
+          alert('Email address is not valid.')
+        }
+        if (errorcode === 'auth/account-exists-with-different-credential') {
+          alert('email already associated with another account.')
+        } else {
+          alert(errormessage)
+        }
+      })
+    },
     submitForm (formName, email, password) {
       console.log('checking form')
       var checkForm = false
-
       this.$refs[formName].validate((valid) => {
         console.log('submitForm call')
         if (valid) {
@@ -147,11 +179,9 @@ export default {
         var clientId = 'dj0yJmk9aUFzRkx2MkVGbnNiJmQ9WVdrOWJXVkVXRWhzTm5NbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD00OA--'
         var redirectUri = 'localhost:9080'
         var responseType = 'token'
-
         var requestUrl = 'https://api.login.yahoo.com/oauth2/request_auth?client_id=' + clientId + '&redirect_uri=' + redirectUri + '&response_type=' + responseType
 
         console.log(requestUrl)
-
         axios.get(requestUrl).then(response => {
           // JSON responses are automatically parsed.
           if (response.status === 302) {
@@ -169,11 +199,6 @@ export default {
         console.log('false')
       }
     }
-/*
-    mounted () {
-      this.setUp()
-    }
-*/
   }
 }
 </script>
