@@ -89,7 +89,7 @@ export default [
     component: DraftInfo,
     breadcrumb: 'draftinfo',
     meta: {
-      reqAuth: false
+      reqAuth: true
     }
   },
   {
@@ -98,7 +98,7 @@ export default [
     component: Draft,
     breadcrumb: 'draft',
     meta: {
-      reqAuth: false
+      reqAuth: true
     }
   },
   {
