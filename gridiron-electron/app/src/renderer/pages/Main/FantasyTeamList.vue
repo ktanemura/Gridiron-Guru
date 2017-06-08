@@ -63,6 +63,8 @@
 </template>
 
 <script>
+  import firebase from 'firebase'
+
   export default {
     methods: {
       handleClick () {
@@ -121,8 +123,20 @@
             losses: 2,
             status: 'None'
           }
-        ]
+        ],
+        teams: []
       }
+    },
+    methods: {
+      setUp () {
+        console.log("This is me")
+        console.log(firebase.auth().currentUser.uId)
+      }
+    },
+    mounted () {
+      console.log("Hello")
+      this.setUp()
     }
+
   }
 </script>

@@ -9,69 +9,75 @@
         </el-col>
       </el-row>
     <el-table
-      :data="tableData" :fit="true"
+      :data="teams" :fit="true"
       border
       style="width: 100%">
-    <el-table-column
-      prop="team"
-      label="Team"
-      width="220">
-    </el-table-column>
-    <el-table-column
-      prop="league"
-      label="League"
-      width="235">
-    </el-table-column>
-    <el-table-column
-      prop="win"
-      label="Wins"
-      width="90">
-    </el-table-column>
-    <el-table-column
-      prop="lose"
-      label="Losses"
-      width="90">
-    </el-table-column>
-    <!--el-table-column
-      prop="status"
-      label="AI Status"
-      width="230">
-    </el-table-column-->
-    <el-table-column
-      label="Options">
-      <template scope="scope">
+    <template scope="t">
+      <el-table-column
+        prop="team"
+        label="Team"
+        width="220">
+      </el-table-column>
+      <el-table-column
+        prop="league"
+        label="League"
+        width="235">
+      </el-table-column>
+      <el-table-column
+        prop="win"
+        label="Wins"
+        width="90">
+      </el-table-column>
+      <el-table-column
+        prop="lose"
+        label="Losses"
+        width="90">
+      </el-table-column>
+      <!--el-table-column
+        prop="status"
+        label="AI Status"
+        width="230">
+      </el-table-column-->
+    </template>
+      <el-table-column
+        label="Options">
+        <template scope="scope">
 
-<!--Report popup-->
-<el-button size="small" type="info" @click="dialogTableVisible = true">Report</el-button>
-<el-dialog title="Report for <team name>" :visible.sync="dialogTableVisible">
- <p style="font-weight: bold;">Weekly Reports</p>
-  <el-table :data="weeklyReports" :fit=true height="150">
-    <el-table-column property="season" label="Season" width="150"></el-table-column>
-    <el-table-column property="week" label="Week" width="200"></el-table-column>
-    <el-table-column property="result" label="Result"></el-table-column>
-  </el-table>
- <p style="font-weight: bold;">Current Lineup</p>
-  <el-table :data="currentLineup" :fit=true height="150">
-    <el-table-column property="position" label="Position" width="150"></el-table-column>
-    <el-table-column property="name" label="Name" width="200"></el-table-column>
-    <el-table-column property="points" label="Points"></el-table-column>
-  </el-table>
- <p style="font-weight: bold;"></br>Recommended Lineup</p>
-  <el-table :data="recommendedLineup" :fit=true height="150">
-    <el-table-column property="position" label="Position" width="150"></el-table-column>
-    <el-table-column property="name" label="Name" width="200"></el-table-column>
-    <el-table-column property="points" label="Points"></el-table-column>
-  </el-table>
-</el-dialog>
+  <!--Report popup-->
+  <el-button size="small" type="info" @click="dialogTableVisible = true">Report</el-button>
+  <el-dialog title="Report for <team name>" :visible.sync="dialogTableVisible">
+   <p style="font-weight: bold;">Weekly Reports</p>
+    <el-table :data="weeklyReports" :fit=true height="150">
+      <el-table-column property="season" label="Season" width="150"></el-table-column>
+      <el-table-column property="week" label="Week" width="200"></el-table-column>
+      <el-table-column property="result" label="Result"></el-table-column>
+    </el-table>
+   <p style="font-weight: bold;">Current Lineup</p>
+    <el-table :data="currentLineup" :fit=true height="150">
+      <el-table-column property="position" label="Position" width="150"></el-table-column>
+      <el-table-column property="name" label="Name" width="200"></el-table-column>
+      <el-table-column property="points" label="Points"></el-table-column>
+    </el-table>
+   <p style="font-weight: bold;"></br>Recommended Lineup</p>
+    <el-table :data="recommendedLineup" :fit=true height="150">
+      <el-table-column property="position" label="Position" width="150"></el-table-column>
+      <el-table-column property="name" label="Name" width="200"></el-table-column>
+      <el-table-column property="points" label="Points"></el-table-column>
+    </el-table>
+  </el-dialog>
 
-      </template>
-    </el-table-column>
-  </el-table>
+        </template>
+      </el-table-column>
+    </el-table>
+      </div>
     </div>
-  </div>
-</template>
-
+  </template>
 <script>
+  import {firebase, firebaseDb} from '../../main.js'
+
+  var userRef
+  var thisisme
+
   export default {
     data () {
       return {
@@ -198,10 +204,24 @@
           lose: 0,
           status: '(None)',
           address: 'No. 189, Grove St, Los Angeles'
-        }]
+        }],
+        teams: []
       }
     },
     methods: {
+      setUp () {
+        userRef = firebaseDb.ref('users/' + firebase.auth().currentUser.uid)
+        thisisme = this
+
+        userRef.child('teams').once('value').then(function (snapshot) {
+          thisisme.teams = snapshot.val()
+          console.log(thisisme.teams)
+        })
+      }
+    },
+    mounted () {
+      console.log('This is me')
+      this.setUp()
     }
   }
 </script>

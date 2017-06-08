@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import {firebase} from '../main.js'
 // import {Firebase} from '../main.js'
 
 export default {
