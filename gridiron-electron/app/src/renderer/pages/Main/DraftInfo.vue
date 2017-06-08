@@ -1,6 +1,5 @@
 <template>
-  <div id="draftInfo">
-    <main-header></main-header>
+  <div id="app-draftInfo">
     <div class="main-cnt">
       <el-row :gutter="20">
         <el-col :span="12" :offset="2">
@@ -50,7 +49,7 @@
 </template>
 
 <script type="text/javascript">
-  import { firebaseDb } from '../main.js'
+  import { firebaseDb } from '../../main.js'
   export default {
     data () {
       return {

@@ -1,6 +1,5 @@
 <template>
-  <div id="draft">
-    <main-header></main-header>
+  <div id="app-draft">
     <div class="main-cnt">
     <router-link :to="{ path: '/login' }" tag="el-button">Exit Draft</router-link>
       <el-row :gutter="24">
@@ -199,7 +198,7 @@
   </div>
 </template>
 <script type="text/javascript">
-  import { firebaseDb } from '../main.js'
+  import { firebaseDb } from '../../main.js'
   
   var draftRef
   var numTeams

@@ -6,8 +6,8 @@ import SignUp from './pages/SignUp.vue'
 import Settings from './pages/Main/Settings.vue'
 import Login from './pages/Login.vue'
 import CreateUsername from './pages/CreateUsername.vue'
-import Draft from './pages/Draft.vue'
-import DraftInfo from './pages/DraftInfo.vue'
+import Draft from './pages/Main/Draft.vue'
+import DraftInfo from './pages/Main/DraftInfo.vue'
 export default [
   {
     path: '/',
@@ -17,6 +17,23 @@ export default [
       reqAuth: true
     },
     children: [
+      {
+        path: 'draftInfo',
+        component: DraftInfo,
+        breadcrumb: 'draftinfo',
+        meta: {
+          reqAuth: true
+        }
+      },
+      {
+        path: 'draft/:id',
+        name: 'DRAFT',
+        component: Draft,
+        breadcrumb: 'draft',
+        meta: {
+          reqAuth: true
+        }
+      },
       {
         path: 'dashboard',
         component: Dashboard,
@@ -75,7 +92,7 @@ export default [
       reqAuth: false
     }
   },
-  {
+/*  {
     path: '/draftInfo',
     component: DraftInfo,
     breadcrumb: 'draftinfo',
@@ -92,6 +109,7 @@ export default [
       reqAuth: true
     }
   },
+*/
   {
     path: '*',
     redirect: '/'

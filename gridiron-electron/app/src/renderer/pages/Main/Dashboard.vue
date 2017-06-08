@@ -1,11 +1,11 @@
 <template>
   <div class="app-dashboard">
     <div class="col-sm-12 col-md-12">
-      <h2>Welcome !!!</h2>
+      <h2>Welcome to Gridiron-Guru!</h2>
       <p>
-        Lorem ipsum Ad non ut aliquip Duis minim sit ex esse eiusmod anim minim 
-        esse qui mollit elit do pariatur deserunt eu eiusmod tempor tempor sunt 
-        fugiat ad dolore reprehenderit do labore ex.
+        Welcome to Gridiron-Guru, the mastermind AI of fantasy football. Create
+        Drafts, join existing Drafts, and let the Guru take over. Take home the
+        W, nothing more nothing less.
       </p>
     </div>
   </div>
