@@ -23,8 +23,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
-import { firebaseDb } from '../main.js'
+import { firebase, firebaseDb } from '../main.js'
 // import {Firebase} from '../main.js'
 
 export default {
@@ -44,9 +43,11 @@ export default {
         displayName: username
       }).then(function () {
         var userRefs = firebaseDb.ref().child('users')
-        var pushRef = userRefs.push()
-        pushRef.set({email: user.email, username: user.displayName})
+        var updates = {}
+        updates['/' + user.uid] = {email: user.email, username: user.displayName}
+        userRefs.update(updates)
         console.log('set username to: ' + user.displayName)
+        console.log('key should be: ' + user.uid)
         window.history.go(-2)
       }, function (error) {
         var errorcode = error.code
