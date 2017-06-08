@@ -4,25 +4,23 @@
       <el-row>
         <el-col :span="24">
           <div class="grid-content bg-blue-dark">
-            <h2>Fantasy List</h2>
+            <h2>Fantasy List!</h2>
           </div>
         </el-col>
       </el-row>
-
-
     <el-table
-      :data="tableData"
+      :data="tableData" :fit="true"
       border
       style="width: 100%">
     <el-table-column
       prop="team"
       label="Team"
-      width="180">
+      width="220">
     </el-table-column>
     <el-table-column
       prop="league"
       label="League"
-      width="180">
+      width="235">
     </el-table-column>
     <el-table-column
       prop="win"
@@ -34,51 +32,36 @@
       label="Losses"
       width="90">
     </el-table-column>
-    <el-table-column
+    <!--el-table-column
       prop="status"
       label="AI Status"
       width="230">
-    </el-table-column>
+    </el-table-column-->
     <el-table-column
       label="Options">
       <template scope="scope">
-        <el-button
-          size="small"
-          type="info"
-          @click="handleReport(scope.$index, scope.row)">Report</el-button>
 
-<!-- Form popup button for Edit-->
-<el-button size="small" type="success" @click="dialogFormVisible = true">Edit</el-button>
-
-<el-dialog title="Team AI" v-model="dialogFormVisible">
-  <el-form :model="form">
-    <el-form-item label="AI Profile" :label-width="formLabelWidth">
-      <el-select v-model="form.region" placeholder="Please select AI Profile">
-        <el-option label="The Brady Bot" value="bradyBot"></el-option>
-        <el-option label="Predicti-Ball" value="predictiBall"></el-option>
-        <el-option label="Weekend Warrior" value="weekendWarrior"></el-option>
-        <el-option label="None" value="noAI"></el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item label="Management Type" :label-width="formLabelWidth">
-      <el-select v-model="form.region" placeholder="Please select Management Type">
-        <el-option label="Manage" value="manage"></el-option>
-        <el-option label="Advise" value="advise"></el-option>
-        <el-option label="None" value="noManage"></el-option>
-      </el-select>
-    </el-form-item>
-
-  <el-checkbox-group v-model="checkList">
-    <el-checkbox label="Set Lineup"></el-checkbox>
-    <el-checkbox label="Free Agency"></el-checkbox>
-    <el-checkbox label="Trade"></el-checkbox>
-  </el-checkbox-group>
-
-  </el-form>
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible = false">Cancel</el-button>
-    <el-button type="primary" @click="dialogFormVisible = false">Submit</el-button>
-  </span>
+<!--Report popup-->
+<el-button size="small" type="info" @click="dialogTableVisible = true">Report</el-button>
+<el-dialog title="Report for <team name>" :visible.sync="dialogTableVisible">
+ <p style="font-weight: bold;">Weekly Reports</p>
+  <el-table :data="weeklyReports" :fit=true height="150">
+    <el-table-column property="season" label="Season" width="150"></el-table-column>
+    <el-table-column property="week" label="Week" width="200"></el-table-column>
+    <el-table-column property="result" label="Result"></el-table-column>
+  </el-table>
+ <p style="font-weight: bold;">Current Lineup</p>
+  <el-table :data="currentLineup" :fit=true height="150">
+    <el-table-column property="position" label="Position" width="150"></el-table-column>
+    <el-table-column property="name" label="Name" width="200"></el-table-column>
+    <el-table-column property="points" label="Points"></el-table-column>
+  </el-table>
+ <p style="font-weight: bold;"></br>Recommended Lineup</p>
+  <el-table :data="recommendedLineup" :fit=true height="150">
+    <el-table-column property="position" label="Position" width="150"></el-table-column>
+    <el-table-column property="name" label="Name" width="200"></el-table-column>
+    <el-table-column property="points" label="Points"></el-table-column>
+  </el-table>
 </el-dialog>
 
       </template>
@@ -92,19 +75,100 @@
   export default {
     data () {
       return {
-        checkList: ['selected and disabled', 'Option A'],
-        dialogFormVisible: false,
-        form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        },
-        formLabelWidth: '130px',
+        dialogTableVisible: false,
+        currentLineup: [{
+          position: 'QB',
+          name: 'Aaron Rodgers',
+          points: 23.42
+        }, {
+          position: 'RB',
+          name: 'Devontae Freeman',
+          points: 17.12
+        }, {
+          position: 'RB',
+          name: 'Lamar Miller',
+          points: 9.68
+        }, {
+          position: 'WR',
+          name: 'Mike Evans',
+          points: 'L'
+        }, {
+          position: 'WR',
+          name: 'Julio Jones',
+          points: 16.11
+        }, {
+          position: 'Flex Position',
+          name: 'Alshon Jeffery',
+          points: 20
+        }, {
+          position: 'Tight End',
+          name: 'Antonio Gates',
+          points: 30
+        }, {
+          position: 'Kicker',
+          name: 'Dan Bailey',
+          points: 12.98
+        }, {
+          position: 'Defense',
+          name: 'Joey Bosa',
+          points: 22.61
+        }],
+
+        recommendedLineup: [{
+          position: 'QB',
+          name: 'Kirk Cousins',
+          points: 23.42
+        }, {
+          position: 'RB',
+          name: 'Jamaal Charles',
+          points: 17.12
+        }, {
+          position: 'RB',
+          name: 'Thomas Rawls',
+          points: 9.68
+        }, {
+          position: 'WR',
+          name: 'Odell Beckham Jr.',
+          points: 'L'
+        }, {
+          position: 'WR',
+          name: 'A.J. Green',
+          points: 16.11
+        }, {
+          position: 'Flex Position',
+          name: 'Jimmy Graham',
+          points: 20
+        }, {
+          position: 'Tight End',
+          name: 'Greg Olson',
+          points: 30
+        }, {
+          position: 'Kicker',
+          name: 'Stephen Gostkowski',
+          points: 12.98
+        }, {
+          position: 'Defense',
+          name: 'Aaron Donald',
+          points: 22.61
+        }],
+
+        weeklyReports: [{
+          season: '2016',
+          week: 4,
+          result: 'L'
+        }, {
+          season: '2016',
+          week: 3,
+          result: 'W'
+        }, {
+          season: '2016',
+          week: 2,
+          result: 'W'
+        }, {
+          season: '2016',
+          week: 1,
+          result: 'L'
+        }],
 
         tableData: [{
           team: 'Happy Campers',
@@ -138,12 +202,6 @@
       }
     },
     methods: {
-      handleEdit (index, row) {
-        console.log(index, row)
-      },
-      handleReport (index, row) {
-        console.log(index, row)
-      }
     }
   }
 </script>
