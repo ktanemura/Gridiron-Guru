@@ -2,7 +2,6 @@ import Main from './pages/Main.vue'
 import Dashboard from './pages/Main/Dashboard.vue'
 import AIProfiles from './pages/Main/AIProfiles.vue'
 import FantasyList from './pages/Main/FantasyList.vue'
-import WeeklyReports from './pages/Main/WeeklyReports.vue'
 import SignUp from './pages/SignUp.vue'
 import Settings from './pages/Main/Settings.vue'
 import Login from './pages/Login.vue'
@@ -38,14 +37,6 @@ export default [
         path: 'fantasylist',
         component: FantasyList,
         breadcrumb: 'fantasy list',
-        meta: {
-          reqAuth: true
-        }
-      },
-      {
-        path: 'weeklyreports',
-        component: WeeklyReports,
-        breadcrumb: 'weekly reports',
         meta: {
           reqAuth: true
         }
