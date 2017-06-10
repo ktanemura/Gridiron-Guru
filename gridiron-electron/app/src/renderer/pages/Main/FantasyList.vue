@@ -12,9 +12,8 @@
       :data="teams" :fit="true"
       border
       style="width: 100%">
-    <template scope="t">
       <el-table-column
-        prop="team"
+        prop="name"
         label="Team"
         width="220">
       </el-table-column>
@@ -23,22 +22,6 @@
         label="League"
         width="235">
       </el-table-column>
-      <el-table-column
-        prop="win"
-        label="Wins"
-        width="90">
-      </el-table-column>
-      <el-table-column
-        prop="lose"
-        label="Losses"
-        width="90">
-      </el-table-column>
-      <!--el-table-column
-        prop="status"
-        label="AI Status"
-        width="230">
-      </el-table-column-->
-    </template>
       <el-table-column
         label="Options">
         <template scope="scope">
@@ -74,10 +57,8 @@
   </template>
 <script>
   import {firebase, firebaseDb} from '../../main.js'
-
   var userRef
   var thisisme
-
   export default {
     data () {
       return {
@@ -175,36 +156,6 @@
           week: 1,
           result: 'L'
         }],
-
-        tableData: [{
-          team: 'Happy Campers',
-          league: 'Extraordinary Bots',
-          win: 0,
-          lose: 2,
-          status: 'The Brady Bot (Managing)',
-          address: 'No. 189, Grove St, Los Angeles'
-        }, {
-          team: 'Winnerz',
-          league: 'Extraordinary Bots',
-          win: 2,
-          lose: 1,
-          status: 'Predicti-Ball (Managing)',
-          address: 'No. 189, Grove St, Los Angeles'
-        }, {
-          team: 'Sports Illustrated',
-          league: 'Number One Fans',
-          win: 3,
-          lose: 1,
-          status: 'Weekend Warrior (Advising)',
-          address: 'No. 189, Grove St, Los Angeles'
-        }, {
-          team: 'Ballers',
-          league: 'Number One Fans',
-          win: 4,
-          lose: 0,
-          status: '(None)',
-          address: 'No. 189, Grove St, Los Angeles'
-        }],
         teams: []
       }
     },
@@ -212,10 +163,29 @@
       setUp () {
         userRef = firebaseDb.ref('users/' + firebase.auth().currentUser.uid)
         thisisme = this
-
         userRef.child('teams').once('value').then(function (snapshot) {
-          thisisme.teams = snapshot.val()
-          console.log(thisisme.teams)
+          var t = snapshot.val()
+
+          console.log(t)
+
+          t.forEach(function (team) {
+            console.log('In teams')
+            firebaseDb.ref('userLeagues').once('value').then(function (snapshot) {
+              var uL = snapshot.val()
+              console.log('In user leagues')
+              console.log(uL)
+              Object.keys(uL).forEach(function (league) {
+                console.log('In league')
+                Object.keys(uL[league]).forEach(function (userId) {
+                  if (userId === firebase.auth().currentUser.uid) {
+                    team['league'] = league
+                    console.log(team)
+                    thisisme.teams = t
+                  }
+                })
+              })
+            })
+          })
         })
       }
     },
