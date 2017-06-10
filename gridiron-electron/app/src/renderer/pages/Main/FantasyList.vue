@@ -24,10 +24,14 @@
       </el-table-column>
       <el-table-column
         label="Options">
-        <template scope="scope">
 
+  <template scope="myScope">
+    <el-button size="small" type="info" @click="displayReport(myScope.row)">Report</el-button>
+  </template>
+  </el-table-column>
+  </el-table>
+        <!--template scope="scope"-->
   <!--Report popup-->
-  <el-button size="small" type="info" @click="dialogTableVisible = true">Report</el-button>
   <el-dialog title="Report for <team name>" :visible.sync="dialogTableVisible">
    <p style="font-weight: bold;">Weekly Reports</p>
     <el-table :data="weeklyReports" :fit=true height="150">
@@ -36,22 +40,22 @@
       <el-table-column property="result" label="Result"></el-table-column>
     </el-table>
    <p style="font-weight: bold;">Current Lineup</p>
-    <el-table :data="currentLineup" :fit=true height="150">
-      <el-table-column property="position" label="Position" width="150"></el-table-column>
-      <el-table-column property="name" label="Name" width="200"></el-table-column>
-      <el-table-column property="points" label="Points"></el-table-column>
+    <el-table :data="testPlayers" :fit=true height="150">
+      <el-table-column property="Position" label="Position" width="150"></el-table-column>
+      <el-table-column property="Player" label="Player" width="190"></el-table-column>
+      <el-table-column property="points" label="Predicted Points"></el-table-column>
     </el-table>
    <p style="font-weight: bold;"></br>Recommended Lineup</p>
     <el-table :data="recommendedLineup" :fit=true height="150">
       <el-table-column property="position" label="Position" width="150"></el-table-column>
       <el-table-column property="name" label="Name" width="200"></el-table-column>
-      <el-table-column property="points" label="Points"></el-table-column>
+      <el-table-column property="points" label="Predicted Points"></el-table-column>
     </el-table>
   </el-dialog>
 
-        </template>
-      </el-table-column>
-    </el-table>
+        <!--/template-->
+      <!--/el-table-column>
+    </el-table-->
       </div>
     </div>
   </template>
@@ -62,7 +66,9 @@
   export default {
     data () {
       return {
+//        curTeam: ,
         dialogTableVisible: false,
+        testPlayers: {},
         currentLineup: [{
           position: 'QB',
           name: 'Aaron Rodgers',
@@ -186,6 +192,13 @@
               })
             })
           })
+        })
+      },
+      displayReport (team) {
+        this.dialogTableVisible = true
+        this.testPlayers = team['players']
+        this.testPlayers.forEach(function (player) {
+          player['points'] = (player['PredFantasyPoints'] / 16).toFixed(2)
         })
       }
     },
