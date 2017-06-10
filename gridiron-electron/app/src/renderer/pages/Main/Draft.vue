@@ -2,6 +2,7 @@
   <div id="app-draft">
     <div class="main-cnt">
     <router-link :to="{ path: '/login' }" tag="el-button">Exit Draft</router-link>
+    <el-button size="small" type="info" @click="tryRecommend()">ReccomendPlayer</el-button>
       <el-row :gutter="24">
         <el-col :span="8">
           <el-card :body-style="{ padding: '0px' }">
@@ -199,7 +200,7 @@
 </template>
 <script type="text/javascript">
   import { firebaseDb } from '../../main.js'
-  
+  import { recommendPlayers } from '../../draft.js'
   var draftRef
   var numTeams
   var numRounds
@@ -328,6 +329,9 @@
         curRound = 1
         curPick = 1
         overallPick = 1
+      },
+      tryRecommend () {
+        console.log(recommendPlayers(teams[0], this.players))
       }
     },
     mounted () {
