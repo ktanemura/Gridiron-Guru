@@ -8,6 +8,7 @@ import Login from './pages/Login.vue'
 import CreateUsername from './pages/CreateUsername.vue'
 import Draft from './pages/Main/Draft.vue'
 import DraftInfo from './pages/Main/DraftInfo.vue'
+import Leagues from './pages/Main/Leagues.vue'
 export default [
   {
     path: '/',
@@ -46,6 +47,14 @@ export default [
         path: 'aiprofiles',
         component: AIProfiles,
         breadcrumb: 'aiprofiles',
+        meta: {
+          reqAuth: true
+        }
+      },
+      {
+        path: 'leagues',
+        component: Leagues,
+        breadcrumb: 'leagues',
         meta: {
           reqAuth: true
         }

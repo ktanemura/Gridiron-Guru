@@ -66,9 +66,8 @@
   export default {
     data () {
       return {
-//        curTeam: ,
         dialogTableVisible: false,
-        testPlayers: {},
+        testPlayers: [],
         currentLineup: [{
           position: 'QB',
           name: 'Aaron Rodgers',
@@ -195,10 +194,50 @@
         })
       },
       displayReport (team) {
+        var temp = team['players']
+        var QB = 0
+        var RB = 0
+        var WR = 0
+        var TE = 0
+        var PK = 0
+        var thisisme = this
         this.dialogTableVisible = true
-        this.testPlayers = team['players']
-        this.testPlayers.forEach(function (player) {
+        temp.forEach(function (player) {
           player['points'] = (player['PredFantasyPoints'] / 16).toFixed(2)
+          switch (player['Position']) {
+            case 'QB':
+              if (QB < 1) {
+                thisisme.testPlayers.push(player)
+              }
+              QB++
+              break
+            case 'RB':
+              if (RB < 2) {
+                thisisme.testPlayers.push(player)
+              }
+              RB++
+              break
+            case 'WR':
+              if (WR < 2) {
+                thisisme.testPlayers.push(player)
+              }
+              WR++
+              break
+            case 'TE':
+              if (TE < 1) {
+                thisisme.testPlayers.push(player)
+              }
+              TE++
+              break
+            case 'PK':
+              if (PK < 1) {
+                thisisme.testPlayers.push(player)
+              }
+              PK++
+              break
+            default:
+              console.log('default switch block')
+          }
         })
       }
     },
