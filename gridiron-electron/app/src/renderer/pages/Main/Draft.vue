@@ -289,6 +289,8 @@
           draftRef.update(updates)
           this.$router.push('/login')
         }
+
+        this.advisedPlayers = recommendPlayers(teams[0], this.players)
       },
       setUp () {
         draftId = this.$route.params.id
@@ -338,7 +340,7 @@
                   playerRef.child('DF').once('value').then(function (snapshot) {
                     var def = snapshot.val()
                     thisisme.players = thisisme.players.concat(def)
-                    thisisme.advisedPlayers = thisisme.players.slice(3)
+                    thisisme.advisedPlayers = recommendPlayers(teams[0], thisisme.players)
                   })
                 })
               })
