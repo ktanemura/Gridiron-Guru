@@ -200,6 +200,7 @@
         var WR = 0
         var TE = 0
         var PK = 0
+        var DEF = 0
         var thisisme = this
         this.dialogTableVisible = true
         temp.forEach(function (player) {
@@ -234,6 +235,12 @@
                 thisisme.testPlayers.push(player)
               }
               PK++
+              break
+            case 'DEF':
+              if (DEF < 1) {
+                thisisme.testPlayers.push(player)
+              }
+              DEF++
               break
             default:
               console.log('default switch block')

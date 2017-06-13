@@ -264,10 +264,10 @@
         var index = players.indexOf(player)
         var toDraft = players[index]
         players.splice(index, 1)
-        teams[curTeam].push(toDraft)
+        // teams[curTeam].push(toDraft)
         curTeam2 = curTeam + 1
-        curTeam += pickDir
-
+        // curTeam += pickDir
+        teams[0].push(toDraft)
         if (curTeam < 0 || curTeam >= numTeams) {
           if (isSnake) {
             pickDir *= -1
