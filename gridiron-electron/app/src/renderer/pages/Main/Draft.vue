@@ -230,8 +230,9 @@
   </div>
 </template>
 <script type="text/javascript">
-  import { firebaseDb } from '../../main.js'
+  import { firebase, firebaseDb } from '../../main.js'
   import { recommendPlayers } from '../../draft.js'
+  import { bestLineup } from '../../lineup.js'
   var draftRef
   var numTeams
   var numRounds
@@ -246,6 +247,7 @@
   var curPick
   var overallPick
   var thisisme
+  var userRef
 
   export default {
     data () {
@@ -300,7 +302,7 @@
 
         if (curRound > numRounds) {
           updates = {}
-          updates['/teams'] = teams
+          updates['/teams'] = userRef.child('teams').once('value')
           draftRef.update(updates)
           this.$router.push('/login')
         }
@@ -330,6 +332,8 @@
         draftRef.child('draftInfo').once('value').then(function (snapshot) {
           isSnake = snapshot.val().isSnake
         })
+
+        userRef = firebaseDb.ref('users/' + firebase.auth().currentUser.uid)
 
         var playerRef = firebaseDb.ref('players')
         playerRef.child('QB').once('value').then(function (snapshot) {
@@ -376,7 +380,7 @@
         overallPick = 1
       },
       tryRecommend () {
-        console.log(recommendPlayers(teams[0], this.players))
+        bestLineup(teams[0], this.players)
       }
     },
     mounted () {
