@@ -1,11 +1,11 @@
 var recommendPlayers = function (teamPlayers, undraftedPlayers) {
   var zScales = {
-    'QB': 1.65,
+    'QB': 1.45,
     'RB': 1.05,
-    'WR': 1.08,
-    'TE': 1.17,
-    'PK': 1.04,
-    'DEF': 1.04
+    'WR': 2.70,
+    'TE': 1.10,
+    'PK': 1.1,
+    'DEF': 1.1
   }
 
   var idealDist = {
@@ -56,7 +56,7 @@ var recommendPlayers = function (teamPlayers, undraftedPlayers) {
     playerValues = playerValues.concat(getDraftValue(posPlayers[pos], zScales[pos], posMetric))
   }
 
-  var top3 = getTop3(playerValues)
+  var top3 = getTopN(playerValues, 15)
   for (var k in top3) {
     console.log(top3[k]['Player'])
     console.log(top3[k]['Position'])
@@ -79,10 +79,10 @@ var getDraftValue = function (players, zScalar, posMetric) {
   return players
 }
 
-var getTop3 = function (playerValues) {
-  var top3 = []
+var getTopN = function (playerValues, N) {
+  var topN = []
 
-  for (var i = 0; i < 3; i++) {
+  for (var i = 0; i < N; i++) {
     var maxIdx = -1
     var maxScr = -999
 
@@ -93,11 +93,11 @@ var getTop3 = function (playerValues) {
       }
     }
 
-    top3.push(playerValues[maxIdx])
+    topN.push(playerValues[maxIdx])
     playerValues.splice(maxIdx, 1)
   }
 
-  return top3
+  return topN
 }
 
 var calcRightSkewness = function (tierCounts, numParticipants = 6) {
@@ -180,7 +180,7 @@ var getTierCounts = function (sortedPlayers, std, minTiers = 4, numParticipants 
         break
       }
     }
-    betweenTiers *= 0.9
+    betweenTiers *= 0.85
   } while (tierCounts.length < minTiers)
 
   return tierCounts
@@ -265,7 +265,7 @@ var calcRosterDist = function (teamPlayers) {
   }
 
   for (var player in teamPlayers) {
-    rosterDist[player['Position']] = rosterDist[player['Position']] + 1
+    rosterDist[teamPlayers[player]['Position']] = rosterDist[teamPlayers[player]['Position']] + 1
   }
 
   return rosterDist
