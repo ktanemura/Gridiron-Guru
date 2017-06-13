@@ -5,38 +5,38 @@
     <el-button size="small" type="info" @click="tryRecommend()">ReccomendPlayer</el-button>
       <el-row :gutter="24">
         <el-col :span="8">
-          <el-card :body-style="{ padding: '0px' }">
+          <el-card :body-style="{ padding: '0px' }" :data="advisedPlayers[0]">
               <img src="" class="image">
               <div style="padding: 14px;">
-                <span>Recommended Player 1</span>
+                <span>{{advisedPlayers[0].Player}}</span>
                 <div class="bottom clearfix">
-                  <p>Position</p>
-                  <p>Projected Points</p>
+                  <p>{{advisedPlayers[0].Position}}</p>
+                  <p>{{advisedPlayers[0].PredFantasyPoints}}</p>
                 </div>
             </div>
           </el-card>
         </el-col>
         <el-col :span="8">
-          <el-card :body-style="{ padding: '0px' }">
+          <el-card :body-style="{ padding: '0px' }" :data="advisedPlayers[1]">
                 <img src="" class="image">
                 <div style="padding: 14px;">
-                  <span>Recommended Player 2</span>
-                  <div class="bottom clearfix">
-                    <p>Position</p>
-                    <p>Projected Points</p>
-                  </div>
+                  <span>{{advisedPlayers[1].Player}}</span>
+                <div class="bottom clearfix">
+                  <p>{{advisedPlayers[1].Position}}</p>
+                  <p>{{advisedPlayers[1].PredFantasyPoints}}</p>
+                </div>
                 </div>
           </el-card>
         </el-col>
         <el-col :span="8">
-          <el-card :body-style="{ padding: '0px' }">
+          <el-card :body-style="{ padding: '0px' }" :data="advisedPlayers[2]">
                 <img src="" class="image">
                 <div style="padding: 14px;">
-                  <span>Recommended Player 3</span>
-                  <div class="bottom clearfix">
-                    <p>Position</p>
-                    <p>Projected Points</p>
-                  </div>
+                  <span>{{advisedPlayers[2].Player}}</span>
+                <div class="bottom clearfix">
+                  <p>{{advisedPlayers[2].Position}}</p>
+                  <p>{{advisedPlayers[2].PredFantasyPoints}}</p>
+                </div>
                 </div>
           </el-card>
         </el-col>
@@ -134,6 +134,22 @@
                           </el-col>
                         </el-row>
                       </template>
+                      <template v-if="props.row.Position === 'DEF'">
+                        <el-row :gutter="24">
+                          <el-col :span ="8">
+                            <p>Points Allowed: {{props.row.PredSeasonPointsAllowed.toFixed(2)}}</p>
+                            <p>Fumble Recoveries: {{props.row.PredSeasonFRecoveries.toFixed(2)}}</p>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>Defensive TDs: {{props.row.PredSeasonTDs.toFixed(2)}}</p>
+                            <p>Interceptions: {{props.row.PredSeasonInterceptions.toFixed(2)}}</p>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>Safties: {{props.row.PredSeasonSafeties.toFixed(2)}}</p>
+                            <p>Sacks: {{props.row.PredSeasonSacks.toFixed(2)}}</p>
+                          </el-col>
+                        </el-row>
+                      </template>
                     </template>
                   </el-table-column>
                   <el-table-column
@@ -143,7 +159,7 @@
                   <el-table-column
                     prop="Position"
                     label="Position"
-                    :filters="[{ text: 'QB', value: 'QB' }, { text: 'RB', value: 'RB' }, { text: 'WR', value: 'WR' }, { text: 'TE', value: 'TE' }, { text: 'PK', value: 'PK' }]"
+                    :filters="[{ text: 'QB', value: 'QB' }, { text: 'RB', value: 'RB' }, { text: 'WR', value: 'WR' }, { text: 'TE', value: 'TE' }, { text: 'PK', value: 'PK' }, { text: 'DEF', value: 'DEF'}]"
                     :filter-method="filterTag"
                     filter-placement="bottom-end">
                   </el-table-column>
@@ -221,7 +237,8 @@
       return {
         tableTab: 'first',
         picks: [],
-        players: []
+        players: [],
+        advisedPlayers: [{'Player': 'Player', 'Position': 'Position', 'PredFantasyPoints': 'Points'}, {'Player': 'Player', 'Position': 'Position', 'PredFantasyPoints': 'Points'}, {'Player': 'Player', 'Position': 'Position', 'PredFantasyPoints': 'Points'}]
       }
     },
     methods: {
@@ -301,23 +318,34 @@
         playerRef.child('QB').once('value').then(function (snapshot) {
           var qbs = snapshot.val()
           thisisme.players = thisisme.players.concat(qbs)
+
+          playerRef.child('RB').once('value').then(function (snapshot) {
+            var rbs = snapshot.val()
+            thisisme.players = thisisme.players.concat(rbs)
+
+            playerRef.child('WR').once('value').then(function (snapshot) {
+              var wrs = snapshot.val()
+              thisisme.players = thisisme.players.concat(wrs)
+
+              playerRef.child('TE').once('value').then(function (snapshot) {
+                var tes = snapshot.val()
+                thisisme.players = thisisme.players.concat(tes)
+
+                playerRef.child('K').once('value').then(function (snapshot) {
+                  var ks = snapshot.val()
+                  thisisme.players = thisisme.players.concat(ks)
+
+                  playerRef.child('DF').once('value').then(function (snapshot) {
+                    var def = snapshot.val()
+                    thisisme.players = thisisme.players.concat(def)
+                    thisisme.advisedPlayers = thisisme.players.slice(3)
+                  })
+                })
+              })
+            })
+          })
         })
-        playerRef.child('RB').once('value').then(function (snapshot) {
-          var rbs = snapshot.val()
-          thisisme.players = thisisme.players.concat(rbs)
-        })
-        playerRef.child('WR').once('value').then(function (snapshot) {
-          var wrs = snapshot.val()
-          thisisme.players = thisisme.players.concat(wrs)
-        })
-        playerRef.child('TE').once('value').then(function (snapshot) {
-          var tes = snapshot.val()
-          thisisme.players = thisisme.players.concat(tes)
-        })
-        playerRef.child('K').once('value').then(function (snapshot) {
-          var ks = snapshot.val()
-          thisisme.players = thisisme.players.concat(ks)
-        })
+
         /*
         var updates = {};
         updates['/picks'] = this.picks;
