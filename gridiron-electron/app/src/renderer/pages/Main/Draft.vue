@@ -12,6 +12,11 @@
                 <div class="bottom clearfix">
                   <p>{{advisedPlayers[0].Position}}</p>
                   <p>{{advisedPlayers[0].PredFantasyPoints}}</p>
+                  <el-button @click="draftPlayer(advisedPlayers[0], players)"
+                      type="text"
+                      size="small">
+                        Draft
+                    </el-button>
                 </div>
             </div>
           </el-card>
@@ -24,6 +29,11 @@
                 <div class="bottom clearfix">
                   <p>{{advisedPlayers[1].Position}}</p>
                   <p>{{advisedPlayers[1].PredFantasyPoints}}</p>
+                  <el-button @click="draftPlayer(advisedPlayers[1], players)"
+                      type="text"
+                      size="small">
+                        Draft
+                    </el-button>
                 </div>
                 </div>
           </el-card>
@@ -36,6 +46,11 @@
                 <div class="bottom clearfix">
                   <p>{{advisedPlayers[2].Position}}</p>
                   <p>{{advisedPlayers[2].PredFantasyPoints}}</p>
+                  <el-button @click="draftPlayer(advisedPlayers[2], players)"
+                      type="text"
+                      size="small">
+                        Draft
+                    </el-button>
                 </div>
                 </div>
           </el-card>
