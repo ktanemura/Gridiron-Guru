@@ -113,8 +113,15 @@
         var TE = 0
         var PK = 0
         var DEF = 0
+        var fa
         var thisisme = this
+        firebaseDb.ref('leagues/' + team['league']).once('value').then(function (snapshot) {
+          fa = snapshot.val().freeAgents
+          thisisme.reccomendedLineup = bestLineUp (temp, fa)
+        }
+
         this.dialogTableVisible = true
+
         temp.forEach(function (player) {
           player['points'] = (player['PredFantasyPoints'] / 16).toFixed(2)
           switch (player['Position']) {
