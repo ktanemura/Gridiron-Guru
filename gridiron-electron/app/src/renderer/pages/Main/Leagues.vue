@@ -1,5 +1,6 @@
 <template>
 <div id="app-leagues">
+  </el-alert>
   <el-row>
     <el-col :span="24">
       <div class="grid-content bg-blue-dark">
@@ -28,7 +29,7 @@
         <el-table-column
           label="Teams">
           <template scope="scope">
-            {{ scope.row.joined }} / {{ scope.row.leagueInfo.teams }}
+            {{ scope.row.numJoined }} / {{ scope.row.leagueInfo.teams }}
           </template>
         </el-table-column>
         <el-table-column
@@ -49,20 +50,10 @@
           fixed="right"
           label="Operations">
           <template scope="scope">
-            <el-button @click.native.prevent="join(scope.$index, tableData)" type="text" size="small">Join</el-button>
-            <el-button @click.native.prevent="draft(scope.$index, tableData)" type="text" size="small">Draft</el-button>
+            <el-button v-if="!scope.row.curUserJoined" @click.native.prevent="join(scope.$index, tableData)" type="text" size="small">Join</el-button>
+            <el-button v-if="scope.row.curUserJoined" @click.native.prevent="unJoin(scope.$index, tableData)" type="text" size="small">Unjoin</el-button>
+            <el-button v-if="scope.row.curUserJoined" @click.native.prevent="draft(scope.$index, tableData)" type="text" size="small">Draft</el-button>
             <el-dialog title="Join" v-model="joinDialogFormVisible">
-              <el-form :model="form">
-                <el-form-item label="Promotion name" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="Zones" :label-width="formLabelWidth">
-                  <el-select v-model="form.region" placeholder="Please select a zone">
-                    <el-option label="Zone No.1" value="shanghai"></el-option>
-                    <el-option label="Zone No.2" value="beijing"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-form>
               <span slot="footer" class="dialog-footer">
                 <el-button @click="joinDialogFormVisible = false">Cancel</el-button>
                 <el-button type="primary" @click="joinDialogFormVisible = false">Confirm</el-button>
@@ -95,6 +86,22 @@
       deleteRow (index, rows) {
         rows.splice(index, 1)
       },
+      unJoin (index, rows) {
+        console.log('unjoin league')
+        console.log(rows[index])
+
+        var league = rows[index]
+        var uid = firebase.auth().currentUser.uid
+
+        userLeaguesRef.child(league.id).child(uid).remove()
+
+        league['curUserJoined'] = false
+        if (league['numJoined'] - 1 < 0) {
+          league['numJoined'] = 0
+        } else {
+          league['numJoined'] -= 1
+        }
+      },
       join (index, rows) {
         console.log('join league')
         console.log(rows[index])
@@ -105,9 +112,17 @@
         updates['/' + uid] = { team: 'My Team' }
 
         userLeaguesRef.child(league.id).update(updates)
+
+        league['curUserJoined'] = true
+        league['numJoined'] += 1
       },
       draft (index, rows) {
         console.log('draft league')
+        console.log('rows[index]')
+
+        var league = rows[index]
+
+        this.$router.push('/draft/' + league.id)
       },
       setUp () {
         thisVue = this
@@ -116,14 +131,31 @@
         userLeaguesRef = firebaseDb.ref('/userLeagues')
         // draftsRef = firebaseDb.ref('/drafts')
 
+        console.log(firebase.auth().currentUser.uid)
+
         leaguesRef.once('value').then(function (leaguesSnapshot) {
           Object.keys(leaguesSnapshot.val()).forEach(function (leagueId) {
             var league = {}
             leaguesRef.child(leagueId).once('value').then(function (leagueSnapshot) {
               league = leagueSnapshot.val()
               league['id'] = leagueId
+
               userLeaguesRef.child(leagueId).once('value').then(function (ulSnapshot) {
-                league['joined'] = ulSnapshot.numChildren()
+                if (!ulSnapshot.val()) {
+                  league['numJoined'] = 0
+                  league['curUserJoined'] = 0
+                  thisVue.tableData.push(league)
+                  return
+                }
+
+                league['numJoined'] = ulSnapshot.numChildren()
+
+                var userLeagues = ulSnapshot.val()
+                league['curUserJoined'] = false
+                console.log(userLeagues)
+                if (userLeagues.hasOwnProperty(firebase.auth().currentUser.uid)) {
+                  league['curUserJoined'] = true
+                }
                 console.log(league)
                 thisVue.tableData.push(league)
               })
