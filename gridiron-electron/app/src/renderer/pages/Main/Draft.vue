@@ -211,7 +211,7 @@
                     label="Pick">
                   </el-table-column>
                   <el-table-column
-                    prop="player"
+                    prop="player.Player"
                     label="Name">
                   </el-table-column>
                   <el-table-column
@@ -405,17 +405,6 @@
                     var def = snapshot.val()
                     thisisme.players = thisisme.players.concat(def)
                     thisisme.advisedPlayers = recommendPlayers(team, thisisme.players)
-
-                    draftRef2.child('picks').once('value').then(function (dSnap) {
-                      thisisme.picks = dSnap.val()
-                      if (thisisme.picks === null) {
-                        thisisme.picks = []
-                      }
-                      thisisme.picks.forEach(function (p) {
-                        var index = thisisme.players.indexOf(p['player'])
-                        thisisme.players.splice(index, 1)
-                      })
-                    })
                   })
                 })
               })
