@@ -302,6 +302,10 @@
         }
 
         if (curRound > numRounds) {
+          var curLeague = firebaseDb.ref('leagues/' + draftId)
+          updates = {}
+          updates['/freeAgents'] = this.players
+          curLeague.update(updates)
           updates = {}
           myTeams.push(teams[pickNumber])
           updates['/teams'] = myTeams
