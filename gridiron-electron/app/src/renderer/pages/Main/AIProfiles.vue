@@ -41,9 +41,9 @@
         <el-input-number v-model="createAIForm.numDEF" @change="handleChange" :min="1" :max="5"></el-input-number>
       </el-form-item>
       <el-form-item label="Team Focus" prop="teamFocus">
-        <el-select v-model="selectedFocus" placeholder="Select Team Focus">
+        <el-select v-model="createAIForm.teamFocus" placeholder="Select Team Focus">
           <el-option
-            v-for="item in createAIForm.selectedFocus"
+            v-for="item in options"
             :key="item.value"
             :label="item.label"
             :value="item.value">
@@ -51,7 +51,7 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="upload()">Upload</el-button>
+        <el-button type="primary" @click="upload('createAIForm.teamFocus')">Upload</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
@@ -155,14 +155,14 @@
         console.log(value)
       },
       upload () {
-/*        var profile = {AIName: this.createAIForm.AIName, numQB: this.createAIForm.numQB, numRB: this.createAIForm.numRB, numWR: this.createAIForm.numWR, numTE: this.createAIForm.numTE, numPK: this.createAIForm.numPK, numDEF: this.createAIForm.numDEF}
+        var profile = {name: this.createAIForm.AIName, displayQB: this.createAIForm.numQB, displayRB: this.createAIForm.numRB, displayWR: this.createAIForm.numWR, displayTE: this.createAIForm.numTE, displayPK: this.createAIForm.numPK, displayDEF: this.createAIForm.numDEF, focus: this.createAIForm.teamFocus}
         this.tableData.push(profile)
         this.dialogTableVisible = false
-        var updates = {}
+/*        var updates = {}
         updates['/aiProifile/profiles'] = this.tableData
         userRef.update(updates)
 */
-        console.log('focus is: ' + this.createAIForm.selectedFocus)
+        console.log('focus is: ' + this.createAIForm.teamFocus)
         console.log('in upload() method')
       }
     },
@@ -180,87 +180,18 @@
           numTE: '',
           numPK: '',
           numDEF: '',
-          selectedFocus: [{
-            value: 'None',
-            label: 'None'
-          }, {
-            value: 'Run Focus - RBs',
-            label: 'Run Focus - RBs'
-          }, {
-            value: 'Pass Focus - WRs',
-            label: 'Pass Focus - WRs'
-          }]
+          teamFocus: ''
         },
         tableData: [
           {
-            name: 'The Brady Bot',
-            displayQB: 5,
-            displayRB: 2,
-            displayWR: 2,
-            displayTE: 2,
-            displayPK: 2,
-            displayDEF: 2,
-            focus: 'Run Focus - RBs'
-          },
-          {
-            name: 'Predicti-ball',
-            displayQB: 4,
-            displayRB: 3,
-            displayWR: 2,
-            displayTE: 2,
-            displayPK: 2,
-            displayDEF: 2,
-            focus: 'Pass Focus - WRs'
-          },
-          {
-            name: 'Gridiron Guru',
-            displayQB: 2,
-            displayRB: 2,
-            displayWR: 2,
-            displayTE: 2,
-            displayPK: 2,
-            displayDEF: 2,
-            focus: 'Pass Focus - WRs'
-          },
-          {
-            name: 'Smashmouth',
-            displayQB: 3,
-            displayRB: 4,
-            displayWR: 2,
-            displayTE: 2,
-            displayPK: 2,
-            displayDEF: 2,
-            focus: 'Pass Focus - WRs'
-          },
-          {
-            name: 'Weekend Warrior',
-            displayQB: 5,
-            displayRB: 7,
-            displayWR: 2,
-            displayTE: 2,
-            displayPK: 2,
-            displayDEF: 2,
-            focus: 'Run Focus - RBs'
-          },
-          {
-            name: 'The Admiral',
-            displayQB: 1,
-            displayRB: 4,
-            displayWR: 2,
-            displayTE: 2,
-            displayPK: 2,
-            displayDEF: 2,
-            focus: 'Run Focus - RBs'
-          },
-          {
-            name: 'Turtle',
-            displayQB: 2,
-            displayRB: 2,
-            displayWR: 2,
-            displayTE: 2,
-            displayPK: 2,
-            displayDEF: 2,
-            focus: 'Pass Focus - WRs'
+            name: '',
+            displayQB: '',
+            displayRB: '',
+            displayWR: '',
+            displayTE: '',
+            displayPK: '',
+            displayDEF: '',
+            focus: ''
           }
         ],
         dialogFormVisible: false,
@@ -269,11 +200,11 @@
           value: 'None',
           label: 'None'
         }, {
-          value: 'Run Focus - RBs',
-          label: 'Run Focus - RBs'
+          value: 'Run Focus',
+          label: 'Run Focus'
         }, {
-          value: 'Pass Focus - WRs',
-          label: 'Pass Focus - WRs'
+          value: 'Pass Focus',
+          label: 'Pass Focus'
         }]
 //        value: ''
       }
