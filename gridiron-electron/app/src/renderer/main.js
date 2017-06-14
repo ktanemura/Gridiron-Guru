@@ -14,7 +14,9 @@ import MainHeader from './components/header.vue'
 import MainSidenav from './components/sidenav.vue'
 import MainFooter from './components/footer.vue'
 
-Vue.use(ElementUI)
+import locale from 'element-ui/lib/locale/lang/en'
+
+Vue.use(ElementUI, { locale })
 Vue.use(Electron)
 Vue.use(Resource)
 Vue.use(Router)

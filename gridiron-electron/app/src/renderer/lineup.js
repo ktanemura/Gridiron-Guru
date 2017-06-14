@@ -10,7 +10,8 @@ var bestLineup = function (currentTeam, freeAgents) {
     offensiveStats = offSnap.val()
     var defenseRef = firebaseDb.ref('defense')
     defenseRef.once('value').then(function (defSnap) {
-      defensePlayers = defSnap.val()
+      var defensePlayers = defSnap.val()
+      console.log(defensePlayers)
       /* Use offensiveStats and defensiveStats here */
       console.log(offensiveStats)
       console.log(defensiveStats)

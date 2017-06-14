@@ -1,11 +1,9 @@
 <template>
 <div id="app-leagues">
-  </el-alert>
   <el-row>
     <el-col :span="24">
-      <div class="grid-content bg-blue-dark">
-        <h2>Leagues</h2>
-      </div>
+        <h2 style="float: left;">Leagues</h2>
+        <router-link :to="{ path: '/leagues/add' }"><el-button type="primary" icon="plus" style="float: right;"></el-button></router-link>
     </el-col>
   </el-row>
   <el-row class="row-cnt">
@@ -23,7 +21,7 @@
         style="width: 100%"
         max-height="250">
         <el-table-column
-          prop="name"
+          prop="leagueInfo.name"
           label="Name">
         </el-table-column>
         <el-table-column
@@ -53,12 +51,7 @@
             <el-button v-if="!scope.row.curUserJoined" @click.native.prevent="join(scope.$index, tableData)" type="text" size="small">Join</el-button>
             <el-button v-if="scope.row.curUserJoined" @click.native.prevent="unJoin(scope.$index, tableData)" type="text" size="small">Unjoin</el-button>
             <el-button v-if="scope.row.curUserJoined" @click.native.prevent="draft(scope.$index, tableData)" type="text" size="small">Draft</el-button>
-            <el-dialog title="Join" v-model="joinDialogFormVisible">
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="joinDialogFormVisible = false">Cancel</el-button>
-                <el-button type="primary" @click="joinDialogFormVisible = false">Confirm</el-button>
-              </span>
-            </el-dialog>
+            <el-button @click.native.prevent="deleteLeague(scope.$index, tableData)" type="text" size="small">Del</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -72,6 +65,7 @@
 
   var leaguesRef
   var userLeaguesRef
+  var draftsRef
   var thisVue
   // var draftsRef
 
@@ -83,12 +77,27 @@
       handleClick (index, row) {
         console.log(index, row.get(index))
       },
-      deleteRow (index, rows) {
-        rows.splice(index, 1)
+      deleteLeague (index, rows) {
+        console.log('delete league ' + index)
+
+        this.$confirm('Are you sure to delete ' + rows[index].leagueInfo.name + '?')
+          .then(_ => {
+            var league = rows[index]
+
+            leaguesRef.child(league.id).remove()
+            draftsRef.child(league.id).remove()
+            userLeaguesRef.child(league.id).remove()
+
+            rows.splice(index, 1)
+          })
+          .catch(_ => {})
+      },
+      addLeague () {
+        console.log('add league')
+        this.$router.push('/leagues/add')
       },
       unJoin (index, rows) {
         console.log('unjoin league')
-        console.log(rows[index])
 
         var league = rows[index]
         var uid = firebase.auth().currentUser.uid
@@ -104,7 +113,7 @@
       },
       join (index, rows) {
         console.log('join league')
-        console.log(rows[index])
+
         var league = rows[index]
         var uid = firebase.auth().currentUser.uid
 
@@ -118,7 +127,6 @@
       },
       draft (index, rows) {
         console.log('draft league')
-        console.log('rows[index]')
 
         var league = rows[index]
 
@@ -129,7 +137,7 @@
 
         leaguesRef = firebaseDb.ref('/leagues')
         userLeaguesRef = firebaseDb.ref('/userLeagues')
-        // draftsRef = firebaseDb.ref('/drafts')
+        draftsRef = firebaseDb.ref('/drafts')
 
         console.log(firebase.auth().currentUser.uid)
 
@@ -171,6 +179,7 @@
       return {
         tableData: [],
         joinDialogFormVisible: false,
+        delDialogVisible: false,
         form: {
           name: '',
           region: '',
