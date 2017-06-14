@@ -62,6 +62,7 @@
   </template>
 <script>
   import {firebase, firebaseDb} from '../../main.js'
+  import {bestLineup} from '../../lineup.js'
   var userRef
   var thisisme
   export default {
@@ -117,10 +118,10 @@
         var thisisme = this
         firebaseDb.ref('leagues/' + team['league']).once('value').then(function (snapshot) {
           fa = snapshot.val().freeAgents
-          thisisme.reccomendedLineup = bestLineUp (temp, fa)
-        }
+          thisisme.reccomendedLineup = bestLineup(temp, fa)
+        })
 
-        this.dialogTableVisible = true
+        thisisme.dialogTableVisible = true
 
         temp.forEach(function (player) {
           player['points'] = (player['PredFantasyPoints'] / 16).toFixed(2)
