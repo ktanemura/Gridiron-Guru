@@ -296,7 +296,7 @@
           overallPick += 1
 
           var updates = {}
-          updates['/picks'] = this.picks
+          updates['/draftInfo/picks'] = this.picks
           updates['/draftInfo/curPick'] = curPick
           updates['/draftInfo/overallPick'] = overallPick
           draftRef2.update(updates)
