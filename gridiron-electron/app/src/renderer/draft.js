@@ -1,8 +1,8 @@
 var recommendPlayers = function (teamPlayers, undraftedPlayers) {
   var zScales = {
-    'QB': 1.45,
-    'RB': 1.05,
-    'WR': 2.70,
+    'QB': 1.40,
+    'RB': 1.10,
+    'WR': 2.62,
     'TE': 1.10,
     'PK': 1.1,
     'DEF': 1.1
@@ -13,8 +13,8 @@ var recommendPlayers = function (teamPlayers, undraftedPlayers) {
     'RB': 5,
     'WR': 5,
     'TE': 1,
-    'PK': 0,
-    'DEF': 0
+    'PK': 1,
+    'DEF': 1
   }
 
   var draftPriority = {
@@ -28,6 +28,7 @@ var recommendPlayers = function (teamPlayers, undraftedPlayers) {
 
   var rosterDist = calcRosterDist(teamPlayers)
   var neededDist = calcNeededDist(idealDist, rosterDist)
+  console.log(rosterDist)
 
   var posPlayers = {}
   var rightSkew = {}
@@ -35,9 +36,6 @@ var recommendPlayers = function (teamPlayers, undraftedPlayers) {
   var minSkew = 999
   var maxSkew = -999
   for (var position in rosterDist) {
-    if (position === 'DEF') {
-      continue
-    }
     posPlayers[position] = sortFantasy(subsetPosition(undraftedPlayers, position))
     var posStd = stdFantasy(posPlayers[position], meanFantasy(posPlayers[position]))
     rightSkew[position] = calcRightSkewness(getTierCounts(posPlayers[position], posStd))
@@ -52,17 +50,11 @@ var recommendPlayers = function (teamPlayers, undraftedPlayers) {
   var playerValues = []
   for (var pos in rightSkew) {
     var normSkew = 1 - ((rightSkew[pos] + minSkew) / (maxSkew - minSkew))
-    var posMetric = (neededDist[pos] / idealDist[pos]) * draftPriority[pos] * normSkew
+    var posMetric = Math.pow(neededDist[pos], 1 / 3) * (neededDist[pos] / idealDist[pos]) * draftPriority[pos] * normSkew
     playerValues = playerValues.concat(getDraftValue(posPlayers[pos], zScales[pos], posMetric))
   }
 
-  var top3 = getTopN(playerValues, 15)
-  for (var k in top3) {
-    console.log(top3[k]['Player'])
-    console.log(top3[k]['Position'])
-    console.log(top3[k]['PredFantasyPoints'])
-    console.log(top3[k]['DraftValue'])
-  }
+  var top3 = getTopN(playerValues, 3)
 
   return top3
 }

@@ -34,16 +34,6 @@
           </el-form>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
-        <el-col :span="24" :offset="2">
-          </br><p style="color:black;font-size:18px;">Join a Draft</p>
-          <el-form :model="joinDraft" ref="joinDraft" label-width="150px" class="demo-ruleForm">
-              <el-form-item label="Draft Key">
-                <el-input v-model="joinDraft.key" style="width:50%;"></el-input><el-button type="primary" @click="joinDraftWithKey(joinDraft.key)">Join Draft</el-button>
-              </el-form-item>
-          </el-form>
-        </el-col>
-      </el-row>
     </div>
   </div>
 </template>
