@@ -413,7 +413,7 @@
                       }
                       thisisme.picks.forEach(function (p) {
                         var index = thisisme.players.indexOf(p['player'])
-                        thisisme.splice(index, 1)
+                        thisisme.players.splice(index, 1)
                       })
                     })
                   })
