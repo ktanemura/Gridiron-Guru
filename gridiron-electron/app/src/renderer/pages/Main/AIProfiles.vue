@@ -128,8 +128,18 @@
 </template>
 
 <script>
+  import { firebase, firebaseDb } from '../../main.js'
+  var userRef
   export default {
     methods: {
+      setUp () {
+        var thisisme = this
+        userRef = firebaseDb.ref('user/' + firebase.auth().currentUser.uid)
+        userRef.once('value').then(function (snapshot) {
+          thisisme.tableData = snapshot.val().aiProfile.profiles
+        })
+        console.log('in setUp()')
+      },
       handleClick (index, row) {
         console.log(index, row.get(index))
       },
@@ -144,9 +154,17 @@
         console.log(value)
       },
       upload () {
+        var profile = {numQB: this.createAIForm.numQB}
+        this.tableData.push(profile)
         this.dialogTableVisible = false
+        var updates = {}
+        updates['/aiProifile/profiles'] = this.tableData
+        userRef.update(updates)
         console.log('in upload() method')
       }
+    },
+    mounted () {
+      this.setUp()
     },
     data () {
       return {
@@ -245,19 +263,6 @@
           label: 'Pass Focus - WRs'
         }],
         value: ''
-
-/*        form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        },
-        formLabelWidth: '120px'
-*/
       }
     }
   }
