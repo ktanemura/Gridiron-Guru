@@ -263,4 +263,4 @@ var calcRosterDist = function (teamPlayers) {
   return rosterDist
 }
 
-export {recommendPlayers}
+export {recommendPlayers, stdFantasy, meanFantasy}
