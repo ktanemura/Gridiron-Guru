@@ -128,16 +128,17 @@
 </template>
 
 <script>
-  import { firebase, firebaseDb } from '../../main.js'
-  var userRef
+//  import { firebase, firebaseDb } from '../../main.js'
+//  var userRef
   export default {
     methods: {
       setUp () {
-        var thisisme = this
+/*        var thisisme = this
         userRef = firebaseDb.ref('user/' + firebase.auth().currentUser.uid)
         userRef.once('value').then(function (snapshot) {
           thisisme.tableData = snapshot.val().aiProfile.profiles
         })
+*/
         console.log('in setUp()')
       },
       handleClick (index, row) {
