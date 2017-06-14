@@ -8,12 +8,12 @@
     </el-col>
   </el-row>
   <el-row class="row-cnt">
-    <el-col :span="12">
+    <el-col :span="24">
       <div class="grid-content bg-blue">
         <p>View and create new AI profiles here. You can assign a profile to a team to manage.</p>
       </div>
     </el-col>
-    <el-col :span="12">
+    <!--el-col :span="12">
       <div class="grid-content bg-blue">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
@@ -22,8 +22,37 @@
           <p>Profile stats here</p>
         </el-card>
       </div>
-    </el-col>
+    </el-col-->
   </el-row>
+
+  <el-button type="primary" @click="displayCreateAIProfile()">Create AI Profile</el-button>
+<!-- Popup dialog form to Create AI Profile -->
+  <el-dialog title="Select Min and Max for # of Players" :visible.sync="dialogTableVisible">
+    <el-form :model="createAIForm" ref="createAIForm" label-width="150px" class="demo-signUpForm">
+      <el-form-item label="QB" prop="numQB">
+        <el-input-number v-model="createAIForm.numQB" @change="handleChange" :min="1" :max="5"></el-input-number>
+      </el-form-item>
+      <el-form-item label="RB" prop="numRB">
+        <el-input-number v-model="createAIForm.numRB" @change="handleChange" :min="2" :max="10"></el-input-number>
+      </el-form-item>
+      <el-form-item label="WR" prop="numWR">
+        <el-input-number v-model="createAIForm.numWR" @change="handleChange" :min="2" :max="10"></el-input-number>
+      </el-form-item>
+      <el-form-item label="TE" prop="numTE">
+        <el-input-number v-model="createAIForm.numTE" @change="handleChange" :min="1" :max="5"></el-input-number>
+      </el-form-item>
+      <el-form-item label="PK" prop="numPK">
+        <el-input-number v-model="createAIForm.numPK" @change="handleChange" :min="1" :max="5"></el-input-number>
+      </el-form-item>
+      <el-form-item label="DEF" prop="numDEF">
+        <el-input-number v-model="createAIForm.numDEF" @change="handleChange" :min="1" :max="5"></el-input-number>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="upload()">Upload</el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
+
   <el-row class="row-cnt">
     <el-col :span="24">
       <el-table
@@ -58,8 +87,9 @@
           fixed="right"
           label="Operations">
           <template scope="scope">
-            <el-button @click="dialogFormVisible = true" type="text" size="small">Edit</el-button>
-            <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">Delete</el-button>            <el-dialog title="AI Profile" v-model="dialogFormVisible">
+            <!--el-button @click="dialogFormVisible = true" type="text" size="small">Edit</el-button-->
+            <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">Delete</el-button>            
+            <el-dialog title="AI Profile" v-model="dialogFormVisible">
               <el-form :model="form">
                 <el-form-item label="Promotion name" :label-width="formLabelWidth">
                   <el-input v-model="form.name" auto-complete="off"></el-input>
@@ -95,10 +125,29 @@
       },
       deleteRow (index, rows) {
         rows.splice(index, 1)
+      },
+      displayCreateAIProfile () {
+        this.dialogTableVisible = true
+        console.log('in displayCreateAIProfile method')
+      },
+      handleChange (value) {
+        console.log(value)
+      },
+      upload () {
+        console.log('in upload() method')
       }
     },
     data () {
       return {
+        dialogTableVisible: false,
+        createAIForm: {
+          numQB: '',
+          numRB: '',
+          numWR: '',
+          numTE: '',
+          numPK: '',
+          numDEF: ''
+        },
         tableData: [
           {
             name: 'The Brady Bot',

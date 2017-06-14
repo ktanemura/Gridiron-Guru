@@ -3,7 +3,7 @@ import sqlite3
 
 # By Ryan McKinney
 
-def select_to_df(db, table, var_list, where=''):
+def select_to_df(db, table, var_list=None, where=''):
     conn = sqlite3.connect(db)
     c = conn.cursor()
     
@@ -12,13 +12,16 @@ def select_to_df(db, table, var_list, where=''):
     
     # create variable string
     var_str = ''
-    first = True
-    for var in var_list:
-        if not first:
-            var_str += ', ' + var
-        else:
-            var_str += var
-            first = False
+    if var_list is not None:
+        first = True
+        for var in var_list:
+            if not first:
+                var_str += ', ' + var
+            else:
+                var_str += var
+                first = False
+    else:
+        var_str = '*'
             
     # create query string
     query = 'SELECT ' + var_str + ' FROM ' + table + ' ' + where
