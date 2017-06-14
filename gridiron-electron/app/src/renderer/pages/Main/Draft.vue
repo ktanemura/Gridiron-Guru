@@ -234,6 +234,7 @@
   import { recommendPlayers } from '../../draft.js'
   import { bestLineup } from '../../lineup.js'
   var draftRef
+  var draftRef2
   var numTeams
   var numRounds
   var pickNumber = 0
@@ -315,10 +316,16 @@
 
         this.advisedPlayers = recommendPlayers(teams[pickNumber], this.players)
       },
+      canPick() {
+        curPick
+        return curPick === pickNumber
+      },
       setUp () {
         draftId = this.$route.params.id
-        draftRef = firebaseDb.ref('drafts/' + draftId)
+        draftRef = firebaseDb.ref('leagues/' + draftId)
+        draftRef2 = firebaseDb.ref('drafts/' + draftId)
         thisisme = this
+
         draftRef.child('draftInfo').once('value').then(function (snapshot) {
           numTeams = snapshot.val().teams
           teams = []
