@@ -154,7 +154,7 @@
         console.log(value)
       },
       upload () {
-        var profile = {numQB: this.createAIForm.numQB}
+        var profile = {AIName: this.createAIForm.AIName, numQB: this.createAIForm.numQB, numRB: this.createAIForm.numRB, numWR: this.createAIForm.numWR, numTE: this.createAIForm.numTE, numPK: this.createAIForm.numPK, numDEF: this.createAIForm.numDEF}
         this.tableData.push(profile)
         this.dialogTableVisible = false
         var updates = {}
