@@ -264,6 +264,7 @@
         return row.Position === value
       },
       draftPlayer (player, players) {
+        var thisisme = this
         draftRef2.child('draftInfo').once('value').then(function (dSnap) {
           var di = dSnap.val()
           var index = players.indexOf(player)
@@ -291,25 +292,25 @@
             team: pickNumber
           }
 
-          this.picks.push(pick)
+          thisisme.picks.push(pick)
           curPick += 1
           overallPick += 1
 
           var updates = {}
-          updates['/picks'] = this.picks
+          updates['/draftInfo/picks'] = thisisme.picks
           updates['/draftInfo/curPick'] = curPick
           updates['/draftInfo/overallPick'] = overallPick
           draftRef2.update(updates)
           if (curRound >= numRounds) {
             var curLeague = firebaseDb.ref('leagues/' + draftId)
             updates = {}
-            updates['/freeAgents'] = this.players
+            updates['/freeAgents'] = thisisme.players
             curLeague.update(updates)
             updates = {}
             myTeams.push(team)
             updates['/teams'] = myTeams
             userRef.update(updates)
-            this.$router.push('/login')
+            thisisme.$router.push('/login')
           }
 
           if (curPick > numTeams) {
@@ -320,7 +321,7 @@
           updates = {}
           updates['/draftInfo/curRound'] = curRound
 
-          this.advisedPlayers = recommendPlayers(team, this.players)
+          thisisme.advisedPlayers = recommendPlayers(team, thisisme.players)
         })
       },
       canPick () {
