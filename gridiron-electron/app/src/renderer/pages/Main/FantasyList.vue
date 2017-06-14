@@ -32,7 +32,8 @@
   </el-table>
         <!--template scope="scope"-->
   <!--Report popup-->
-  <el-dialog title="Report for <team name>" :visible.sync="dialogTableVisible">
+  <el-dialog title="Report" :visible.sync="dialogTableVisible">
+  <!--el-dialog prop=teamName :visible.sync="dialogTableVisible"-->
    <p style="font-weight: bold;">Weekly Reports</p>
     <el-table :data="weeklyReports" :fit=true height="150">
       <el-table-column property="season" label="Season" width="150"></el-table-column>
@@ -66,6 +67,7 @@
   export default {
     data () {
       return {
+        teamName: '',
         dialogTableVisible: false,
         testPlayers: [],
         currentLineup: [{
@@ -185,6 +187,8 @@
                   if (userId === firebase.auth().currentUser.uid) {
                     team['league'] = league
                     console.log(team)
+                    thisisme.teamName = 'Report for ' + team['name']
+                    console.log('TEAM NAME: ' + team['name'])
                     thisisme.teams = t
                   }
                 })
