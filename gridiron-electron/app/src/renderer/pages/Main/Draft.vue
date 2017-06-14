@@ -2,7 +2,6 @@
   <div id="app-draft">
     <div class="main-cnt">
     <router-link :to="{ path: '/login' }" tag="el-button">Exit Draft</router-link>
-    <el-button size="small" type="info" @click="tryRecommend()">ReccomendPlayer</el-button>
       <el-row :gutter="24">
         <el-col :span="8">
           <el-card :body-style="{ padding: '0px' }" :data="advisedPlayers[0]">
@@ -190,7 +189,7 @@
                     <el-button @click="draftPlayer(undrafted.row, players)"
                       type="text"
                       size="small"
-                      :disabled="!canPick()">
+                      :enabled="canPick()">
                         Draft
                     </el-button>
                     </template>
