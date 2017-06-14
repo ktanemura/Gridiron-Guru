@@ -154,12 +154,14 @@
         console.log(value)
       },
       upload () {
-        var profile = {AIName: this.createAIForm.AIName, numQB: this.createAIForm.numQB, numRB: this.createAIForm.numRB, numWR: this.createAIForm.numWR, numTE: this.createAIForm.numTE, numPK: this.createAIForm.numPK, numDEF: this.createAIForm.numDEF}
+/*        var profile = {AIName: this.createAIForm.AIName, numQB: this.createAIForm.numQB, numRB: this.createAIForm.numRB, numWR: this.createAIForm.numWR, numTE: this.createAIForm.numTE, numPK: this.createAIForm.numPK, numDEF: this.createAIForm.numDEF}
         this.tableData.push(profile)
         this.dialogTableVisible = false
         var updates = {}
         updates['/aiProifile/profiles'] = this.tableData
         userRef.update(updates)
+*/
+        console.log('focus is: ' + this.options.value)
         console.log('in upload() method')
       }
     },
