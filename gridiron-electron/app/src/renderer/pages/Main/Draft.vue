@@ -236,7 +236,7 @@
   var draftRef
   var numTeams
   var numRounds
-  // var pickNumber
+  var pickNumber = 0
   var isSnake
   var draftId
   var teams
@@ -248,6 +248,8 @@
   var overallPick
   var thisisme
   var userRef
+  var leagueRef
+  var myTeams
 
   export default {
     data () {
@@ -266,10 +268,9 @@
         var index = players.indexOf(player)
         var toDraft = players[index]
         players.splice(index, 1)
-        // teams[curTeam].push(toDraft)
+        teams[curTeam].push(toDraft)
         curTeam2 = curTeam + 1
-        // curTeam += pickDir
-        teams[0].push(toDraft)
+        curTeam += pickDir
         if (curTeam < 0 || curTeam >= numTeams) {
           if (isSnake) {
             pickDir *= -1
@@ -302,12 +303,13 @@
 
         if (curRound > numRounds) {
           updates = {}
-          updates['/teams'] = userRef.child('teams').once('value')
-          draftRef.update(updates)
+          myTeams.push(teams[pickNumber])
+          updates['/teams'] = myTeams
+          userRef.update(updates)
           this.$router.push('/login')
         }
 
-        this.advisedPlayers = recommendPlayers(teams[0], this.players)
+        this.advisedPlayers = recommendPlayers(teams[pickNumber], this.players)
       },
       setUp () {
         draftId = this.$route.params.id
@@ -335,6 +337,25 @@
 
         userRef = firebaseDb.ref('users/' + firebase.auth().currentUser.uid)
 
+        userRef.child('teams').once('value').then(function (teamsSnap) {
+          myTeams = teamsSnap.val()
+        })
+
+        leagueRef = firebaseDb.ref('userLeagues/' + draftId)
+        leagueRef.once('value').then(function (leagueSnap) {
+          var users = leagueSnap.val()
+          console.log('These are user league')
+          console.log(users)
+          var idx = 0
+          Object.keys(users).forEach(function (userId) {
+            if (userId === firebase.auth().currentUser.uid) {
+              pickNumber = idx
+            } else {
+              idx += 1
+            }
+          })
+        })
+
         var playerRef = firebaseDb.ref('players')
         playerRef.child('QB').once('value').then(function (snapshot) {
           var qbs = snapshot.val()
@@ -359,7 +380,7 @@
                   playerRef.child('DF').once('value').then(function (snapshot) {
                     var def = snapshot.val()
                     thisisme.players = thisisme.players.concat(def)
-                    thisisme.advisedPlayers = recommendPlayers(teams[0], thisisme.players)
+                    thisisme.advisedPlayers = recommendPlayers(teams[pickNumber], thisisme.players)
                   })
                 })
               })
