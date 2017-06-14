@@ -301,7 +301,7 @@
           updates['/draftInfo/curPick'] = curPick
           updates['/draftInfo/overallPick'] = overallPick
           draftRef2.update(updates)
-          if (curRound >= numRounds) {
+          if (overallPick > numRounds) {
             var curLeague = firebaseDb.ref('leagues/' + draftId)
             updates = {}
             updates['/freeAgents'] = thisisme.players
