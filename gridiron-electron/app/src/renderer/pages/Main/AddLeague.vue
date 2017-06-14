@@ -73,7 +73,8 @@
           picks: 0,
           teamRoster: 0,
           curPick: 1,
-          overallPick: 1
+          overallPick: 1,
+          curRound: 1
         }
         var leagueI = {
           rounds: numRounds,
