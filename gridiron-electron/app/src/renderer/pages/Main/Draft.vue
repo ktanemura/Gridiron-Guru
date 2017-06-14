@@ -211,7 +211,7 @@
                     label="Pick">
                   </el-table-column>
                   <el-table-column
-                    prop="player"
+                    prop="player.Player"
                     label="Name">
                   </el-table-column>
                   <el-table-column
@@ -420,23 +420,11 @@
 
         pickDir = 1
       },
-      checkPlayers () {
-        draftRef2 = firebaseDb.ref('drafts/' + draftId)
-        thisisme = this
-        draftRef2.child('picks').once('value').then(function (dSnap) {
-          thisisme.picks = dSnap.val()
-          thisisme.picks.forEach(function (p) {
-            var index = thisisme.players.indexOf(p['player'])
-            thisisme.splice(index, 1)
-          })
-        })
-      },
       tryRecommend () {
         bestLineup(team, this.players)
       }
     },
     mounted () {
-      this.checkPlayers()
       this.setUp()
     }
   }
