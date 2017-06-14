@@ -343,11 +343,11 @@
           overallPick = di['overallPick']
         })
 
-        draftRef.child('draftInfo').once('value').then(function (snapshot) {
+        draftRef.child('leagueInfo').once('value').then(function (snapshot) {
           numTeams = snapshot.val().teams
         })
 
-        draftRef.child('draftInfo').once('value').then(function (snapshot) {
+        draftRef.child('leagueInfo').once('value').then(function (snapshot) {
           numRounds = snapshot.val().rounds
         })
 /*
@@ -355,7 +355,7 @@
           pickNumber = snapshot.val().pickNo
         })
 */
-        draftRef.child('draftInfo').once('value').then(function (snapshot) {
+        draftRef.child('leagueInfo').once('value').then(function (snapshot) {
           isSnake = snapshot.val().isSnake
         })
 
