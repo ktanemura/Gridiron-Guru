@@ -405,6 +405,17 @@
                     var def = snapshot.val()
                     thisisme.players = thisisme.players.concat(def)
                     thisisme.advisedPlayers = recommendPlayers(team, thisisme.players)
+
+                    draftRef2.child('picks').once('value').then(function (dSnap) {
+                      thisisme.picks = dSnap.val()
+                      if (thisisme.picks === null) {
+                        thisisme.picks = []
+                      }
+                      thisisme.picks.forEach(function (p) {
+                        var index = thisisme.players.indexOf(p['player'])
+                        thisisme.splice(index, 1)
+                      })
+                    })
                   })
                 })
               })
@@ -420,23 +431,11 @@
 
         pickDir = 1
       },
-      checkPlayers () {
-        draftRef2 = firebaseDb.ref('drafts/' + draftId)
-        thisisme = this
-        draftRef2.child('picks').once('value').then(function (dSnap) {
-          thisisme.picks = dSnap.val()
-          thisisme.picks.forEach(function (p) {
-            var index = thisisme.players.indexOf(p['player'])
-            thisisme.splice(index, 1)
-          })
-        })
-      },
       tryRecommend () {
         bestLineup(team, this.players)
       }
     },
     mounted () {
-      this.checkPlayers()
       this.setUp()
     }
   }
