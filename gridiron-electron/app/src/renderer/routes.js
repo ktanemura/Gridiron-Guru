@@ -9,6 +9,7 @@ import CreateUsername from './pages/CreateUsername.vue'
 import Draft from './pages/Main/Draft.vue'
 import DraftInfo from './pages/Main/DraftInfo.vue'
 import Leagues from './pages/Main/Leagues.vue'
+import AddLeague from './pages/Main/AddLeague.vue'
 export default [
   {
     path: '/',
@@ -55,6 +56,13 @@ export default [
         path: 'leagues',
         component: Leagues,
         breadcrumb: 'leagues',
+        meta: {
+          reqAuth: true
+        }
+      },
+      {
+        path: 'leagues/add',
+        component: AddLeague,
         meta: {
           reqAuth: true
         }
