@@ -13,22 +13,15 @@
         <p>View and create new AI profiles here. You can assign a profile to a team to manage.</p>
       </div>
     </el-col>
-    <!--el-col :span="12">
-      <div class="grid-content bg-blue">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span>Profile Stats</span>
-          </div>
-          <p>Profile stats here</p>
-        </el-card>
-      </div>
-    </el-col-->
   </el-row>
 
-  <el-button type="primary" @click="displayCreateAIProfile()">Create AI Profile</el-button>
+  <el-button type="primary" @click="displayCreateAIProfile()">New AI Profile <i class="el-icon-plus el-icon-right"></i></el-button>
 <!-- Popup dialog form to Create AI Profile -->
-  <el-dialog title="Select Min and Max for # of Players" :visible.sync="dialogTableVisible">
+  <el-dialog title="Create an AI Bot" :visible.sync="dialogTableVisible">
     <el-form :model="createAIForm" ref="createAIForm" label-width="150px" class="demo-signUpForm">
+      <el-form-item label="AI Bot Name" prop="AIName">
+        <el-input v-model="createAIForm.AIName" style="width:75%;"></el-input>
+      </el-form-item>
       <el-form-item label="QB" prop="numQB">
         <el-input-number v-model="createAIForm.numQB" @change="handleChange" :min="1" :max="5"></el-input-number>
       </el-form-item>
@@ -47,6 +40,16 @@
       <el-form-item label="DEF" prop="numDEF">
         <el-input-number v-model="createAIForm.numDEF" @change="handleChange" :min="1" :max="5"></el-input-number>
       </el-form-item>
+      <el-form-item label="Team Focus" prop="teamFocus">
+        <el-select v-model="value" placeholder="Select Team Focus">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="upload()">Upload</el-button>
       </el-form-item>
@@ -59,37 +62,47 @@
         :data="tableData"
         border
         style="width: 100%"
-        max-height="250">
-        <el-table-column
+        max-height="400">
+        <el-table-column width="160px"
+          fixed
           prop="name"
           label="Name">
         </el-table-column>
-        <el-table-column
-          prop="aggression"
-          label="Risk Tendency">
+        <el-table-column width="90px"
+          prop="displayQB"
+          label="# of QB">
         </el-table-column>
-        <el-table-column
-          prop="trading"
-          label="Make Trades"
-          :filters="[{ text: 'True', value: 'True' }, { text: 'False', value: 'False' }]"
-          :filter-method="filterTag">
-          <template scope="scope">
-            <el-tag
-              :type="scope.row.trading === 'True' ? 'success' : 'danger'"
-              close-transition>{{scope.row.trading}}</el-tag>
-          </template>
+        <el-table-column width="90px"
+          prop="displayRB"
+          label="# of RB">
         </el-table-column>
-        <el-table-column
+        <el-table-column width="90px"
+          prop="displayWR"
+          label="# of WR">
+        </el-table-column>
+        <el-table-column width="90px"
+          prop="displayTE"
+          label="# of TE">
+        </el-table-column>
+        <el-table-column width="90px"
+          prop="displayPK"
+          label="# of PK">
+        </el-table-column>
+        <el-table-column width="94px"
+          prop="displayDEF"
+          label="# of DEF">
+        </el-table-column>
+        <el-table-column width="153px"
           prop="focus"
           label="Team Focus">
         </el-table-column>
-        <el-table-column
+        <el-table-column width="111px"
           fixed="right"
           label="Operations">
           <template scope="scope">
             <!--el-button @click="dialogFormVisible = true" type="text" size="small">Edit</el-button-->
             <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">Delete</el-button>            
-            <el-dialog title="AI Profile" v-model="dialogFormVisible">
+            <!--el-dialog title="AI Profile" v-model="dialogFormVisible">
               <el-form :model="form">
                 <el-form-item label="Promotion name" :label-width="formLabelWidth">
                   <el-input v-model="form.name" auto-complete="off"></el-input>
@@ -104,7 +117,7 @@
               <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">Cancel</el-button>
                 <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
-              </span>
+              </span-->
             </el-dialog>
           </template>
         </el-table-column>
@@ -117,9 +130,6 @@
 <script>
   export default {
     methods: {
-      filterTag (value, row) {
-        return row.trading === value
-      },
       handleClick (index, row) {
         console.log(index, row.get(index))
       },
@@ -134,6 +144,7 @@
         console.log(value)
       },
       upload () {
+        this.dialogTableVisible = false
         console.log('in upload() method')
       }
     },
@@ -141,6 +152,7 @@
       return {
         dialogTableVisible: false,
         createAIForm: {
+          AIName: '',
           numQB: '',
           numRB: '',
           numWR: '',
@@ -151,49 +163,90 @@
         tableData: [
           {
             name: 'The Brady Bot',
-            aggression: 7,
-            trading: 'True',
-            focus: 'Run Heavy'
+            displayQB: 5,
+            displayRB: 2,
+            displayWR: 2,
+            displayTE: 2,
+            displayPK: 2,
+            displayDEF: 2,
+            focus: 'Run Focus - RBs'
           },
           {
             name: 'Predicti-ball',
-            aggression: 4,
-            trading: 'True',
-            focus: 'Arial Attack'
+            displayQB: 4,
+            displayRB: 3,
+            displayWR: 2,
+            displayTE: 2,
+            displayPK: 2,
+            displayDEF: 2,
+            focus: 'Pass Focus - WRs'
           },
           {
             name: 'Gridiron Guru',
-            aggression: 8,
-            trading: 'True',
-            focus: 'Twin TE'
+            displayQB: 2,
+            displayRB: 2,
+            displayWR: 2,
+            displayTE: 2,
+            displayPK: 2,
+            displayDEF: 2,
+            focus: 'Pass Focus - WRs'
           },
           {
             name: 'Smashmouth',
-            aggression: 3,
-            trading: 'False',
-            focus: 'Run Heavy'
+            displayQB: 3,
+            displayRB: 4,
+            displayWR: 2,
+            displayTE: 2,
+            displayPK: 2,
+            displayDEF: 2,
+            focus: 'Pass Focus - WRs'
           },
           {
             name: 'Weekend Warrior',
-            aggression: 5,
-            trading: 'False',
-            focus: 'Run Heavy'
+            displayQB: 5,
+            displayRB: 7,
+            displayWR: 2,
+            displayTE: 2,
+            displayPK: 2,
+            displayDEF: 2,
+            focus: 'Run Focus - RBs'
           },
           {
             name: 'The Admiral',
-            aggression: 10,
-            trading: 'False',
-            focus: 'Arial Attack'
+            displayQB: 1,
+            displayRB: 4,
+            displayWR: 2,
+            displayTE: 2,
+            displayPK: 2,
+            displayDEF: 2,
+            focus: 'Run Focus - RBs'
           },
           {
             name: 'Turtle',
-            aggression: 2,
-            trading: 'True',
-            focus: 'Run Heavy'
+            displayQB: 2,
+            displayRB: 2,
+            displayWR: 2,
+            displayTE: 2,
+            displayPK: 2,
+            displayDEF: 2,
+            focus: 'Pass Focus - WRs'
           }
         ],
         dialogFormVisible: false,
-        form: {
+
+        options: [{
+          value: 'None',
+          label: 'None'
+        }, {
+          value: 'Run Focus - RBs',
+          label: 'Run Focus - RBs'
+        }, {
+          value: 'Pass Focus - WRs',
+          label: 'Pass Focus - WRs'
+        }],
+        value: ''
+
+/*        form: {
           name: '',
           region: '',
           date1: '',
@@ -204,6 +257,7 @@
           desc: ''
         },
         formLabelWidth: '120px'
+*/
       }
     }
   }
