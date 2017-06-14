@@ -41,9 +41,9 @@
         <el-input-number v-model="createAIForm.numDEF" @change="handleChange" :min="1" :max="5"></el-input-number>
       </el-form-item>
       <el-form-item label="Team Focus" prop="teamFocus">
-        <el-select v-model="value" placeholder="Select Team Focus">
+        <el-select v-model="selectedFocus" placeholder="Select Team Focus">
           <el-option
-            v-for="item in options"
+            v-for="item in createAIForm.selectedFocus"
             :key="item.value"
             :label="item.label"
             :value="item.value">
@@ -162,7 +162,7 @@
         updates['/aiProifile/profiles'] = this.tableData
         userRef.update(updates)
 */
-        console.log('focus is: ' + this.options.value)
+        console.log('focus is: ' + this.createAIForm.selectedFocus)
         console.log('in upload() method')
       }
     },
@@ -179,7 +179,17 @@
           numWR: '',
           numTE: '',
           numPK: '',
-          numDEF: ''
+          numDEF: '',
+          selectedFocus: [{
+            value: 'None',
+            label: 'None'
+          }, {
+            value: 'Run Focus - RBs',
+            label: 'Run Focus - RBs'
+          }, {
+            value: 'Pass Focus - WRs',
+            label: 'Pass Focus - WRs'
+          }]
         },
         tableData: [
           {
@@ -264,8 +274,8 @@
         }, {
           value: 'Pass Focus - WRs',
           label: 'Pass Focus - WRs'
-        }],
-        value: ''
+        }]
+//        value: ''
       }
     }
   }
